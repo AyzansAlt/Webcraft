@@ -1,3 +1,4 @@
+![alt text][logo]
 [logo]: https://i.imgur.com/Icz3wCA.png "Discraft Logo"
 
 Discraft allows you to access Discord via an in-game web display, defeating the 
