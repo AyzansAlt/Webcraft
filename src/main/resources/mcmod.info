@@ -1,0 +1,16 @@
+[
+  {
+    "modid": "dc",
+    "name": "Discraft - Unofficial Minecraft Discord Interface",
+    "description": "A Forge-API mod that allows the use of Discord from In-game",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "https://github.com/scottehboeh/discraft",
+    "updateUrl": "",
+    "authorList": [ "ScottehBoeh", "montoyo" ],
+    "credits": "Discraft makes use of the amazing MCEF library, created by montoyo. (https://github.com/montoyo/mcef/)",
+    "logoFile": "discraft.png",
+    "screenshots": [],
+    "dependencies": []
+  }
+]

@@ -1,0 +1,61 @@
+# Discraft Language File
+# The following file has been commented to improve the readability for users who wish to translate the Game into their
+# own language.
+#
+# WARNING: Please make sure all translations have PROPER GRAMMAR and SPELLING
+#
+
+# Key Bindings
+key.discraft.category=Discraft Controls
+key.discraft.open=Open Discraft UI
+
+# In-game Information
+discraft.ingame.loading=Loading discord...
+discraft.ingame.connecting=CONNECTING
+
+# In-game Tooltip Texts
+discraft.ingame.tip.close=Press ESC to return to your Game!
+discraft.ingame.tip.open=Press %s to launch Discraft v%s
+
+# In-game Button Texts
+discraft.ingame.button.reload=Reload
+
+# In-game Button Tooltip Texts
+discraft.ingame.button.tooltip.reload=Reload the Discord UI
+discraft.ingame.menu.options.tooltip.reload=View/Change Discraft Options
+
+# In-game Screens Texts
+discraft.screen.tip=Shift+%s near me to close me!
+
+# In-game Options Menu
+discraft.options.title=Discraft Options
+discraft.options.reloadconfig=Reload Config File (%s)
+discraft.options.enablemod=Enable Discraft: %s
+discraft.options.disableplayerlist=Disable Player List: %s
+
+# Discraft Messages
+discraft.config.reload=Configuration file reloaded!
+discraft.config.enable=Discraft has been %s!
+discraft.playerlist.disable=MC Player List has been %s!
+discraft.openfirst=Open Discraft first before placing a Screen!
+
+# Discraft Nametags
+discraft.nametag.developer=Discraft Developer
+
+# Yes/No Variables
+discraft.yes=Yes
+discraft.no=No
+discraft.true=True
+discraft.false=False
+discraft.up=Up
+discraft.down=Down
+discraft.left=Left
+discraft.right=Right
+discraft.on=On
+discraft.off=Off
+discraft.enabled=Enabled
+discraft.disabled=Disabled
+
+# Discraft Overlay Messages
+discraft.overlay.disabledplayerlist=Player List Disabled!
+discraft.overlay.disabledplayerlist.top=(Can bee Re-Enabled in Discraft Options)

@@ -1,0 +1,89 @@
+Manifest-Version: 1.0
+Target-Platforms: win32-x86-64, win32-x86, linux-x86-64, darwin
+Implementation-Version: 1.3.1
+ContainedDeps: mcef-1.12.2-0.9.jar
+
+Name: net/discraft/mod/render/layer/LayerDiscraftCape.class
+SHA-256-Digest: yoQ45+CH0IkME/DnuJM6sXq0KYsAhiY4G8CmHfeE3a4=
+
+Name: net/discraft/mod/gui/GuiUtils.class
+SHA-256-Digest: JewW5+BKxFSiEMB79DAglwKcmjrWh1dNZz3HZFs/aAo=
+
+Name: assets/mcef/mime.types
+SHA-256-Digest: lXGyaFwcbOvtEJ+oWG+MXkISiJUebkMmJ3feBPWa3wQ=
+
+Name: net/discraft/mod/DiscraftCards.class
+SHA-256-Digest: wBEZXpg2A+ZEcy3Yhcb8mNhRCnh5SlegAqJcqP5pcxc=
+
+Name: net/discraft/mod/DiscraftKeys.class
+SHA-256-Digest: oxRTG5pfIIKZR/uT1O0jqUh4/CKOk9d4hwHGwggqBMg=
+
+Name: assets/dc/textures/gui/logo.png
+SHA-256-Digest: g0Efn35G+0qNoV+FOML6WFt9RXoNeRdT0ex19VjEHFc=
+
+Name: net/discraft/mod/gui/api/GuiDCButton.class
+SHA-256-Digest: 0MCRjYFgaD1UETXkCdz68wINlmZRAMO3ryDRDSQZ7hQ=
+
+Name: assets/dc/textures/gui/icons.png
+SHA-256-Digest: ApJeHtnT3eTpOJNVM8iDAw2r8ACAymVoMwcEam9RQHc=
+
+Name: assets/mcef/html/home.html
+SHA-256-Digest: pOEFVt9pnEGA7J67Ff4DfFQxxmnqDHvrkoixaDUHVdc=
+
+Name: net/discraft/mod/DiscraftLogger.class
+SHA-256-Digest: fyjJ7v8aIHmCquBhg4ygoHQU2fDRU4ib7ppraEeqC0g=
+
+Name: assets/mcef/html/jquery.js
+SHA-256-Digest: C6CB9UYIS9UJeqinPHWTHVqh/E1uhG5Twh+Y5qFQmYg=
+
+Name: assets/dc/textures/misc/cape.png
+SHA-256-Digest: hB+o0LUB+8st5ElTP3SXGfB4cjFhDfOCtM+NMBfINAU=
+
+Name: assets/dc/html/home.html
+SHA-256-Digest: FCqYyXuNJkVlJ7+pG1r+QA0HV0wSDqIHZ7p1k8gxhew=
+
+Name: META-INF/fml_cache_annotation.json
+SHA-256-Digest: ZVvcjeoe3BQ1divM/ACJZNbcmXyMj/+ukpL5KHAvMUE=
+
+Name: net/discraft/mod/DiscraftShutdownHook.class
+SHA-256-Digest: JzTcPvFewl+wq8G4dHzM2ztt/P+55ajFVbMGBAR5K90=
+
+Name: net/discraft/mod/gui/GuiDiscraftMain.class
+SHA-256-Digest: WnNcu5UzPX/7tI3+E5hltLyXpiX+pyYeCY5QXLiNcyo=
+
+Name: net/discraft/mod/DiscraftPresence.class
+SHA-256-Digest: 4p7ZjJF2Z9UJMsjpGTyNRSP0M2sYftD4SnZwm+1h7d4=
+
+Name: pack.mcmeta
+SHA-256-Digest: j1nrrrN9tXVsjaSs6gh+8novlE0XhZUjNDKcLH4t1m0=
+
+Name: assets/dc/lang/en_us.lang
+SHA-256-Digest: UPmhIAfFb2g1Vn8ETjz0YsdWdBc6VU/ufJb5esLhXII=
+
+Name: mcef-1.12.2-0.9.jar
+SHA-256-Digest: m3i3Oy1nlO5FfiS9zvXH0AdSH5b9/Q1SnvVcOHFVQoU=
+
+Name: net/discraft/mod/Discraft.class
+SHA-256-Digest: lSRodF1HgNFBIxBLf5hAwc/a2n82o0nFLMVY/hq9dy8=
+
+Name: assets/mcef/html/discord.html
+SHA-256-Digest: O9S62urlzGDvVafd2envKnK6Jwe2LbanBorwEDrT4eU=
+
+Name: net/discraft/mod/ClientEvents.class
+SHA-256-Digest: CugZqcfdnEwJhVi9S8Cxc31sgIICx0SgllHYsA7IkvE=
+
+Name: net/discraft/mod/gui/GuiHandler.class
+SHA-256-Digest: zBH3YC1xYEAucLDlmvaST81IcDnKlYSpBHur62Wna9o=
+
+Name: META-INF/fml_cache_class_versions.json
+SHA-256-Digest: yXE2S7dd48ohCrbawGmQGBJZJd7GRTKYwlfY5YekujE=
+
+Name: net/discraft/mod/DiscraftShutdownHook$1.class
+SHA-256-Digest: uK+D+fVIUEHQr+64nV6cNG3jasSGScckqa+VOQyI2CA=
+
+Name: discraft.png
+SHA-256-Digest: 5DJ5ZYo4xv5e/AV7iujnTkDV7bm/SyqthU40/u7ej6M=
+
+Name: mcmod.info
+SHA-256-Digest: /UR4Bkjjvjfq/bp3VdlYVXPg4wgHjWum2i0dY+I4K+Q=
+
