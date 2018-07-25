@@ -6,21 +6,21 @@ package org.cef.callback;
 
 class CefSchemeRegistrar_N extends CefNativeAdapter implements CefSchemeRegistrar {
 
-  @Override
-  public boolean addCustomScheme(String schemeName,
-                                 boolean isStandard,
-                                 boolean isLocal,
-                                 boolean isDisplayIsolated) {
-    try {
-      return N_AddCustomScheme(schemeName, isStandard, isLocal, isDisplayIsolated);
-    } catch (UnsatisfiedLinkError err) {
-      err.printStackTrace();
+    @Override
+    public boolean addCustomScheme(String schemeName,
+                                   boolean isStandard,
+                                   boolean isLocal,
+                                   boolean isDisplayIsolated) {
+        try {
+            return N_AddCustomScheme(schemeName, isStandard, isLocal, isDisplayIsolated);
+        } catch (UnsatisfiedLinkError err) {
+            err.printStackTrace();
+        }
+        return false;
     }
-    return false;
-  }
 
-  private final native boolean N_AddCustomScheme(String schemeName,
-                                                 boolean isStandard,
-                                                 boolean isLocal,
-                                                 boolean isDisplayIsolated);
+    private final native boolean N_AddCustomScheme(String schemeName,
+                                                   boolean isStandard,
+                                                   boolean isLocal,
+                                                   boolean isDisplayIsolated);
 }

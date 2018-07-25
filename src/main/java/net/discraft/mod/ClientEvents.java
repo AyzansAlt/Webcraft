@@ -184,21 +184,15 @@ public class ClientEvents {
 
     /**
      * On Render Overlay - Called when the game is rendering the In-game Overlay
+     *
      * @param event - Given Event (RenderGameOverlayEvent)
      */
     @SubscribeEvent
-    public void onRenderOverlay(RenderGameOverlayEvent event){
+    public void onRenderOverlay(RenderGameOverlayEvent event) {
 
         /* Get the Minecraft Instance */
         Minecraft mc = Minecraft.getMinecraft();
         ScaledResolution scaledResolution = new ScaledResolution(mc);
-
-        if(event.getType().equals(RenderGameOverlayEvent.ElementType.PLAYER_LIST) && Discraft.getInstance().discraftSettings.disablePlayerList){
-            event.setCanceled(true);
-
-            GuiUtils.renderCenteredTextWithOutline(I18n.format("discraft.overlay.disabledplayerlist"), scaledResolution.getScaledWidth() / 2, scaledResolution.getScaledHeight() / 2 - 30, 0xFFFFFF, 0x000000);
-            GuiUtils.renderCenteredTextScaled(I18n.format("discraft.overlay.disabledplayerlist.top"), scaledResolution.getScaledWidth() / 2, scaledResolution.getScaledHeight() / 2 - 15, 0xFFFFFF, 0.75);
-        }
 
     }
 

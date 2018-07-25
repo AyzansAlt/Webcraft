@@ -16,6 +16,7 @@ public class DiscraftScreenManager {
 
     /**
      * Add - Add a new Screen to the Discraft Screen List
+     *
      * @param discraftScreen - Given Discraft Screen Object
      */
     public void add(DiscraftScreen discraftScreen) {

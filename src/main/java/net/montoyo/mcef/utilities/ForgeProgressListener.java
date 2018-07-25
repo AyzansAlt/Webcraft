@@ -9,7 +9,7 @@ public class ForgeProgressListener implements IProgressListener {
 
     private void stepUntil(int val) {
         //FIXME: Bad, disgusting, and everything...
-        while(lastVal < val) {
+        while (lastVal < val) {
             progressBar.step("" + val + "%");
             lastVal++;
         }
@@ -22,7 +22,7 @@ public class ForgeProgressListener implements IProgressListener {
 
     @Override
     public void onTaskChanged(String name) {
-        if(progressBar != null) {
+        if (progressBar != null) {
             stepUntil(100);
             ProgressManager.pop(progressBar);
         }
@@ -33,7 +33,7 @@ public class ForgeProgressListener implements IProgressListener {
 
     @Override
     public void onProgressEnd() {
-        if(progressBar != null) {
+        if (progressBar != null) {
             stepUntil(100);
             ProgressManager.pop(progressBar);
             progressBar = null;

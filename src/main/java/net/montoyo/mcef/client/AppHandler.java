@@ -3,7 +3,6 @@ package net.montoyo.mcef.client;
 import net.montoyo.mcef.MCEF;
 import net.montoyo.mcef.api.IScheme;
 import net.montoyo.mcef.utilities.Log;
-
 import org.cef.CefApp;
 import org.cef.browser.CefBrowser;
 import org.cef.callback.CefSchemeHandlerFactory;
@@ -16,6 +15,38 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AppHandler extends CefAppHandlerAdapter {
+
+    private final HashMap<String, SchemeData> schemeMap = new HashMap<>();
+
+    public void registerScheme(String name, Class<? extends IScheme> cls, boolean std, boolean local, boolean dispIsolated) {
+        schemeMap.put(name, new SchemeData(cls, std, local, dispIsolated));
+    }
+
+    public boolean isSchemeRegistered(String name) {
+        return schemeMap.containsKey(name);
+    }
+
+    @Override
+    public void onRegisterCustomSchemes(CefSchemeRegistrar reg) {
+        int cnt = 0;
+
+        for (Map.Entry<String, SchemeData> entry : schemeMap.entrySet()) {
+            if (reg.addCustomScheme(entry.getKey(), entry.getValue().std, entry.getValue().local, entry.getValue().dispIsolated))
+                cnt++;
+            else
+                Log.error("Could not register scheme %s", entry.getKey());
+        }
+
+        Log.info("%d schemes registered", cnt);
+    }
+
+    @Override
+    public void onContextInitialized() {
+        CefApp app = ((ClientProxy) MCEF.PROXY).getCefApp();
+
+        for (Map.Entry<String, SchemeData> entry : schemeMap.entrySet())
+            app.registerSchemeHandlerFactory(entry.getKey(), "", new SchemeHandlerFactory(entry.getValue().cls));
+    }
 
     private static class SchemeData {
 
@@ -33,38 +64,6 @@ public class AppHandler extends CefAppHandlerAdapter {
 
     }
 
-    private final HashMap<String, SchemeData> schemeMap = new HashMap<>();
-
-    public void registerScheme(String name, Class<? extends IScheme> cls, boolean std, boolean local, boolean dispIsolated) {
-        schemeMap.put(name, new SchemeData(cls, std, local, dispIsolated));
-    }
-
-    public boolean isSchemeRegistered(String name) {
-        return schemeMap.containsKey(name);
-    }
-    
-    @Override
-    public void onRegisterCustomSchemes(CefSchemeRegistrar reg) {
-        int cnt = 0;
-
-        for(Map.Entry<String, SchemeData> entry : schemeMap.entrySet()) {
-            if(reg.addCustomScheme(entry.getKey(), entry.getValue().std, entry.getValue().local, entry.getValue().dispIsolated))
-                cnt++;
-            else
-                Log.error("Could not register scheme %s", entry.getKey());
-        }
-
-        Log.info("%d schemes registered", cnt);
-    }
-    
-    @Override
-    public void onContextInitialized() {
-        CefApp app = ((ClientProxy) MCEF.PROXY).getCefApp();
-
-        for(Map.Entry<String, SchemeData> entry : schemeMap.entrySet())
-            app.registerSchemeHandlerFactory(entry.getKey(), "", new SchemeHandlerFactory(entry.getValue().cls));
-    }
-    
     private static class SchemeHandlerFactory implements CefSchemeHandlerFactory {
 
         private Class<? extends IScheme> cls;
@@ -77,12 +76,12 @@ public class AppHandler extends CefAppHandlerAdapter {
         public CefResourceHandler create(CefBrowser browser, String schemeName, CefRequest request) {
             try {
                 return new SchemeResourceHandler(cls.newInstance());
-            } catch(Throwable t) {
+            } catch (Throwable t) {
                 t.printStackTrace();
                 return null;
             }
         }
-        
+
     }
 
 }

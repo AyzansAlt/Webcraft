@@ -13,19 +13,19 @@ import java.io.IOException;
 public class LinuxPatch {
 
     private static String[] getBinDirs() {
-        return new String[] { "/bin", "/usr/bin", "/usr/sbin", "/usr/local/bin", "/usr/local/sbin" };
+        return new String[]{"/bin", "/usr/bin", "/usr/sbin", "/usr/local/bin", "/usr/local/sbin"};
     }
 
     private static String[] getPatchFiles() {
-        return new String[] { "icudtl.dat", "natives_blob.bin", "snapshot_blob.bin" };
+        return new String[]{"icudtl.dat", "natives_blob.bin", "snapshot_blob.bin"};
     }
 
     private static String getExeLocation(String exe) {
         String[] bins = getBinDirs();
-        for(String b: bins) {
+        for (String b : bins) {
             File f = new File(b, exe);
 
-            if(f.exists())
+            if (f.exists())
                 return f.getAbsolutePath();
         }
 
@@ -49,12 +49,12 @@ public class LinuxPatch {
         bw.write("MCEF_ROOT=\"" + ClientProxy.ROOT + "\"\n");
         bw.write("JAVA_ROOT=\"" + System.getProperty("java.home") + "/bin\"\n\n");
 
-        for(String f: files)
+        for (String f : files)
             bw.write("rm -f \"$JAVA_ROOT/" + f + "\"\n");
 
         bw.write("\n\n");
 
-        for(String f: files)
+        for (String f : files)
             bw.write("ln -s \"$MCEF_ROOT/" + f + "\" \"$JAVA_ROOT/" + f + "\"\n");
 
         bw.write("\n\n");
@@ -63,32 +63,32 @@ public class LinuxPatch {
 
     public static boolean runScript() {
         String cmd = getGksudoLocation();
-        if(cmd == null)
+        if (cmd == null)
             return false;
 
         try {
-            if(Runtime.getRuntime().exec(new String[] { "chmod", "+x", getScriptFile().getAbsolutePath() }).exitValue() != 0) {
+            if (Runtime.getRuntime().exec(new String[]{"chmod", "+x", getScriptFile().getAbsolutePath()}).exitValue() != 0) {
                 Log.error("chmod failed!");
                 return false;
             }
 
-            if(Runtime.getRuntime().exec(new String[] { cmd, getScriptFile().getAbsolutePath() }).exitValue() != 0) {
+            if (Runtime.getRuntime().exec(new String[]{cmd, getScriptFile().getAbsolutePath()}).exitValue() != 0) {
                 Log.error("gksudo failed!");
                 return false;
             }
 
-            for(int i = 0; i < 6; i++) {
-                if(isPatched())
+            for (int i = 0; i < 6; i++) {
+                if (isPatched())
                     break;
 
                 try {
                     Thread.sleep(1000);
-                } catch(Throwable t) {
+                } catch (Throwable t) {
                 }
             }
 
             return true;
-        } catch(IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
             return false;
         }
@@ -98,8 +98,8 @@ public class LinuxPatch {
         File root = new File(System.getProperty("java.home"), "bin");
         String[] files = getPatchFiles();
 
-        for(String f: files) {
-            if(!(new File(root, f)).exists())
+        for (String f : files) {
+            if (!(new File(root, f)).exists())
                 return false;
         }
 
@@ -107,12 +107,12 @@ public class LinuxPatch {
     }
 
     public static boolean doPatch() {
-        if(isPatched())
+        if (isPatched())
             return true;
 
         try {
             generateScript();
-        } catch(Throwable t) {
+        } catch (Throwable t) {
             Log.error("Could not apply linux patch:");
             t.printStackTrace();
             return false;
@@ -121,7 +121,7 @@ public class LinuxPatch {
         int ans = JOptionPane.showConfirmDialog(null, "An existing bug in JCEF requires some files to be copied\ninto the Java home directory in order to make MCEF working.\nThis operations requires root privileges.\nDo you want MCEF to try to do it automatically?",
                 "MCEF Linux", JOptionPane.YES_NO_OPTION);
 
-        if(ans != JOptionPane.YES_OPTION) {
+        if (ans != JOptionPane.YES_OPTION) {
             JOptionPane.showMessageDialog(null, "MCEF will enter virtual mode.\nA script containing the patch was generated here:\n" + getScriptFile().getAbsolutePath(), "MCEF Linux", JOptionPane.INFORMATION_MESSAGE);
             return false;
         }

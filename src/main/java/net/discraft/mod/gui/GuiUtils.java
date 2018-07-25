@@ -151,7 +151,7 @@ public class GuiUtils {
         renderText(text, x - 1 - fr.getStringWidth(text) / 2, y, outlineColor);
         renderText(text, x + 1 - fr.getStringWidth(text) / 2, y, outlineColor);
         renderText(text, x - 1 - fr.getStringWidth(text) / 2, y - 1, outlineColor);
-        renderText(text, x - fr.getStringWidth(text) / 2, y - 1,outlineColor);
+        renderText(text, x - fr.getStringWidth(text) / 2, y - 1, outlineColor);
         renderText(text, x + 1 - fr.getStringWidth(text) / 2, y - 1, outlineColor);
 
         renderText(text, x - fr.getStringWidth(text) / 2, y, color);
@@ -277,7 +277,7 @@ public class GuiUtils {
         GL11.glPushMatrix();
 
         GL11.glTranslated(par2, par3, par4);
-        GL11.glTranslated(-mc.getRenderManager().viewerPosX,-mc.getRenderManager().viewerPosY,-mc.getRenderManager().viewerPosZ);
+        GL11.glTranslated(-mc.getRenderManager().viewerPosX, -mc.getRenderManager().viewerPosY, -mc.getRenderManager().viewerPosZ);
         GL11.glNormal3f(0.0F, 1.0F, 0.0F);
 
         GL11.glRotatef(-player.rotationYaw, 0.0F, 1.0F, 0.0F);
@@ -302,7 +302,7 @@ public class GuiUtils {
         GL11.glPushMatrix();
 
         GL11.glTranslated(par2, par3, par4);
-        GL11.glTranslated(-mc.getRenderManager().viewerPosX,-mc.getRenderManager().viewerPosY,-mc.getRenderManager().viewerPosZ);
+        GL11.glTranslated(-mc.getRenderManager().viewerPosX, -mc.getRenderManager().viewerPosY, -mc.getRenderManager().viewerPosZ);
         GL11.glNormal3f(0.0F, 1.0F, 0.0F);
 
         GL11.glRotatef(-player.rotationYaw, 0.0F, 1.0F, 0.0F);

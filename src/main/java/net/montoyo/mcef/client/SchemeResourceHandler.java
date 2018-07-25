@@ -21,7 +21,7 @@ public class SchemeResourceHandler extends CefResourceHandlerAdapter {
     public boolean processRequest(CefRequest request, CefCallback callback) {
         SchemePreResponse resp = scheme.processRequest(request.getURL());
 
-        switch(resp) {
+        switch (resp) {
             case HANDLED_CONTINUE:
                 callback.Continue();
                 return true;

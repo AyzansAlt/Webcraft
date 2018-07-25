@@ -6,14 +6,6 @@
 
 package org.cef.browser;
 
-import java.awt.Component;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelEvent;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.nio.ByteBuffer;
-
 import net.montoyo.mcef.MCEF;
 import net.montoyo.mcef.api.IBrowser;
 import net.montoyo.mcef.api.IStringVisitor;
@@ -26,12 +18,20 @@ import org.cef.handler.CefClientHandler;
 import org.cef.handler.CefRenderHandler;
 import org.lwjgl.BufferUtils;
 
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
+import java.nio.ByteBuffer;
+
 /**
  * This class represents an off-screen rendered browser.
  * The visibility of this class is "package". To create a new
  * CefBrowser instance, please use CefBrowserFactory.
  */
 public class CefBrowserOsr extends CefBrowser_N implements CefRenderHandler, IBrowser {
+    public static boolean CLEANUP = true;
+    private final PaintData paintData = new PaintData();
     private CefRenderer renderer_;
     private Rectangle browser_rect_ = new Rectangle(0, 0, 1, 1);  // Work around CEF issue #1437.
     private CefClientHandler clientHandler_;
@@ -41,8 +41,6 @@ public class CefBrowserOsr extends CefBrowser_N implements CefRenderHandler, IBr
     private CefBrowserOsr parent_ = null;
     private CefBrowserOsr devTools_ = null;
     private DummyComponent dc_ = new DummyComponent();
-
-    public static boolean CLEANUP = true;
 
     CefBrowserOsr(CefClientHandler clientHandler,
                   String url,
@@ -92,7 +90,7 @@ public class CefBrowserOsr extends CefBrowser_N implements CefRenderHandler, IBr
             parent_ = null;
         }
 
-        if(CLEANUP) {
+        if (CLEANUP) {
             ((ClientProxy) MCEF.PROXY).removeBrowser(this);
             renderer_.cleanup();
         }
@@ -154,32 +152,21 @@ public class CefBrowserOsr extends CefBrowser_N implements CefRenderHandler, IBr
         }
     }
 
-    private static class PaintData {
-        private ByteBuffer buffer;
-        private int width;
-        private int height;
-        private Rectangle[] dirtyRects;
-        private boolean hasFrame;
-        private boolean fullReRender;
-    }
-
-    private final PaintData paintData = new PaintData();
-
     @Override
     public void onPaint(CefBrowser browser, boolean popup, Rectangle[] dirtyRects, ByteBuffer buffer, int width, int height) {
-        if(popup)
+        if (popup)
             return;
 
         final int size = (width * height) << 2;
 
-        synchronized(paintData) {
-            if(buffer.limit() > size)
+        synchronized (paintData) {
+            if (buffer.limit() > size)
                 Log.warning("Skipping MCEF browser frame, data is too heavy"); //TODO: Don't spam
             else {
-                if(paintData.hasFrame) //The previous frame was not uploaded to GL texture, so we skip it and render this on instead
+                if (paintData.hasFrame) //The previous frame was not uploaded to GL texture, so we skip it and render this on instead
                     paintData.fullReRender = true;
 
-                if(paintData.buffer == null || size != paintData.buffer.capacity()) //This only happens when the browser gets resized
+                if (paintData.buffer == null || size != paintData.buffer.capacity()) //This only happens when the browser gets resized
                     paintData.buffer = BufferUtils.createByteBuffer(size);
 
                 paintData.buffer.position(0);
@@ -197,8 +184,8 @@ public class CefBrowserOsr extends CefBrowser_N implements CefRenderHandler, IBr
     }
 
     public void mcefUpdate() {
-        synchronized(paintData) {
-            if(paintData.hasFrame) {
+        synchronized (paintData) {
+            if (paintData.hasFrame) {
                 renderer_.onPaint(false, paintData.dirtyRects, paintData.buffer, paintData.width, paintData.height, paintData.fullReRender);
                 paintData.hasFrame = false;
                 paintData.fullReRender = false;
@@ -279,5 +266,14 @@ public class CefBrowserOsr extends CefBrowser_N implements CefRenderHandler, IBr
     @Override
     public boolean isPageLoading() {
         return isLoading();
+    }
+
+    private static class PaintData {
+        private ByteBuffer buffer;
+        private int width;
+        private int height;
+        private Rectangle[] dirtyRects;
+        private boolean hasFrame;
+        private boolean fullReRender;
     }
 }

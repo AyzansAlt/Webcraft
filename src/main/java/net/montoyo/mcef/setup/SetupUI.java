@@ -14,17 +14,6 @@ import java.util.zip.ZipOutputStream;
 public class SetupUI implements ActionListener, WindowListener, MouseListener {
 
     public static SetupUI INSTANCE = null;
-
-    public static void main(String[] args) {
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch(Throwable t) {
-            t.printStackTrace();
-        }
-
-        INSTANCE = new SetupUI();
-    }
-
     private File selfDestruct = null;
     private JFrame frame;
     private GridLayout layout;
@@ -34,7 +23,6 @@ public class SetupUI implements ActionListener, WindowListener, MouseListener {
     private JButton btnUninstall;
     private JButton btnExit;
     private JLabel aboutLabel;
-
     public SetupUI() {
         //Setup
         frame = new JFrame("MCEF Setup");
@@ -80,15 +68,25 @@ public class SetupUI implements ActionListener, WindowListener, MouseListener {
         frame.setVisible(true);
     }
 
+    public static void main(String[] args) {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+
+        INSTANCE = new SetupUI();
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == btnExit)
+        if (e.getSource() == btnExit)
             windowClosing(null);
-        else if(e.getSource() == btnInstall)
+        else if (e.getSource() == btnInstall)
             new McLocationPrompt(frame, "install");
-        else if(e.getSource() == btnConfigure)
+        else if (e.getSource() == btnConfigure)
             new McLocationPrompt(frame, "configure");
-        else if(e.getSource() == btnUninstall)
+        else if (e.getSource() == btnUninstall)
             new McLocationPrompt(frame, "uninstall");
     }
 
@@ -108,18 +106,19 @@ public class SetupUI implements ActionListener, WindowListener, MouseListener {
         int read;
 
         zos.putNextEntry(new ZipEntry("net/montoyo/mcef/setup/Deleter.class"));
-        while((read = is.read(buf)) > 0)
+        while ((read = is.read(buf)) > 0)
             zos.write(buf, 0, read);
 
         try {
             zos.closeEntry();
-        } catch(Throwable t) {}
+        } catch (Throwable t) {
+        }
 
         SetupUtil.silentClose(zos);
         SetupUtil.silentClose(is);
 
         String java = "\"" + System.getProperty("java.home") + File.separator + "bin" + File.separator + "java";
-        if(System.getProperty("os.name").toLowerCase().contains("win"))
+        if (System.getProperty("os.name").toLowerCase().contains("win"))
             java += "w.exe";
 
         java += "\" -classpath \"";
@@ -141,10 +140,10 @@ public class SetupUI implements ActionListener, WindowListener, MouseListener {
     public void windowClosing(WindowEvent e) {
         frame.dispose();
 
-        if(selfDestruct != null) {
+        if (selfDestruct != null) {
             try {
                 runSelfDestructionUnsafe();
-            } catch(Throwable t) {
+            } catch (Throwable t) {
                 System.err.println("Failed to destruct myself:");
                 t.printStackTrace();
             }
@@ -175,7 +174,7 @@ public class SetupUI implements ActionListener, WindowListener, MouseListener {
     public void mouseClicked(MouseEvent e) {
         try {
             Desktop.getDesktop().browse(new URI("https://montoyo.net"));
-        } catch(Throwable t) {
+        } catch (Throwable t) {
             t.printStackTrace();
         }
     }

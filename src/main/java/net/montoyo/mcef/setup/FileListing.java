@@ -14,7 +14,7 @@ public class FileListing {
     public FileListing(File dir) {
         location = new File(dir, "mcefFiles.lst");
 
-        if(location.exists())
+        if (location.exists())
             load();
     }
 
@@ -22,7 +22,7 @@ public class FileListing {
         try {
             unsafeLoad();
             return true;
-        } catch(Throwable t) {
+        } catch (Throwable t) {
             System.err.println("Coud not read file listing:");
             t.printStackTrace();
             return false;
@@ -35,10 +35,10 @@ public class FileListing {
 
         fileNames.clear();
 
-        while((line = br.readLine()) != null) {
+        while ((line = br.readLine()) != null) {
             line = line.trim();
 
-            if(line.length() > 0 && line.charAt(0) != '#' && line.charAt(0) != '.' && line.charAt(0) != '/' && line.charAt(0) != '\\')
+            if (line.length() > 0 && line.charAt(0) != '#' && line.charAt(0) != '.' && line.charAt(0) != '/' && line.charAt(0) != '\\')
                 fileNames.add(line);
         }
 
@@ -49,7 +49,7 @@ public class FileListing {
         try {
             unsafeSave();
             return true;
-        } catch(Throwable t) {
+        } catch (Throwable t) {
             System.err.println("Coud not write file listing:");
             t.printStackTrace();
             return false;
@@ -57,7 +57,7 @@ public class FileListing {
     }
 
     private void unsafeSave() throws Throwable {
-        if(location.exists())
+        if (location.exists())
             SetupUtil.tryDelete(location);
 
         BufferedWriter bw = new BufferedWriter(new FileWriter(location));
@@ -66,14 +66,14 @@ public class FileListing {
         bw.write("# If you remove MCEF, they are no longer needed and you can safely remove them,\n");
         bw.write("# or you can let the uninstaller do it for you. Just run the MCEF mod jar using Java.\n\n");
 
-        for(String f : fileNames)
+        for (String f : fileNames)
             bw.write(f + "\n");
 
         SetupUtil.silentClose(bw);
     }
 
     public void addFile(String f) {
-        if(!fileNames.contains(f))
+        if (!fileNames.contains(f))
             fileNames.add(f);
     }
 
@@ -81,7 +81,7 @@ public class FileListing {
         try {
             addZipUnsafe(fname);
             return true;
-        } catch(Throwable t) {
+        } catch (Throwable t) {
             System.err.println("Coud not list file in ZIP archive \"" + fname + "\":");
             t.printStackTrace();
             return false;
@@ -93,10 +93,10 @@ public class FileListing {
         ZipInputStream zis = new ZipInputStream(new FileInputStream(fname));
         ZipEntry ze;
 
-        while((ze = zis.getNextEntry()) != null) {
+        while ((ze = zis.getNextEntry()) != null) {
             String name = ze.getName();
 
-            if(ze.isDirectory() && (name.endsWith("/") || name.endsWith("\\")))
+            if (ze.isDirectory() && (name.endsWith("/") || name.endsWith("\\")))
                 files.add(name.substring(0, name.length() - 1));
             else
                 files.add(name);
@@ -105,7 +105,7 @@ public class FileListing {
         SetupUtil.silentClose(zis);
 
         files.sort(new SlashComparator(new DefaultComparator()));
-        for(String t: files)
+        for (String t : files)
             addFile(t); //Use addFile instead of fileNames.addAll() to remove duplicates
     }
 

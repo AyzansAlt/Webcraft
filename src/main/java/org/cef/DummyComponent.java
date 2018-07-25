@@ -2,8 +2,7 @@
 
 package org.cef;
 
-import java.awt.Component;
-import java.awt.Point;
+import java.awt.*;
 
 public class DummyComponent extends Component {
 

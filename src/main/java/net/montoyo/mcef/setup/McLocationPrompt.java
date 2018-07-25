@@ -81,7 +81,7 @@ public class McLocationPrompt implements ActionListener, WindowListener {
         //Fill location field
         try {
             locationField.setText(autoLocateMinecraft());
-        } catch(Throwable t) {
+        } catch (Throwable t) {
             System.err.println("Note: could not locate Minecraft:");
             t.printStackTrace();
         }
@@ -95,21 +95,21 @@ public class McLocationPrompt implements ActionListener, WindowListener {
 
     private String autoLocateMinecraft() {
         File cDir = (new File(".")).getAbsoluteFile();
-        if(cDir.getName().equals("mods")) {
+        if (cDir.getName().equals("mods")) {
             File pFile = cDir.getParentFile();
             File saves = new File(pFile, "saves");
             File rpacks = new File(pFile, "resourcepacks");
 
-            if(saves.exists() && saves.isDirectory() && rpacks.exists() && rpacks.isDirectory())
+            if (saves.exists() && saves.isDirectory() && rpacks.exists() && rpacks.isDirectory())
                 return pFile.getAbsolutePath();
         }
 
         File root = new File(System.getProperty("user.home", "."));
         String os = System.getProperty("os.name").toLowerCase();
 
-        if(os.contains("win"))
+        if (os.contains("win"))
             root = new File(System.getenv("APPDATA"));
-        else if(os.contains("mac"))
+        else if (os.contains("mac"))
             root = new File(new File(root, "Library"), "Application Support");
 
         root = new File(root, ".minecraft");
@@ -118,20 +118,20 @@ public class McLocationPrompt implements ActionListener, WindowListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == btnLocate) {
+        if (e.getSource() == btnLocate) {
             JFileChooser fc = new JFileChooser();
             fc.setDialogTitle("Where's Minecraft?");
             fc.setCurrentDirectory(new File(locationField.getText()));
             fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
-            if(fc.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION)
+            if (fc.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION)
                 locationField.setText(fc.getSelectedFile().getAbsolutePath());
-        } else if(e.getSource() == btnBack) {
+        } else if (e.getSource() == btnBack) {
             parent.setVisible(true);
             frame.dispose();
-        } else if(e.getSource() == btnOk) {
+        } else if (e.getSource() == btnOk) {
             File loc = new File(locationField.getText());
-            if(!loc.exists() || !loc.isDirectory()) {
+            if (!loc.exists() || !loc.isDirectory()) {
                 JOptionPane.showMessageDialog(frame, "The selected directory does not exist.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -139,14 +139,14 @@ public class McLocationPrompt implements ActionListener, WindowListener {
             File saves = new File(loc, "saves");
             File rpacks = new File(loc, "resourcepacks");
 
-            if(!saves.exists() || !saves.isDirectory() || !rpacks.exists() || !rpacks.isDirectory()) {
-                if(JOptionPane.showConfirmDialog(frame, "The selected directory does not look like a valid Minecraft setup...\nWould you like to continue?", "Hmmm...", JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION)
+            if (!saves.exists() || !saves.isDirectory() || !rpacks.exists() || !rpacks.isDirectory()) {
+                if (JOptionPane.showConfirmDialog(frame, "The selected directory does not look like a valid Minecraft setup...\nWould you like to continue?", "Hmmm...", JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION)
                     return;
             }
 
-            if(action.equals("configure")) {
+            if (action.equals("configure")) {
                 File configDir = new File(loc, "config");
-                if(!configDir.exists())
+                if (!configDir.exists())
                     configDir.mkdirs();
 
                 new ConfigForm(parent, new File(configDir, "MCEF.cfg"));
@@ -155,11 +155,11 @@ public class McLocationPrompt implements ActionListener, WindowListener {
             }
 
             try {
-                if(((Boolean) Processes.class.getMethod(action, JFrame.class, File.class).invoke(null, frame, loc)).booleanValue()) {
+                if (((Boolean) Processes.class.getMethod(action, JFrame.class, File.class).invoke(null, frame, loc)).booleanValue()) {
                     parent.setVisible(true);
                     frame.dispose();
                 }
-            } catch(Throwable t) {
+            } catch (Throwable t) {
                 System.err.println("Could not execute action \"" + action + "\":");
                 t.printStackTrace();
                 JOptionPane.showMessageDialog(frame, "Could not execute action \"" + action + "\".\nThis shouldn't happen; please contact mod author.", "Error", JOptionPane.ERROR_MESSAGE);

@@ -1,7 +1,5 @@
 package net.discraft.mod;
 
-import net.montoyo.mcef.MCEF;
-
 import static net.discraft.mod.gui.GuiDiscraftMain.discordBrowser;
 
 public class DiscraftShutdownHook {

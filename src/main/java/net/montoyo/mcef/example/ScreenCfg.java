@@ -24,7 +24,7 @@ public class ScreenCfg extends GuiScreen {
 
     public ScreenCfg(IBrowser b, String vId) {
         browser = b;
-        if(vId != null)
+        if (vId != null)
             b.loadURL("https://www.youtube.com/embed/" + vId + "?autoplay=1");
 
         b.resize(width, height);
@@ -32,8 +32,8 @@ public class ScreenCfg extends GuiScreen {
 
     @Override
     public void handleInput() {
-        while(Keyboard.next()) {
-            if(Keyboard.getEventKey() == Keyboard.KEY_ESCAPE) {
+        while (Keyboard.next()) {
+            if (Keyboard.getEventKey() == Keyboard.KEY_ESCAPE) {
                 drawSquare = false;
                 ExampleMod.INSTANCE.hudBrowser = this;
                 browser.injectMouseMove(-10, -10, 0, true);
@@ -42,33 +42,33 @@ public class ScreenCfg extends GuiScreen {
             }
         }
 
-        while(Mouse.next()) {
+        while (Mouse.next()) {
             int btn = Mouse.getEventButton();
             boolean pressed = Mouse.getEventButtonState();
             int sx = Mouse.getEventX();
             int sy = mc.displayHeight - Mouse.getEventY();
 
-            if(btn == 1 && pressed && sx >= x && sy >= y && sx < x + width && sy < y + height) {
+            if (btn == 1 && pressed && sx >= x && sy >= y && sx < x + width && sy < y + height) {
                 browser.injectMouseMove(sx - x, sy - y, 0, false);
                 browser.injectMouseButton(sx - x, sy - y, 0, 1, true, 1);
                 browser.injectMouseButton(sx - x, sy - y, 0, 1, false, 1);
-            } else if(dragging) {
-                if(btn == 0 && !pressed)
+            } else if (dragging) {
+                if (btn == 0 && !pressed)
                     dragging = false;
                 else {
                     x = sx + offsetX;
                     y = sy + offsetY;
                 }
-            } else if(resizing) {
-                if(btn == 0 && !pressed) {
+            } else if (resizing) {
+                if (btn == 0 && !pressed) {
                     resizing = false;
                     browser.resize(width, height);
                 } else {
                     int w = sx - x;
                     int h = sy - y;
 
-                    if(w >= 32 && h >= 18) {
-                        if(h >= w) {
+                    if (w >= 32 && h >= 18) {
+                        if (h >= w) {
                             double dw = ((double) h) * (16.0 / 9.0);
                             width = (int) dw;
                             height = h;
@@ -79,11 +79,11 @@ public class ScreenCfg extends GuiScreen {
                         }
                     }
                 }
-            } else if(pressed && btn == 0 && sx >= x && sy >= y && sx < x + width && sy < y + height) { //In browser rect
+            } else if (pressed && btn == 0 && sx >= x && sy >= y && sx < x + width && sy < y + height) { //In browser rect
                 dragging = true;
                 offsetX = x - sx;
                 offsetY = y - sy;
-            } else if(pressed && btn == 0 && sx >= x + width && sy >= y + height && sx < x + width + 10 && sy < y + height + 10) //In resize rect
+            } else if (pressed && btn == 0 && sx >= x + width && sy >= y + height && sx < x + width + 10 && sy < y + height + 10) //In resize rect
                 resizing = true;
         }
     }
@@ -94,7 +94,7 @@ public class ScreenCfg extends GuiScreen {
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         browser.draw(unscaleX(x), unscaleY(height + y), unscaleX(width + x), unscaleY(y));
 
-        if(drawSquare) {
+        if (drawSquare) {
             Tessellator t = Tessellator.getInstance();
             BufferBuilder vb = t.getBuffer();
 

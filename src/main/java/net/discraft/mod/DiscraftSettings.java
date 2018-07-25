@@ -9,9 +9,6 @@ public class DiscraftSettings {
 
     public boolean enableDiscraft = true;
 
-    public boolean disablePlayerList = false;
-    public boolean disableChat = false;
-
     File configFile = new File("config/discraft.cfg");
 
     public void init() {
@@ -25,7 +22,6 @@ public class DiscraftSettings {
                 output = new FileOutputStream(configFile);
 
                 properties.setProperty("enableDiscraft", enableDiscraft ? "true" : "false");
-                properties.setProperty("disablePlayerList", disablePlayerList ? "true" : "false");
 
                 properties.store(output, "Discraft - Official Configuration Settings");
             }
@@ -34,6 +30,7 @@ public class DiscraftSettings {
 
         } catch (IOException io) {
             io.printStackTrace();
+            Discraft.getInstance().getLogger().printError("Discraft","Failed to Initialize Discraft Configuration File");
         } finally {
             if (output != null) {
                 try {
@@ -59,7 +56,6 @@ public class DiscraftSettings {
             properties.load(input);
 
             enableDiscraft = parseBoolean(properties.getProperty("enableDiscraft"));
-            disablePlayerList = parseBoolean(properties.getProperty("disablePlayerList"));
 
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -85,7 +81,6 @@ public class DiscraftSettings {
             output = new FileOutputStream(configFile);
 
             properties.setProperty("enableDiscraft", enableDiscraft ? "true" : "false");
-            properties.setProperty("disablePlayerList", disablePlayerList ? "true" : "false");
 
             properties.store(output, "Discraft - Official Configuration Settings");
 

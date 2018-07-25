@@ -4,14 +4,13 @@
 
 package org.cef.browser.mac;
 
-import java.awt.Component;
-import java.awt.peer.ComponentPeer;
-
 import org.cef.browser.CefBrowserWindow;
 
+import java.awt.*;
+
 public class CefBrowserWindowMac implements CefBrowserWindow {
-  @Override
-  public long getWindowHandle(Component comp) {
-    return 0;
-  }
+    @Override
+    public long getWindowHandle(Component comp) {
+        return 0;
+    }
 }

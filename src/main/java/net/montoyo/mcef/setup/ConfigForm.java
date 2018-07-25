@@ -174,17 +174,17 @@ public class ConfigForm implements ActionListener, WindowListener {
         config.setBooleanValue("examplebrowser", "enable", cBrowserEnable.isSelected());
         config.setStringValue("examplebrowser", "home", cBrowserHome.getText());
 
-        if(!config.save())
+        if (!config.save())
             JOptionPane.showMessageDialog(frame, "Could not save configuration file.\nMake sure you have the permissions to write in the config folder.", "Error", JOptionPane.ERROR_MESSAGE);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == btnBack)
+        if (e.getSource() == btnBack)
             windowClosing(null);
-        else if(e.getSource() == btnApply)
+        else if (e.getSource() == btnApply)
             saveChanges();
-        else if(e.getSource() == btnOk) {
+        else if (e.getSource() == btnOk) {
             saveChanges();
             windowClosing(null);
         }

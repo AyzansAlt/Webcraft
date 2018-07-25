@@ -36,8 +36,6 @@ public class GuiDiscraftOptions extends GuiScreen {
         this.buttonList.add(new GuiButton(200, this.width / 2 - 155, this.height / 6 + 48 - 6, 150, 20, I18n.format("discraft.options.reloadconfig", Discraft.MOD_VERSION)));
         this.buttonList.add(new GuiButton(201, this.width / 2 + 5, this.height / 6 + 48 - 6, 150, 20, I18n.format("discraft.options.enablemod", this.settings.enableDiscraft)));
 
-        this.buttonList.add(new GuiButton(202, this.width / 2 - 155, this.height / 6 + 72 - 6, 150, 20, I18n.format("discraft.options.disableplayerlist",this.settings.disablePlayerList)));
-
         this.buttonList.add(new GuiButton(300, this.width / 2 - 100, this.height / 6 + 168, I18n.format("gui.done")));
 
     }
@@ -58,10 +56,6 @@ public class GuiDiscraftOptions extends GuiScreen {
                 case 201:
                     this.settings.enableDiscraft = !this.settings.enableDiscraft;
                     mc.ingameGUI.addChatMessage(ChatType.CHAT, new TextComponentString(ChatFormatting.GREEN + "[Discraft] " + ChatFormatting.RESET + I18n.format("discraft.config.enable", this.settings.enableDiscraft ? I18n.format("discraft.enabled") : I18n.format("discraft.disabled"))));
-                    break;
-                case 202:
-                    this.settings.disablePlayerList = !this.settings.disablePlayerList;
-                    mc.ingameGUI.addChatMessage(ChatType.CHAT, new TextComponentString(ChatFormatting.GREEN + "[Discraft] " + ChatFormatting.RESET + I18n.format("discraft.playerlist.disable", !this.settings.disablePlayerList ? I18n.format("discraft.enabled") : I18n.format("discraft.disabled"))));
                     break;
             }
         }

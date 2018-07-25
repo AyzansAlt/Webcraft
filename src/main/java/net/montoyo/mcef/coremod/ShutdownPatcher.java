@@ -1,7 +1,7 @@
 package net.montoyo.mcef.coremod;
 
-import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 import net.minecraft.launchwrapper.IClassTransformer;
+import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.objectweb.asm.*;
@@ -14,16 +14,20 @@ import java.util.Map;
 @IFMLLoadingPlugin.MCVersion("1.12.2")
 public class ShutdownPatcher implements IFMLLoadingPlugin, IClassTransformer {
 
-    private static boolean PATCH_OK = false;
     private static final String OBF_SHUTDOWN_METHOD = "func_71405_e"; //The "searge-obfuscated" name of the Minecraft.shutdownMinecraftApplet() method
+    private static boolean PATCH_OK = false;
 
     public static boolean didPatchSucceed() {
         return PATCH_OK;
     }
 
+    private static void log(String str, Object... args) {
+        LogManager.getLogger("MCEF").log(Level.INFO, String.format(str, args));
+    }
+
     @Override
     public String[] getASMTransformerClass() {
-        return new String[] { "net.montoyo.mcef.coremod.ShutdownPatcher" };
+        return new String[]{"net.montoyo.mcef.coremod.ShutdownPatcher"};
     }
 
     @Override
@@ -47,7 +51,7 @@ public class ShutdownPatcher implements IFMLLoadingPlugin, IClassTransformer {
 
     @Override
     public byte[] transform(String name, String deobfName, byte[] cls) {
-        if(!deobfName.equals("net.minecraft.client.Minecraft"))
+        if (!deobfName.equals("net.minecraft.client.Minecraft"))
             return cls;
 
         boolean envObf = !name.equals(deobfName); //If the current environment is obfuscated
@@ -60,7 +64,7 @@ public class ShutdownPatcher implements IFMLLoadingPlugin, IClassTransformer {
             cr.accept(cv, 0);
 
             return cw.toByteArray();
-        } catch(Throwable t) {
+        } catch (Throwable t) {
             t.printStackTrace();
             log("Failed to setup Minecraft shutdown detector.");
         }
@@ -95,8 +99,8 @@ public class ShutdownPatcher implements IFMLLoadingPlugin, IClassTransformer {
         @Override
         public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
             MethodVisitor mv = cv.visitMethod(access, name, desc, signature, exceptions);
-            if(access == Opcodes.ACC_PUBLIC && desc.equals("()V")) { //void shutdownMinecraftApplet()
-                if((envObf && name.equals(OBF_SHUTDOWN_METHOD)) || name.equals("shutdownMinecraftApplet")) {
+            if (access == Opcodes.ACC_PUBLIC && desc.equals("()V")) { //void shutdownMinecraftApplet()
+                if ((envObf && name.equals(OBF_SHUTDOWN_METHOD)) || name.equals("shutdownMinecraftApplet")) {
                     log("shutdownMinecraftApplet() method found; transforming...");
                     return new ShutdownMCAppletVisitor(mv);
                 }
@@ -105,10 +109,6 @@ public class ShutdownPatcher implements IFMLLoadingPlugin, IClassTransformer {
             return mv;
         }
 
-    }
-
-    private static void log(String str, Object ... args) {
-        LogManager.getLogger("MCEF").log(Level.INFO, String.format(str, args));
     }
 
 }
