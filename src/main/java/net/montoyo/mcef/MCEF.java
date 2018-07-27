@@ -11,7 +11,7 @@ import net.montoyo.mcef.utilities.Log;
 public class MCEF {
 
     public static final String VERSION = "0.9";
-    public static boolean ENABLE_EXAMPLE;
+    public static boolean ENABLE_EXAMPLE = false;
     public static boolean SKIP_UPDATES;
     public static boolean WARN_UPDATES;
     public static boolean USE_FORGE_SPLASH;
@@ -45,7 +45,7 @@ public class MCEF {
         if (mirror.length() > 0)
             FORCE_MIRROR = mirror;
 
-        ENABLE_EXAMPLE = cfg.getBoolean("enable", "exampleBrowser", true, "Set this to false if you don't want to enable the F10 browser.");
+        //ENABLE_EXAMPLE = cfg.getBoolean("enable", "exampleBrowser", true, "Set this to false if you don't want to enable the F10 browser.");
         HOME_PAGE = cfg.getString("home", "exampleBrowser", "mod://mcef/home.html", "The home page of the F10 browser.");
         DISABLE_GPU_RENDERING = cfg.getBoolean("disableGPURendering", "main", true, "The new launcher breaks CEF GPU rendering. Re-enabling it may work with a different launcher like MultiMC.");
         CHECK_VRAM_LEAK = cfg.getBoolean("checkForVRAMLeak", "debug", false, "Track allocated OpenGL textures to make sure there's no leak");
