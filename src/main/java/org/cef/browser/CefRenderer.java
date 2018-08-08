@@ -30,6 +30,7 @@ public class CefRenderer {
     private int view_height_ = 0;
     private Rectangle popup_rect_ = new Rectangle(0, 0, 0, 0);
     private Rectangle original_popup_rect_ = new Rectangle(0, 0, 0, 0);
+
     protected CefRenderer(boolean transparent) {
         transparent_ = transparent;
         initialize();
@@ -74,14 +75,14 @@ public class CefRenderer {
             return;
 
         Tessellator t = Tessellator.getInstance();
-        BufferBuilder vb = t.getBuffer();
+        BufferBuilder wr = t.getBuffer();
 
         GlStateManager.bindTexture(texture_id_[0]);
-        vb.begin(GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
-        vb.pos(x1, y1, 0.0).tex(0.0, 1.0).color(255, 255, 255, 255).endVertex();
-        vb.pos(x2, y1, 0.0).tex(1.f, 1.f).color(255, 255, 255, 255).endVertex();
-        vb.pos(x2, y2, 0.0).tex(1.f, 0.0).color(255, 255, 255, 255).endVertex();
-        vb.pos(x1, y2, 0.0).tex(0.0, 0.0).color(255, 255, 255, 255).endVertex();
+        wr.begin(GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
+        wr.pos(x1, y1, 0.0).tex(0.0, 1.0).color(255, 255, 255, 255).endVertex();
+        wr.pos(x2, y1, 0.0).tex(1.f, 1.f).color(255, 255, 255, 255).endVertex();
+        wr.pos(x2, y2, 0.0).tex(1.f, 0.0).color(255, 255, 255, 255).endVertex();
+        wr.pos(x1, y2, 0.0).tex(0.0, 0.0).color(255, 255, 255, 255).endVertex();
         t.draw();
         GlStateManager.bindTexture(0);
     }

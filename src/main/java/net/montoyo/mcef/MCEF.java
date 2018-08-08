@@ -20,7 +20,7 @@ public class MCEF {
     public static boolean DISABLE_GPU_RENDERING;
     public static boolean CHECK_VRAM_LEAK;
 
-    @Mod.Instance(owner = "mcef")
+    @Mod.Instance("mcef")
     public static MCEF INSTANCE;
 
     @SidedProxy(serverSide = "net.montoyo.mcef.BaseProxy", clientSide = "net.montoyo.mcef.client.ClientProxy")

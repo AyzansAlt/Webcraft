@@ -1,0 +1,20 @@
+{
+  "hitbeep": {
+    "category": "player",
+    "sounds": [
+      "dc:misc/hitbeep"
+    ]
+  },
+  "hitbeep.single": {
+    "category": "player",
+    "sounds": [
+      "dc:misc/hitbeepsingle"
+    ]
+  },
+  "notification": {
+    "category": "player",
+    "sounds": [
+      "dc:misc/notification"
+    ]
+  }
+}

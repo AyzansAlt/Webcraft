@@ -53,6 +53,7 @@ public final class CefCookie {
      */
     public final boolean hasExpires;
     public final Date expires;
+
     public CefCookie(String name,
                      String value,
                      String domain,

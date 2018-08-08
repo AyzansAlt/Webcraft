@@ -76,7 +76,7 @@ public class BrowserScreen extends GuiScreen {
 
             //Handle resizing
             vidMode.x = width - 40;
-            go.x = width - 60;
+            go.y = width - 60;
             min.x = width - 20;
 
             String old = url.getText();

@@ -1,9 +1,8 @@
 package net.montoyo.mcef.client;
 
+import com.mojang.realmsclient.gui.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.SplashProgress;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -268,13 +267,7 @@ public class ClientProxy extends BaseProxy {
         if (updateStr == null || !MCEF.WARN_UPDATES)
             return;
 
-        Style cs = new Style();
-        cs.setColor(TextFormatting.LIGHT_PURPLE);
-
-        TextComponentString cct = new TextComponentString(updateStr);
-        cct.setStyle(cs);
-
-        ev.player.sendMessage(cct);
+        ev.player.sendMessage(new TextComponentString(ChatFormatting.DARK_PURPLE + updateStr));
     }
 
     public void removeBrowser(CefBrowserOsr b) {

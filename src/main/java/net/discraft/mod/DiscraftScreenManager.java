@@ -5,7 +5,6 @@ import net.discraft.mod.screens.DiscraftScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.text.ChatType;
 import net.minecraft.util.text.TextComponentString;
 
 import java.util.ArrayList;
@@ -32,7 +31,7 @@ public class DiscraftScreenManager {
                 newArray.add(discraftScreens);
                 /* Remove a screen from the list and inform the user of it */
             } else {
-                mc.ingameGUI.addChatMessage(ChatType.CHAT, new TextComponentString(ChatFormatting.GREEN + "[Discraft] " + ChatFormatting.RESET + "Removed Screen at " + (int) discraftScreens.posX + "/" + (int) discraftScreens.posY + "/" + (int) discraftScreens.posZ));
+                mc.ingameGUI.getChatGUI().printChatMessage(new TextComponentString(ChatFormatting.GREEN + "[Discraft] " + ChatFormatting.RESET + "Removed Screen at " + (int) discraftScreens.posX + "/" + (int) discraftScreens.posY + "/" + (int) discraftScreens.posZ));
                 hasRemovedClose = true;
             }
         }
@@ -41,11 +40,11 @@ public class DiscraftScreenManager {
         if (!hasRemovedClose) {
             /* Add screen to new screens list */
             newArray.add(discraftScreen);
-            mc.ingameGUI.addChatMessage(ChatType.CHAT, new TextComponentString(ChatFormatting.GREEN + "[Discraft] " + ChatFormatting.RESET + "Placed Screen at " + (int) mc.player.posX + "/" + (int) mc.player.posY + "/" + (int) mc.player.posZ));
-            mc.world.playSound(mc.player.posX, mc.player.posY, mc.player.posZ, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 1, 1, false);
+            mc.ingameGUI.getChatGUI().printChatMessage(new TextComponentString(ChatFormatting.GREEN + "[Discraft] " + ChatFormatting.RESET + "Placed Screen at " + (int) mc.player.posX + "/" + (int) mc.player.posY + "/" + (int) mc.player.posZ));
+            mc.world.playSound(mc.player.posX, mc.player.posY, mc.player.posZ, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.AMBIENT, 1, 1,false);
             /* else, play the pop sound */
         } else {
-            mc.world.playSound(mc.player.posX, mc.player.posY, mc.player.posZ, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 1, 0, false);
+            mc.world.playSound(mc.player.posX, mc.player.posY, mc.player.posZ, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.AMBIENT, 1, 0,false);
         }
 
         /* Replace the current discraft screen list with the new, altered version */

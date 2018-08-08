@@ -2,11 +2,11 @@ package net.discraft.mod.gui.override;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
 import net.discraft.mod.Discraft;
-import net.discraft.mod.DiscraftSettings;
+import net.discraft.mod.gui.GuiDiscraftMain;
+import net.discraft.mod.notification.ClientNotification;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.util.text.ChatType;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -15,15 +15,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class GuiDiscraftOptions extends GuiScreen {
 
     private final GuiScreen lastScreen;
-    /**
-     * Reference to the GameSettings object.
-     */
-    private final DiscraftSettings settings;
-    protected String title = "Discraft Options";
+    protected String title = "";
 
-    public GuiDiscraftOptions(GuiScreen p_i1046_1_, DiscraftSettings p_i1046_2_) {
+    public GuiDiscraftOptions(GuiScreen p_i1046_1_) {
         this.lastScreen = p_i1046_1_;
-        this.settings = p_i1046_2_;
     }
 
     /**
@@ -34,7 +29,7 @@ public class GuiDiscraftOptions extends GuiScreen {
         this.title = I18n.format("discraft.options.title");
 
         this.buttonList.add(new GuiButton(200, this.width / 2 - 155, this.height / 6 + 48 - 6, 150, 20, I18n.format("discraft.options.reloadconfig", Discraft.MOD_VERSION)));
-        this.buttonList.add(new GuiButton(201, this.width / 2 + 5, this.height / 6 + 48 - 6, 150, 20, I18n.format("discraft.options.enablemod", this.settings.enableDiscraft)));
+        this.buttonList.add(new GuiButton(201, this.width / 2 + 5, this.height / 6 + 48 - 6, 150, 20, I18n.format("discraft.options.enablemod", Discraft.getInstance().discraftSettings.enableDiscraft)));
 
         this.buttonList.add(new GuiButton(300, this.width / 2 - 100, this.height / 6 + 168, I18n.format("gui.done")));
 
@@ -50,17 +45,28 @@ public class GuiDiscraftOptions extends GuiScreen {
                     mc.displayGuiScreen(this.lastScreen);
                     return;
                 case 200:
-                    this.settings.loadConfig();
-                    mc.ingameGUI.addChatMessage(ChatType.CHAT, new TextComponentString(ChatFormatting.GREEN + "[Discraft] " + ChatFormatting.RESET + I18n.format("discraft.config.reload")));
+                    Discraft.getInstance().loadConfigurations();
+                    mc.ingameGUI.getChatGUI().printChatMessage(new TextComponentString(ChatFormatting.GREEN + "[Discraft] " + ChatFormatting.RESET + I18n.format("discraft.config.reload")));
+                    ClientNotification.createNotification("Discraft - " + ChatFormatting.GREEN + Discraft.MOD_VERSION, I18n.format("discraft.config.reload"));
                     break;
                 case 201:
-                    this.settings.enableDiscraft = !this.settings.enableDiscraft;
-                    mc.ingameGUI.addChatMessage(ChatType.CHAT, new TextComponentString(ChatFormatting.GREEN + "[Discraft] " + ChatFormatting.RESET + I18n.format("discraft.config.enable", this.settings.enableDiscraft ? I18n.format("discraft.enabled") : I18n.format("discraft.disabled"))));
+                    Discraft.getInstance().discraftSettings.enableDiscraft = !Discraft.getInstance().discraftSettings.enableDiscraft;
+                    mc.ingameGUI.getChatGUI().printChatMessage(new TextComponentString(ChatFormatting.GREEN + "[Discraft] " + ChatFormatting.RESET + I18n.format("discraft.config.enable", Discraft.getInstance().discraftSettings.enableDiscraft ? I18n.format("discraft.enabled") : I18n.format("discraft.disabled"))));
+
+                    if(!Discraft.getInstance().discraftSettings.enableDiscraft && Discraft.getInstance().clientNetworkConnection.client.isConnected()){
+                        Discraft.getInstance().clientNetworkConnection.client.close();
+                    }
+
+                    if(GuiDiscraftMain.discordBrowser != null){
+                        GuiDiscraftMain.discordBrowser.close();
+                        GuiDiscraftMain.discordBrowser = null;
+                    }
+
                     break;
             }
         }
-        this.settings.saveConfig();
-        mc.displayGuiScreen(new GuiDiscraftOptions(this.lastScreen, this.settings));
+        Discraft.getInstance().discraftSettings.saveConfig();
+        mc.displayGuiScreen(new GuiDiscraftOptions(this.lastScreen));
     }
 
     /**

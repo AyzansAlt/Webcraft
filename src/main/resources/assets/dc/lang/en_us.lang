@@ -9,13 +9,16 @@
 key.discraft.category=Discraft Controls
 key.discraft.open=Open Discraft UI
 
+key.discraft.pvp.rearcam=PVP: Rear Cam
+
 # In-game Information
 discraft.ingame.loading=Loading discord...
 discraft.ingame.connecting=CONNECTING
 
 # In-game Tooltip Texts
 discraft.ingame.tip.close=Press ESC to return to your Game!
-discraft.ingame.tip.open=Press %s to launch Discraft v%s
+discraft.ingame.tip.open=Press %s to launch Discraft v%s!
+discraft.ingame.tip.open2=(Or type %s for more commands!)
 
 # In-game Button Texts
 discraft.ingame.button.reload=Reload
@@ -59,3 +62,11 @@ discraft.disabled=Disabled
 # Discraft Overlay Messages
 discraft.overlay.disabledplayerlist=Player List Disabled!
 discraft.overlay.disabledplayerlist.top=(Can bee Re-Enabled in Discraft Options)
+
+# Hypixel API Messages
+discraft.hypixel.api.success=Successfully fetched new §aHypixel API§f!
+discraft.hypixel.api.fail=§cFailed to fetched new Hypixel API!
+
+# Hypixel API GUI Messages
+discraft.hypixel.gui.profile.bot=Artificial User
+discraft.hypixel.gui.profile.nicked=Nicked Player

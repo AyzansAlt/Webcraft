@@ -1,6 +1,5 @@
 package net.discraft.mod.gui.override;
 
-import net.discraft.mod.Discraft;
 import net.discraft.mod.gui.api.GuiButtonDiscraftOptions;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiIngameMenu;
@@ -19,7 +18,7 @@ public class GuiDiscraftIngameMenu extends GuiIngameMenu {
         super.actionPerformed(button);
         switch (button.id) {
             case 30:
-                this.mc.displayGuiScreen(new GuiDiscraftOptions(this, Discraft.getInstance().discraftSettings));
+                this.mc.displayGuiScreen(new GuiDiscraftOptions(this));
                 break;
         }
     }

@@ -96,13 +96,13 @@ public class ScreenCfg extends GuiScreen {
 
         if (drawSquare) {
             Tessellator t = Tessellator.getInstance();
-            BufferBuilder vb = t.getBuffer();
+            BufferBuilder wr = t.getBuffer();
 
-            vb.begin(GL11.GL_LINE_LOOP, DefaultVertexFormats.POSITION_COLOR);
-            vb.pos(unscaleX(x + width), unscaleY(y + height), 0.0).color(255, 255, 255, 255).endVertex();
-            vb.pos(unscaleX(x + width + 10), unscaleY(y + height), 0.0).color(255, 255, 255, 255).endVertex();
-            vb.pos(unscaleX(x + width + 10), unscaleY(y + height + 10), 0.0).color(255, 255, 255, 255).endVertex();
-            vb.pos(unscaleX(x + width), unscaleY(y + height + 10), 0.0).color(255, 255, 255, 255).endVertex();
+            wr.begin(GL11.GL_LINE_LOOP, DefaultVertexFormats.POSITION_COLOR);
+            wr.pos(unscaleX(x + width), unscaleY(y + height), 0.0).color(255, 255, 255, 255).endVertex();
+            wr.pos(unscaleX(x + width + 10), unscaleY(y + height), 0.0).color(255, 255, 255, 255).endVertex();
+            wr.pos(unscaleX(x + width + 10), unscaleY(y + height + 10), 0.0).color(255, 255, 255, 255).endVertex();
+            wr.pos(unscaleX(x + width), unscaleY(y + height + 10), 0.0).color(255, 255, 255, 255).endVertex();
             t.draw();
         }
 

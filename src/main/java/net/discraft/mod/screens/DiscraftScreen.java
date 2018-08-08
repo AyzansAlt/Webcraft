@@ -2,11 +2,11 @@ package net.discraft.mod.screens;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
 import net.discraft.mod.Discraft;
-import net.discraft.mod.DiscraftVariables;
 import net.discraft.mod.gui.GuiUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.player.EntityPlayer;
 import org.lwjgl.opengl.GL11;
 
@@ -26,8 +26,10 @@ public class DiscraftScreen {
 
     public void render() {
 
-        float val = (float) (Math.sin(DiscraftVariables.swing / 20) / 25);
-        float val2 = (float) (Math.sin(DiscraftVariables.swing / 50));
+        GL11.glPushMatrix();
+
+        float val = (float) (Math.sin(Discraft.getInstance().discraftVariables.swing / 20) / 25);
+        float val2 = (float) (Math.sin(Discraft.getInstance().discraftVariables.swing / 50));
 
         GL11.glRotatef(val2, 0, 1, 0);
         GL11.glTranslated(0, val, 0);
@@ -53,6 +55,7 @@ public class DiscraftScreen {
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
         if (discordBrowser != null) {
+
             GL11.glPushMatrix();
             GlStateManager.enableAlpha();
             GlStateManager.enableTexture2D();
@@ -63,12 +66,14 @@ public class DiscraftScreen {
 
             GL11.glPushMatrix();
             GL11.glTranslated(0, -6.5, 0);
-            GuiUtils.renderCenteredTextScaled(ChatFormatting.WHITE + I18n.format("discraft.screen.tip", Discraft.getInstance().getKeyRegistry().keyOpen.getDisplayName()), 0, 0, 0, .5);
+            GuiUtils.renderCenteredTextScaled(ChatFormatting.WHITE + I18n.format("discraft.screen.tip", (GameSettings.getKeyDisplayString(Discraft.getInstance().getKeyRegistry().keyOpen.getKeyCode()))), 0, 0, 0, .5);
             GL11.glPopMatrix();
 
         }
 
         GL11.glDisable(GL11.GL_BLEND);
+        GL11.glPopMatrix();
+
         GL11.glPopMatrix();
 
     }

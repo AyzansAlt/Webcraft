@@ -8,6 +8,7 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.util.ResourceLocation;
 
 public class GuiDCButton extends GuiButton {
 
@@ -78,11 +79,6 @@ public class GuiDCButton extends GuiButton {
             }
 
         }
-    }
-
-    @Override
-    public void playPressSound(SoundHandler soundHandlerIn) {
-        soundHandlerIn.playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
     }
 
 }

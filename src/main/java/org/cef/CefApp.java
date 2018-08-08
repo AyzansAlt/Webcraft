@@ -88,6 +88,7 @@ public class CefApp extends CefAppHandlerAdapter {
         }
     };
     private boolean executeDefaultShutdown_ = false;
+
     /**
      * To get an instance of this class, use the method
      * getInstance() instead of this CTOR.

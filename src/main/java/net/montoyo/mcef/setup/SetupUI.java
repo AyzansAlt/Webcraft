@@ -23,6 +23,7 @@ public class SetupUI implements ActionListener, WindowListener, MouseListener {
     private JButton btnUninstall;
     private JButton btnExit;
     private JLabel aboutLabel;
+
     public SetupUI() {
         //Setup
         frame = new JFrame("MCEF Setup");
