@@ -58,11 +58,6 @@ public class ClientNotification {
         this.subMessage = "Discraft";
     }
 
-    public ClientNotification setWarning(){
-        this.isWarning = true;
-        return this;
-    }
-
     /**
      * Create and add a new notification to the client
      */
@@ -79,6 +74,15 @@ public class ClientNotification {
     public static void createNotification(String givenMessage, String givenSubmessage, boolean isWarning) {
         ClientNotification not = new ClientNotification(givenMessage, givenSubmessage).setWarning();
         Discraft.getInstance().discraftVariables.clientNotificationList.add(not);
+    }
+
+    public static void clearNotifications() {
+        Discraft.getInstance().discraftVariables.clientNotificationList.clear();
+    }
+
+    public ClientNotification setWarning() {
+        this.isWarning = true;
+        return this;
     }
 
     public ClientNotification setSubMessage(String par1) {
@@ -122,7 +126,7 @@ public class ClientNotification {
     }
 
     public void doRender(Minecraft par1Minecraft) {
-        float val = (float) (Math.sin(Discraft.getInstance().discraftVariables.swing / 4));
+        float val = (float) (Math.sin(Discraft.getInstance().discraftVariables.smoothSwing / 8) + 1);
         GuiUtils.renderImageTransparent(3, (int) this.posY + 3, isWarning ? notificationWarningTexture : notificationTexture, 160, 32, alpha);
         GuiUtils.renderImageTransparent(3, (int) this.posY + 3, isWarning ? notificationWarningTextureOverlay : notificationTextureOverlay, 160, 32, val);
         GuiUtils.renderText(ChatFormatting.WHITE + this.message[0].trim(), 7, (int) this.posY + 7, 0xFFFFFF);

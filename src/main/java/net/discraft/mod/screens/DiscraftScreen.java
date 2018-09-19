@@ -10,7 +10,7 @@ import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.player.EntityPlayer;
 import org.lwjgl.opengl.GL11;
 
-import static net.discraft.mod.gui.GuiDiscraftMain.discordBrowser;
+import static net.discraft.mod.module.discord.gui.GuiDiscord.discordBrowser;
 
 public class DiscraftScreen {
 

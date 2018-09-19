@@ -3,8 +3,6 @@ package net.discraft.mod;
 import net.discraft.mod.notification.ClientNotification;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
 public class DiscraftVariables {
 
@@ -17,23 +15,13 @@ public class DiscraftVariables {
      * Swing Animations
      */
     public float swing;
+    public float smoothSwing;
 
     /**
      * Client Notifications
      */
     public ArrayList<ClientNotification> clientNotificationList = new ArrayList<ClientNotification>();
     public ClientNotification currentClientNotification = null;
-
-    /**
-     * Gui Variables
-     */
-    public float lastReachF = 0;
-    public double lastReachD = 0;
-    public boolean isMouseDown = false;
-    public double playerSpeed;
-    public int clicksPerSecondRefreshRate = 3;
-    public int clicksPerSecond = 0;
-    public int clicksPerSecondAverage = 0;
     /**
      * PVP Rear Cam Variables
      */
@@ -41,7 +29,5 @@ public class DiscraftVariables {
     public int reconnectionTimer = 10;
     public int initialReconnectionTimer = 300;
     public boolean lastConnected;
-    public boolean clicksPerSecondHasPressed;
-    List<Integer> clicksPerSecondList = new ArrayList<Integer>();
 
 }

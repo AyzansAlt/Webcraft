@@ -4,7 +4,7 @@ import club.minnced.discord.rpc.DiscordEventHandlers;
 import club.minnced.discord.rpc.DiscordRPC;
 import club.minnced.discord.rpc.DiscordRichPresence;
 import net.discraft.mod.gui.GuiUtils;
-import net.discraft.mod.utils.hypixel.HypixelGamemode;
+import net.discraft.mod.module.hypixel.utils.HypixelGamemode;
 import net.minecraft.client.Minecraft;
 
 import static net.discraft.mod.Discraft.MOD_VERSION;
@@ -140,6 +140,30 @@ public class DiscraftPresence {
     }
 
     /**
+     * Get Current Gamemode - Get the Current Gamemode that your Player is Playing
+     *
+     * @return - Given Gamemode (HypixelGamemode)
+     */
+    public HypixelGamemode getCurrentGamemode() {
+
+        Minecraft mc = Minecraft.getMinecraft();
+        String title = GuiUtils.getScoreboardTitle(mc);
+
+        if (title != null) {
+
+            for (HypixelGamemode gamemode : HypixelGamemode.values()) {
+                if (gamemode.scoreboardString.equalsIgnoreCase(title)) {
+                    return gamemode;
+                }
+            }
+
+        }
+
+        return HypixelGamemode.NONE;
+
+    }
+
+    /**
      * EnumServerType - Used to Distinguish Servers Brands
      */
     public enum EnumServerType {
@@ -149,29 +173,6 @@ public class DiscraftPresence {
         VELTPVP,
         HIVEMC,
         UNKNOWN
-    }
-
-    /**
-     * Get Current Gamemode - Get the Current Gamemode that your Player is Playing
-     * @return - Given Gamemode (HypixelGamemode)
-     */
-    public HypixelGamemode getCurrentGamemode(){
-
-        Minecraft mc = Minecraft.getMinecraft();
-        String title = GuiUtils.getScoreboardTitle(mc);
-
-        if(title != null) {
-
-            for(HypixelGamemode gamemode : HypixelGamemode.values()){
-                if(gamemode.scoreboardString.equalsIgnoreCase(title)){
-                    return gamemode;
-                }
-            }
-
-        }
-
-        return HypixelGamemode.NONE;
-
     }
 
 }

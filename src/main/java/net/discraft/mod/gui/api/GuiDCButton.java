@@ -3,12 +3,10 @@ package net.discraft.mod.gui.api;
 import net.discraft.mod.gui.GuiUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.util.ResourceLocation;
 
 public class GuiDCButton extends GuiButton {
 

@@ -2,7 +2,8 @@ package net.discraft.mod.gui.override;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
 import net.discraft.mod.Discraft;
-import net.discraft.mod.gui.GuiDiscraftMain;
+import net.discraft.mod.module.discord.gui.GuiDiscord;
+import net.discraft.mod.network.ClientNetworkConnection;
 import net.discraft.mod.notification.ClientNotification;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -53,13 +54,13 @@ public class GuiDiscraftOptions extends GuiScreen {
                     Discraft.getInstance().discraftSettings.enableDiscraft = !Discraft.getInstance().discraftSettings.enableDiscraft;
                     mc.ingameGUI.getChatGUI().printChatMessage(new TextComponentString(ChatFormatting.GREEN + "[Discraft] " + ChatFormatting.RESET + I18n.format("discraft.config.enable", Discraft.getInstance().discraftSettings.enableDiscraft ? I18n.format("discraft.enabled") : I18n.format("discraft.disabled"))));
 
-                    if(!Discraft.getInstance().discraftSettings.enableDiscraft && Discraft.getInstance().clientNetworkConnection.client.isConnected()){
-                        Discraft.getInstance().clientNetworkConnection.client.close();
+                    if (!Discraft.getInstance().discraftSettings.enableDiscraft && ClientNetworkConnection.client.isConnected()) {
+                        ClientNetworkConnection.client.close();
                     }
 
-                    if(GuiDiscraftMain.discordBrowser != null){
-                        GuiDiscraftMain.discordBrowser.close();
-                        GuiDiscraftMain.discordBrowser = null;
+                    if (GuiDiscord.discordBrowser != null) {
+                        GuiDiscord.discordBrowser.close();
+                        GuiDiscord.discordBrowser = null;
                     }
 
                     break;

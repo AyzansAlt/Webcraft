@@ -15,10 +15,10 @@ public class MessageListener_Client extends Listener {
 
         connection.isIdle();
 
-        if(object instanceof Response_FromServer_Broadcast){
-            Response_FromServer_Broadcast response = ((Response_FromServer_Broadcast)object);
+        if (object instanceof Response_FromServer_Broadcast) {
+            Response_FromServer_Broadcast response = ((Response_FromServer_Broadcast) object);
 
-            ClientNotification.createNotification(response.givenBroadcastMessage,"Network Broadcast");
+            ClientNotification.createNotification(response.givenBroadcastMessage, "Network Broadcast");
 
         }
 

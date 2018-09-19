@@ -1,6 +1,6 @@
 package net.discraft.mod;
 
-import static net.discraft.mod.gui.GuiDiscraftMain.discordBrowser;
+import net.discraft.mod.module.DiscraftModule;
 
 public class DiscraftShutdownHook {
 
@@ -9,18 +9,12 @@ public class DiscraftShutdownHook {
      */
     public void init() {
 
-        /* Add new Shutdown Hook Thread */
-        Runtime.getRuntime().addShutdownHook(
-
-                new Thread(() -> {
-                    Discraft.getInstance().getLogger().printLine("Discraft", "Shutting down Discraft...");
-
-                    discordBrowser.close();
-                    discordBrowser = null;
-
-                })
-
-        );
+        /* Add all necessary shutdown hooks from each discraft module */
+        for(DiscraftModule module : Discraft.getInstance().discraftModules){
+            if(module.isEnabled) {
+                module.addShutdownHook();
+            }
+        }
 
     }
 

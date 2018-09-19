@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class DiscraftScreenManager {
 
-    ArrayList<DiscraftScreen> discraftScreens;
+    public ArrayList<DiscraftScreen> discraftScreens;
 
     /**
      * Add - Add a new Screen to the Discraft Screen List
@@ -41,10 +41,10 @@ public class DiscraftScreenManager {
             /* Add screen to new screens list */
             newArray.add(discraftScreen);
             mc.ingameGUI.getChatGUI().printChatMessage(new TextComponentString(ChatFormatting.GREEN + "[Discraft] " + ChatFormatting.RESET + "Placed Screen at " + (int) mc.player.posX + "/" + (int) mc.player.posY + "/" + (int) mc.player.posZ));
-            mc.world.playSound(mc.player.posX, mc.player.posY, mc.player.posZ, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.AMBIENT, 1, 1,false);
+            mc.world.playSound(mc.player.posX, mc.player.posY, mc.player.posZ, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.AMBIENT, 1, 1, false);
             /* else, play the pop sound */
         } else {
-            mc.world.playSound(mc.player.posX, mc.player.posY, mc.player.posZ, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.AMBIENT, 1, 0,false);
+            mc.world.playSound(mc.player.posX, mc.player.posY, mc.player.posZ, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.AMBIENT, 1, 0, false);
         }
 
         /* Replace the current discraft screen list with the new, altered version */

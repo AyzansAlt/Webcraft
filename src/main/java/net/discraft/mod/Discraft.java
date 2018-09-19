@@ -1,24 +1,19 @@
 package net.discraft.mod;
 
-import net.discraft.mod.configs.GuiSettings;
-import net.discraft.mod.configs.HypixelSettings;
-import net.discraft.mod.configs.HypixelVariables;
-import net.discraft.mod.configs.PvpSettings;
 import net.discraft.mod.gui.GuiHandler;
+import net.discraft.mod.module.DiscraftModule;
+import net.discraft.mod.module.custogui.Module_CustoGUI;
+import net.discraft.mod.module.discord.Module_Discord;
+import net.discraft.mod.module.hypixel.Module_Hypixel;
+import net.discraft.mod.module.pvpessentials.Module_PvpEssentials;
+import net.discraft.mod.module.visualize.Module_Visualize;
 import net.discraft.mod.network.ClientNetworkConnection;
 import net.discraft.mod.network.listener.MessageListener_Client;
-import net.discraft.mod.render.entity.EntityItemRenderFactoryDiscraft;
 import net.discraft.mod.render.layer.LayerDiscraftCape;
-import net.hypixel.api.HypixelAPI;
-import net.hypixel.api.reply.PlayerReply;
-import net.hypixel.api.request.Request;
-import net.hypixel.api.request.RequestBuilder;
-import net.hypixel.api.request.RequestParam;
-import net.hypixel.api.request.RequestType;
-import net.hypixel.api.util.Callback;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -30,6 +25,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 @Mod(
         modid = Discraft.MOD_ID,
@@ -44,9 +40,10 @@ public class Discraft {
      * Mod Attributes
      */
     public static final String MOD_ID = "dc";
-    public static final String MOD_VERSION = "1.0a";
+    public static final String MOD_VERSION = "1.1a";
     public static final String MOD_NAME = "Discraft";
     public static final String[] developerList = new String[]{"dbc4ea0e-cb87-4ffc-b431-d9a8eec1428c"};
+    public ArrayList<DiscraftModule> discraftModules = new ArrayList<>();
     /**
      * Discord Page URL
      */
@@ -68,19 +65,7 @@ public class Discraft {
     public DiscraftShutdownHook discraftShutdownHook = new DiscraftShutdownHook();
     public DiscraftPresence discraftPresence = new DiscraftPresence();
     public DiscraftSettings discraftSettings = new DiscraftSettings();
-    public DiscraftScreenManager discraftScreenManager = new DiscraftScreenManager();
-
-    /**
-     * Necessary Settings
-     */
-    public HypixelSettings hypixelSettings = new HypixelSettings();
-    public PvpSettings pvpSettings = new PvpSettings();
-    public GuiSettings guiSettings = new GuiSettings();
-
-    /**
-     * Necessary Server-based Variables
-     */
-    public HypixelVariables hypixelVariables = new HypixelVariables();
+    public DiscraftSettingsModules discraftSettingsModules = new DiscraftSettingsModules();
 
     /**
      * Discraft Network Connection
@@ -90,8 +75,6 @@ public class Discraft {
     public String clientNetworkConnection_ip = "network.mcdecimation.net";
     public int clientNetworkConnection_tcp = 54666;
     public int clientNetworkConnection_udp = 54888;
-
-    public HypixelAPI hypixelAPI = HypixelAPI.getInstance();
 
     /**
      * Get Instance - Get the initial Discraft Instance
@@ -114,12 +97,62 @@ public class Discraft {
 
         Discraft.getInstance().getLogger().printLine("Discraft", "Pre-initializing Discraft...");
 
+        /* Change Icon and Title of Window */
+        DiscraftJavaWindow.init();
+
+        DiscraftModule moduleHypixel = new Module_Hypixel(
+                "module_hypixel",
+                "Hypixel API",
+                "Discraft Hypixel API Fetcher",
+                "The Discraft Hypixel API is a utility that hooks into the Hypixel API and caches the player data of all players in your game. Great for quickly viewing player hypixel stats in-game.",
+                "ScottehBoeh",
+                new ResourceLocation(Discraft.MOD_ID,
+                        "textures/modules/hypixel.png"));
+
+        DiscraftModule modulePvpEssentials = new Module_PvpEssentials(
+                "module_pvpessentials", "PVP Essentials",
+                "A set of essential PVP features",
+                "PVP Essentials consists of various tools and utilities that you can find useful for in-game combat.",
+                "ScottehBoeh",
+                new ResourceLocation(Discraft.MOD_ID,
+                        "textures/modules/pvpessentials.png"));
+
+        DiscraftModule moduleCustoGUI = new Module_CustoGUI(
+                "module_custogui", "Custo-GUI",
+                "Customise your In-game GUI",
+                "Custo-GUI gives you the power to display various different GUI widgets on your in-game GUI. Great for streamers and professional players",
+                "ScottehBoeh",
+                new ResourceLocation(Discraft.MOD_ID,
+                        "textures/modules/custogui.png"));
+
+        DiscraftModule moduleVisualize = new Module_Visualize(
+                "module_visualize", "Visualize",
+                "Edit your game visuals",
+                "Visualize lets you edit how various aspects of your game are rendered.",
+                "ScottehBoeh",
+                new ResourceLocation(Discraft.MOD_ID,
+                        "textures/modules/visualize.png"));
+
+        DiscraftModule moduleDiscord = new Module_Discord(
+                "module_discord", "Discord",
+                "Use Discord in Minecraft",
+                "Discord Module allows you to use and configure your Discord session from in-game. This includes the ability to share files, watch videos, and message other users via in-game",
+                "ScottehBoeh",
+                new ResourceLocation(Discraft.MOD_ID,
+                        "textures/modules/discord.png"));
+
+
+        this.discraftModules.add(moduleHypixel);
+        this.discraftModules.add(modulePvpEssentials);
+        this.discraftModules.add(moduleCustoGUI);
+        this.discraftModules.add(moduleVisualize);
+        this.discraftModules.add(moduleDiscord);
+
         /* Initialize Handlers/Managers */
         getInstance().discraftSettings.init(); /* Discraft Settings */
         getInstance().discraftKeys.init(); /* Discraft Keys */
         getInstance().discraftShutdownHook.init(); /* Discraft Shutdown Hook */
         getInstance().discraftPresence.init(); /* Discraft Rich Presence Hook */
-        getInstance().discraftScreenManager.init(); /* Discraft Screen Manager */
 
         initializeConfigurations(); /* Initialize the Discraft Configuration Files */
 
@@ -132,7 +165,36 @@ public class Discraft {
         /* Register Client-Side Commands */
         ClientCommandHandler.instance.registerCommand(new DiscraftCommands());
 
-        RenderingRegistry.registerEntityRenderingHandler(EntityItem.class, new EntityItemRenderFactoryDiscraft());
+        /**
+         * Smooth Swing Ticker - Used to smoothen out Swing Value for Animations
+         */
+        new Thread("SmoothSwingTicker") {
+
+            public void run() {
+
+                long lastTime = System.nanoTime();
+                double amountOfTicks = 60.0;
+                double ns = 1000000000 / amountOfTicks;
+                double delta = 0;
+
+                while (true) {
+                    long now = System.nanoTime();
+                    delta += (now - lastTime) / ns;
+                    lastTime = now;
+                    while (delta >= 1) {
+                        Discraft.getInstance().discraftVariables.smoothSwing++;
+                        delta--;
+                    }
+                }
+
+            }
+
+        }.start();
+
+        /* Pre-Initialize Modules */
+        for (DiscraftModule module : discraftModules) {
+            module.preInit(event);
+        }
 
     }
 
@@ -143,7 +205,14 @@ public class Discraft {
      */
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
+
         Discraft.getInstance().getLogger().printLine("Discraft", "Initializing Discraft...");
+
+        /* Initialize Modules */
+        for (DiscraftModule module : discraftModules) {
+            module.init(event);
+        }
+
     }
 
     /**
@@ -164,13 +233,18 @@ public class Discraft {
         Discraft.getInstance().getLogger().printLine("Discraft", "Created new Client-side Network Connection. Starting...");
         clientNetworkConnection = new ClientNetworkConnection();
         if (FMLCommonHandler.instance().getSide().isClient()) {
-            clientNetworkConnection.client.addListener(new MessageListener_Client());
+            ClientNetworkConnection.client.addListener(new MessageListener_Client());
         }
         try {
-            clientNetworkConnection.initializeClientConnection(clientNetworkConnection_ip, clientNetworkConnection_tcp, clientNetworkConnection_udp);
+            ClientNetworkConnection.initializeClientConnection(clientNetworkConnection_ip, clientNetworkConnection_tcp, clientNetworkConnection_udp);
         } catch (IOException e) {
             Discraft.getInstance().getLogger().printError("Discraft", "Failed to Initialize Client Connection Instance!");
             e.printStackTrace();
+        }
+
+        /* Post-Initialize Modules */
+        for (DiscraftModule module : discraftModules) {
+            module.postInit(event);
         }
 
     }
@@ -193,11 +267,13 @@ public class Discraft {
         return getInstance().discraftKeys;
     }
 
-    public void initializeConfigurations(){
+    public void initializeConfigurations() {
 
-        getInstance().hypixelSettings.init(); /* Hypixel Settings */
-        getInstance().pvpSettings.init(); /* PvP Settings */
-        getInstance().guiSettings.init(); /* GUI Settings */
+        getInstance().discraftSettingsModules.init(); /* GUI Settings */
+
+        for (DiscraftModule module : discraftModules) {
+            module.initializeConfigurations();
+        }
 
     }
 
@@ -206,9 +282,33 @@ public class Discraft {
      */
     public void loadConfigurations() {
 
-        getInstance().hypixelSettings.loadConfig(); /* Hypixel Settings */
-        getInstance().pvpSettings.loadConfig(); /* PvP Settings */
-        getInstance().guiSettings.loadConfig(); /* GUI Settings */
+        for (DiscraftModule module : discraftModules) {
+            module.loadConfigurations();
+        }
+
+    }
+
+    public boolean doesModuleExist(String givenModuleID) {
+
+        for (DiscraftModule module : discraftModules) {
+            if (module.moduleID.equals(givenModuleID)) {
+                return true;
+            }
+        }
+
+        return false;
+
+    }
+
+    public DiscraftModule getModuleFromID(String givenModuleID) {
+
+        for (DiscraftModule module : discraftModules) {
+            if (module.moduleID.equals(givenModuleID)) {
+                return module;
+            }
+        }
+
+        return null;
 
     }
 

@@ -1,9 +1,5 @@
 package net.discraft.mod;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.util.ResourceLocation;
-
 import java.io.*;
 import java.util.Properties;
 
@@ -12,7 +8,6 @@ import static java.lang.Boolean.parseBoolean;
 public class DiscraftSettings {
 
     public boolean enableDiscraft = true;
-    public boolean enableOpticraft = true;
 
     File configFile = new File("config/discraft.cfg");
 
@@ -27,7 +22,6 @@ public class DiscraftSettings {
                 OutputStream output = new FileOutputStream(configFile);
 
                 properties.setProperty("enableDiscraft", enableDiscraft ? "true" : "false");
-                properties.setProperty("enableOpticraft", enableOpticraft ? "true" : "false");
 
                 properties.store(output, "Discraft - Official Configuration Settings");
 
@@ -54,7 +48,6 @@ public class DiscraftSettings {
             properties.load(input);
 
             enableDiscraft = parseBoolean(properties.getProperty("enableDiscraft"));
-            enableOpticraft = parseBoolean(properties.getProperty("enableOpticraft"));
 
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -80,7 +73,6 @@ public class DiscraftSettings {
             output = new FileOutputStream(configFile);
 
             properties.setProperty("enableDiscraft", enableDiscraft ? "true" : "false");
-            properties.setProperty("enableOpticraft", enableOpticraft ? "true" : "false");
 
             properties.store(output, "Discraft - Official Configuration Settings");
 
@@ -98,15 +90,6 @@ public class DiscraftSettings {
             }
 
         }
-
-    }
-
-    /**
-     * Refresh Optimiser - Refreshes the Optimiser (To turn it on/off)
-     */
-    public void refreshOptimiser(){
-
-
 
     }
 

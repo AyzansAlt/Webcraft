@@ -4,7 +4,6 @@ import com.mojang.authlib.GameProfile;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.network.NetworkPlayerInfo;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -14,7 +13,6 @@ import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.chunk.IChunkProvider;
-import org.lwjgl.opengl.GL11;
 
 import static net.minecraft.client.Minecraft.getMinecraft;
 import static net.minecraft.client.renderer.GlStateManager.*;
@@ -83,7 +81,7 @@ public class FakePlayerRendering {
     public void renderPlayerModel(int posX, int posY, float scale, float rotation) {
         Minecraft mc = getMinecraft();
 
-        mc.getRenderManager().pointedEntity = player;//TODO ?
+        mc.getRenderManager().pointedEntity = player;//0TODO ?
         mc.getRenderManager().renderEngine = mc.getTextureManager();
 
         pushMatrix();
@@ -99,7 +97,6 @@ public class FakePlayerRendering {
         RenderHelper.enableStandardItemLighting();
 
         rotate(rotation, 0.0F, 1.0F, 0.0F);
-;
         player.rotationYawHead = player.rotationYaw + rotation;
 
         translate(0.0F, player.getYOffset(), 0.0F);

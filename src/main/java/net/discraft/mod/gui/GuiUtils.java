@@ -1,10 +1,5 @@
 package net.discraft.mod.gui;
 
-import com.mojang.realmsclient.gui.ChatFormatting;
-import net.discraft.mod.Discraft;
-import net.discraft.mod.utils.hypixel.HypixelGamemode;
-import net.discraft.mod.utils.hypixel.HypixelProfile;
-import net.discraft.mod.utils.hypixel.HypixelProfileManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.gui.FontRenderer;
@@ -12,15 +7,12 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.scoreboard.ScoreObjective;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
-import java.nio.ByteBuffer;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.awt.*;
 
 /**
  * Gui Utilities
@@ -36,10 +28,10 @@ public class GuiUtils {
     /**
      * Render Text
      *
-     * @param text  - Given Text (String)
-     * @param givenX  - Given Text Position X
-     * @param givenY  - Given Text Position Y
-     * @param color - Given Color
+     * @param text   - Given Text (String)
+     * @param givenX - Given Text Position X
+     * @param givenY - Given Text Position Y
+     * @param color  - Given Color
      */
     public static void renderText(String text, int givenX, int givenY, int color) {
         GL11.glPushMatrix();
@@ -51,10 +43,10 @@ public class GuiUtils {
     /**
      * Render Text With Shadow
      *
-     * @param text  - Given Text (String)
-     * @param givenX  - Given Text Position X
-     * @param givenY  - Given Text Position Y
-     * @param color - Given Color
+     * @param text   - Given Text (String)
+     * @param givenX - Given Text Position X
+     * @param givenY - Given Text Position Y
+     * @param color  - Given Color
      */
     public static void renderTextWithShadow(String text, int givenX, int givenY, int color) {
         GL11.glPushMatrix();
@@ -66,10 +58,10 @@ public class GuiUtils {
     /**
      * Render Centered Text
      *
-     * @param text  - Given Text (String)
-     * @param givenX  - Given Text Position X
-     * @param givenY  - Given Text Position Y
-     * @param color - Given Color
+     * @param text   - Given Text (String)
+     * @param givenX - Given Text Position X
+     * @param givenY - Given Text Position Y
+     * @param color  - Given Color
      */
     public static void renderCenteredText(String text, int givenX, int givenY, int color) {
         GL11.glPushMatrix();
@@ -82,8 +74,8 @@ public class GuiUtils {
      * Render Text Scaled
      *
      * @param text       - Given Text (String)
-     * @param givenX       - Given Position X
-     * @param givenY       - Given Position Y
+     * @param givenX     - Given Position X
+     * @param givenY     - Given Position Y
      * @param color      - Given Color
      * @param givenScale - Given Scale
      */
@@ -101,8 +93,8 @@ public class GuiUtils {
      * Render Centered Text Scaled
      *
      * @param text       - Given Text (String)
-     * @param givenX       - Given Text Position X
-     * @param givenY       - Given Text Position Y
+     * @param givenX     - Given Text Position X
+     * @param givenY     - Given Text Position Y
      * @param color      - Given Text Color
      * @param givenScale - Given Scale
      */
@@ -203,8 +195,8 @@ public class GuiUtils {
     /**
      * Render a Rectangle
      *
-     * @param givenX   - Given Start Position X
-     * @param givenY   - Given start Position Y
+     * @param givenX      - Given Start Position X
+     * @param givenY      - Given start Position Y
      * @param givenWidth  - Given Rectangle Width
      * @param givenHeight - Given Rectangle Height
      * @param givenColor  - Given Rectangle Color
@@ -247,11 +239,49 @@ public class GuiUtils {
 
     }
 
+    public static void renderRectWithFade(int givenX, int givenY, int givenWidth, int givenHeight, int givenColor, float givenFade) {
+
+        givenWidth = givenX + givenWidth;
+        givenHeight = givenY + givenHeight;
+
+        if (givenX < givenWidth) {
+            int i = givenX;
+            givenX = givenWidth;
+            givenWidth = i;
+        }
+
+        if (givenY < givenHeight) {
+            int j = givenY;
+            givenY = givenHeight;
+            givenHeight = j;
+        }
+
+        float f3 = (float) (givenColor >> 24 & 255) / 255.0F;
+        float f = (float) (givenColor >> 16 & 255) / 255.0F;
+        float f1 = (float) (givenColor >> 8 & 255) / 255.0F;
+        float f2 = (float) (givenColor & 255) / 255.0F;
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder bufferbuilder = tessellator.getBuffer();
+        GlStateManager.enableBlend();
+        GlStateManager.disableTexture2D();
+        GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
+        GlStateManager.color(f, f1, f2, givenFade);
+        bufferbuilder.begin(7, DefaultVertexFormats.POSITION);
+        bufferbuilder.pos((double) givenX, (double) givenHeight, 0.0D).endVertex();
+        bufferbuilder.pos((double) givenWidth, (double) givenHeight, 0.0D).endVertex();
+        bufferbuilder.pos((double) givenWidth, (double) givenY, 0.0D).endVertex();
+        bufferbuilder.pos((double) givenX, (double) givenY, 0.0D).endVertex();
+        tessellator.draw();
+        GlStateManager.enableTexture2D();
+        GlStateManager.disableBlend();
+
+    }
+
     /**
      * Draw a Rectangle with an Outline
      *
-     * @param givenX         - Given Start Position X
-     * @param givenY         - Given start Position Y
+     * @param givenX            - Given Start Position X
+     * @param givenY            - Given start Position Y
      * @param givenWidth        - Given Rectangle Width
      * @param givenHeight       - Given Rectangle Height
      * @param givenColor        - Given Rectangle Color
@@ -290,6 +320,39 @@ public class GuiUtils {
         bufferbuilder.pos((double) givenX, (double) givenY, givenZLevel).color(f1, f2, f3, f).endVertex();
         bufferbuilder.pos((double) givenX, (double) givenHeight, givenZLevel).color(f5, f6, f7, f4).endVertex();
         bufferbuilder.pos((double) givenWidth, (double) givenHeight, givenZLevel).color(f5, f6, f7, f4).endVertex();
+        tessellator.draw();
+        GlStateManager.shadeModel(7424);
+        GlStateManager.disableBlend();
+        GlStateManager.enableAlpha();
+        GlStateManager.enableTexture2D();
+
+    }
+
+    public static void renderRectWithGradientWithAlpha(int givenX, int givenY, int givenWidth, int givenHeight, int startColor, int endColor, double givenZLevel, float givenAlphaStart, float givenAlphaEnd) {
+
+        givenWidth = givenX + givenWidth;
+        givenHeight = givenY + givenHeight;
+
+        float f = (float) (startColor >> 24 & 255) / 255.0F;
+        float f1 = (float) (startColor >> 16 & 255) / 255.0F;
+        float f2 = (float) (startColor >> 8 & 255) / 255.0F;
+        float f3 = (float) (startColor & 255) / 255.0F;
+        float f4 = (float) (endColor >> 24 & 255) / 255.0F;
+        float f5 = (float) (endColor >> 16 & 255) / 255.0F;
+        float f6 = (float) (endColor >> 8 & 255) / 255.0F;
+        float f7 = (float) (endColor & 255) / 255.0F;
+        GlStateManager.disableTexture2D();
+        GlStateManager.enableBlend();
+        GlStateManager.disableAlpha();
+        GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
+        GlStateManager.shadeModel(7425);
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder bufferbuilder = tessellator.getBuffer();
+        bufferbuilder.begin(7, DefaultVertexFormats.POSITION_COLOR);
+        bufferbuilder.pos((double) givenWidth, (double) givenY, givenZLevel).color(f1, f2, f3, givenAlphaStart).endVertex();
+        bufferbuilder.pos((double) givenX, (double) givenY, givenZLevel).color(f1, f2, f3, givenAlphaStart).endVertex();
+        bufferbuilder.pos((double) givenX, (double) givenHeight, givenZLevel).color(f5, f6, f7, givenAlphaEnd).endVertex();
+        bufferbuilder.pos((double) givenWidth, (double) givenHeight, givenZLevel).color(f5, f6, f7, givenAlphaEnd).endVertex();
         tessellator.draw();
         GlStateManager.shadeModel(7424);
         GlStateManager.disableBlend();
@@ -390,7 +453,7 @@ public class GuiUtils {
     public static void renderImageCentered(double givenX, double givenY, ResourceLocation givenTexture, double givenWidth, double givenHeight) {
 
         GL11.glPushMatrix();
-        renderImage(givenX - (givenWidth / 2),givenY,givenTexture,givenWidth,givenHeight);
+        renderImage(givenX - (givenWidth / 2), givenY, givenTexture, givenWidth, givenHeight);
         GL11.glPopMatrix();
 
     }
@@ -411,12 +474,13 @@ public class GuiUtils {
 
     /**
      * Render an image with Transparent Capability
-     * @param givenX - Given X Position
-     * @param givenY - Given Y Position
+     *
+     * @param givenX       - Given X Position
+     * @param givenY       - Given Y Position
      * @param givenTexture - Given Texture
-     * @param givenWidth - Given Width
-     * @param givenHeight - Given Height
-     * @param givenAlpha - Given Alpha
+     * @param givenWidth   - Given Width
+     * @param givenHeight  - Given Height
+     * @param givenAlpha   - Given Alpha
      */
     public static void renderImageTransparent(int givenX, int givenY, ResourceLocation givenTexture, int givenWidth, int givenHeight, double givenAlpha) {
         GL11.glPushMatrix();
@@ -432,25 +496,27 @@ public class GuiUtils {
 
     /**
      * Render Player - Render the Player Model
+     *
      * @param givenPlayer - The given player to render
-     * @param x - X position of Render
-     * @param y - Y position of Render
+     * @param x           - X position of Render
+     * @param y           - Y position of Render
      */
-    public static void renderOtherPlayer(AbstractClientPlayer givenPlayer, int x, int y){
+    public static void renderOtherPlayer(AbstractClientPlayer givenPlayer, int x, int y) {
 
         GL11.glPushMatrix();
 
-        PLAYER_RENDERER.renderOtherPlayerModel(givenPlayer,x + 80, y + 100, 55, 0);
+        PLAYER_RENDERER.renderOtherPlayerModel(givenPlayer, x + 80, y + 100, 55, 0);
         GL11.glPopMatrix();
 
     }
 
     /**
      * Render Player - Render the Player Model
+     *
      * @param x - X position of Render
      * @param y - Y position of Render
      */
-    public static void renderPlayer(int x, int y){
+    public static void renderPlayer(int x, int y) {
 
         GL11.glPushMatrix();
 
@@ -461,12 +527,13 @@ public class GuiUtils {
 
     /**
      * Get Scoreboard Title - get the Title of the Scoreboard GUI Element
+     *
      * @param mc - Given Minecraft Instance
      * @return - Returns the Scoreboard as a String Value (with no formatting)
      */
-    public static String getScoreboardTitle(Minecraft mc){
+    public static String getScoreboardTitle(Minecraft mc) {
 
-        if(mc.world != null && mc.world.getScoreboard() != null) {
+        if (mc.world != null && mc.world.getScoreboard() != null) {
 
             ScoreObjective scoreobjective = mc.world.getScoreboard().getObjectiveInDisplaySlot(1);
 
@@ -488,73 +555,24 @@ public class GuiUtils {
 
     }
 
-    public static void renderHypixelStatsBox(int givenX, int givenY, EntityPlayer givenPlayer, int givenWidth, int givenHeight){
-
-        GlStateManager.pushMatrix();
-
-        float scale = 1.1f;
-
-        HypixelProfile profile = HypixelProfileManager.getProfileFromUUID(givenPlayer.getGameProfile().getId().toString());
-
-        GuiUtils.renderImageCenteredTransparent(givenWidth / 2,givenHeight - 108,new ResourceLocation(Discraft.MOD_ID,"textures/gui/hypixelstats.png"),160,70,.85);
-        GuiUtils.renderText(givenPlayer.getDisplayName().getFormattedText(), givenX + 5, givenY + 5, 0xFFFFFF);
-
-        ScissorState.scissor(givenX + 1, givenY + 1, 158, 68, true);
-        GL11.glPushMatrix();
-
-        GuiUtils.renderOtherPlayer((AbstractClientPlayer)givenPlayer,givenX + 45, givenY - 5);
-        GL11.glPopMatrix();
-        if (profile != null) {
-
-            Date firstLoginDate = new Date(profile.firstLogin);
-            Date lastLoginDate = new Date(profile.lastLogin);
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");
-            SimpleDateFormat dateFormatLoggedIn = new SimpleDateFormat("HH:mm:ss");
-
-            if(!profile.isBot) {
-
-                GuiUtils.renderText(givenPlayer.getDisplayName().getFormattedText(), givenX + 5, givenY + 5, 0xFFFFFF);
-
-                GuiUtils.renderText("Rank: " + profile.hypixelRank.toEnglishFormatted(), givenX + 5, givenY + 15, 0xFFFFFF);
-                GuiUtils.renderText("EXP: " + ChatFormatting.YELLOW + (long) profile.networkEXP, givenX + 5, givenY + 24, 0xFFFFFF);
-
-                if(profile.hypixelProfileSettings != null) {
-                    if (!profile.hypixelProfileSettings.allowFriendRequests) {
-
-                        GuiUtils.renderCenteredTextScaledWithOutline("Has Friend" + (!profile.hypixelProfileSettings.allowGuildRequests ? " and Guild" : "") + " Requests Disabled", givenWidth / 2, givenHeight - 46, 0xFF0000, 0x000000, 0.5f);
-
-                    } else if(!profile.hypixelProfileSettings.allowFriendRequests){
-
-                        GuiUtils.renderCenteredTextScaledWithOutline(!profile.hypixelProfileSettings.allowFriendRequests ? "Has Guild Requests Disabled" : "", givenWidth / 2, givenHeight - 46, 0xFF0000, 0x000000, 0.5f);
-
-                    }
-                }
-
-                switch(Discraft.getInstance().discraftPresence.getCurrentGamemode()){
-                    default:
-                        GuiUtils.renderText("Joined: " + ChatFormatting.GRAY + dateFormat.format(firstLoginDate), givenX + 5, givenY + 33, 0xFFFFFF);
-                        GuiUtils.renderText("Login: " + ChatFormatting.GRAY + dateFormatLoggedIn.format(lastLoginDate), givenX + 5, givenY + 42, 0xFFFFFF);
-                        GuiUtils.renderText("Karma: " + ChatFormatting.LIGHT_PURPLE + profile.karma, givenX + 5, givenY + 51, 0xFFFFFF);
-                        break;
-                }
-
-            } else {
-                GuiUtils.renderText(givenPlayer.getDisplayName().getFormattedText(), givenX + 5, givenY + 5, 0xFFFFFF);
-
-                if(!givenPlayer.getDisplayName().getUnformattedText().contains("[NPC]") && givenPlayer.getDisplayName().getUnformattedText().length() != 10) {
-                    GuiUtils.renderText(ChatFormatting.RED + I18n.format("discraft.hypixel.gui.profile.nicked"), givenX + 5, givenY + 15, 0xFFFFFF);
-                } else {
-                    GuiUtils.renderText(ChatFormatting.RED + I18n.format("discraft.hypixel.gui.profile.bot"), givenX + 5, givenY + 15, 0xFFFFFF);
-                }
-
-            }
-
-        } else {
-            GuiUtils.renderText(ChatFormatting.GRAY + "Fetching details...", givenX + 5, givenY + 15, 0xFFFFFF);
-        }
-
-        ScissorState.endScissor();
-        
+    public static void renderColor(int par1) {
+        Color color = Color.decode("" + par1);
+        float red = color.getRed() / 255.0F;
+        float green = color.getGreen() / 255.0F;
+        float blue = color.getBlue() / 255.0F;
+        GL11.glColor3f(red, green, blue);
     }
-    
+
+    public static void renderCenteredTextWithShadow(String text, int x, int y, int color, int outlineColor) {
+        GlStateManager.pushMatrix();
+        Minecraft mc = Minecraft.getMinecraft();
+        FontRenderer fr = mc.fontRenderer;
+        renderTextWithShadow(text, x - fr.getStringWidth(text) / 2, y, color);
+        GlStateManager.popMatrix();
+    }
+
+    public static boolean isInBox(int x, int y, int width, int height, int checkX, int checkY) {
+        return checkX >= x && checkY >= y && checkX <= x + width && checkY <= y + height;
+    }
+
 }

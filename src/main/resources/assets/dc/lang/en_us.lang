@@ -6,10 +6,20 @@
 #
 
 # Key Bindings
-key.discraft.category=Discraft Controls
-key.discraft.open=Open Discraft UI
+key.discraft.category.main=Discraft Controls
+key.discraft.category.module=Discraft Controls (Modules)
 
-key.discraft.pvp.rearcam=PVP: Rear Cam
+# Key Bindings (PVP Essentials)
+key.discraft.pvp.rearcam=(PVP-E) Quick-switch Rear Cam
+
+# Key Bindings (CustoGUI)
+key.discraft.custogui.editgui=(Custo-GUI) Edit GUI
+
+# Key Bindings (Visualize)
+key.discraft.visualize.tabtoggle=(Vizualise) Toggle Tab
+
+# Key Bindings (Discord)
+key.discraft.discord.opengui=(Discord) Open Discord GUI
 
 # In-game Information
 discraft.ingame.loading=Loading discord...
@@ -41,6 +51,7 @@ discraft.config.reload=Configuration file reloaded!
 discraft.config.enable=Discraft has been %s!
 discraft.playerlist.disable=MC Player List has been %s!
 discraft.openfirst=Open Discraft first before placing a Screen!
+discraft.initialized.modules=Initialized %s Modules!
 
 # Discraft Nametags
 discraft.nametag.developer=Discraft Developer
@@ -68,5 +79,11 @@ discraft.hypixel.api.success=Successfully fetched new §aHypixel API§f!
 discraft.hypixel.api.fail=§cFailed to fetched new Hypixel API!
 
 # Hypixel API GUI Messages
-discraft.hypixel.gui.profile.bot=Artificial User
-discraft.hypixel.gui.profile.nicked=Nicked Player
+discraft.hypixel.gui.profile.unknown=Error - Unknown User
+
+# Button Tool Tips
+button.tooltip.options=View/Edit game options
+button.tooltip.singleplayer=Play on a singleplayer world
+button.tooltip.multiplayer=Play on an online/LAN server
+button.tooltip.mods=View installed mods (%s)
+button.tooltip.quit=Quit and shut down Game
