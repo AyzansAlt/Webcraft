@@ -244,7 +244,7 @@ public class Module_Hypixel extends DiscraftModule {
         msg = msg.replace("\n", "");
 
         /* Auto-friend Feature */
-        if(this.hypixelSettings.enableAutoFriend) {
+        if (this.hypixelSettings.enableAutoFriend) {
             Matcher friendMatcher = friendRequestPattern.matcher(msg);
 
             if (friendMatcher.matches()) {
@@ -265,12 +265,12 @@ public class Module_Hypixel extends DiscraftModule {
 
         System.out.println("Server chat!!!");
 
-        if(friendRemovePattern.matcher(givenUnformatted).matches()){
+        if (friendRemovePattern.matcher(givenUnformatted).matches()) {
             String username = friendRemovePattern.matcher(givenUnformatted).group("player");
             System.out.println("Player " + username + " tried to REMOVE YOU!");
         }
 
-        if(friendRequestPattern.matcher(givenUnformatted).matches()){
+        if (friendRequestPattern.matcher(givenUnformatted).matches()) {
             String username = friendRequestPattern.matcher(givenUnformatted).group("player");
             System.out.println("Player " + username + " tried to ADD YOU!");
         }

@@ -1,5 +1,6 @@
 package net.discraft.mod.gui.api;
 
+import net.discraft.mod.gui.GuiUtils;
 import net.discraft.mod.gui.menu.GuiDiscraftScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;

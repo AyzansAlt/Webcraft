@@ -9,9 +9,9 @@ public class DiscraftShutdownHook {
      */
     public void init() {
 
-        /* Add all necessary shutdown hooks from each discraft module */
-        for(DiscraftModule module : Discraft.getInstance().discraftModules){
-            if(module.isEnabled) {
+        /* Add all necessary shutdown hooks from each discraft elementCPS */
+        for (DiscraftModule module : Discraft.getInstance().discraftModules) {
+            if (module.isEnabled) {
                 module.addShutdownHook();
             }
         }

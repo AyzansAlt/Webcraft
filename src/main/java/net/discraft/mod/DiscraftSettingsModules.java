@@ -21,7 +21,7 @@ public class DiscraftSettingsModules {
 
                 OutputStream output = new FileOutputStream(configFile);
 
-                for(DiscraftModule module : Discraft.getInstance().discraftModules){
+                for (DiscraftModule module : Discraft.getInstance().discraftModules) {
                     properties.setProperty(module.moduleID, module.isEnabled ? "true" : "false");
                 }
 
@@ -49,8 +49,8 @@ public class DiscraftSettingsModules {
 
             properties.load(input);
 
-            for(DiscraftModule module : Discraft.getInstance().discraftModules){
-                    module.isEnabled = parseBoolean(properties.getProperty(module.moduleID));
+            for (DiscraftModule module : Discraft.getInstance().discraftModules) {
+                module.isEnabled = parseBoolean(properties.getProperty(module.moduleID));
             }
 
         } catch (IOException ex) {
@@ -76,8 +76,8 @@ public class DiscraftSettingsModules {
 
             output = new FileOutputStream(configFile);
 
-            for(DiscraftModule module : Discraft.getInstance().discraftModules){
-                    properties.setProperty(module.moduleID, module.isEnabled ? "true" : "false");
+            for (DiscraftModule module : Discraft.getInstance().discraftModules) {
+                properties.setProperty(module.moduleID, module.isEnabled ? "true" : "false");
             }
 
             properties.store(output, "Discraft - Module Configuration Settings");

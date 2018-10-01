@@ -1,7 +1,14 @@
 package net.discraft.mod.gui.api;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
+import net.discraft.mod.Discraft;
 import net.discraft.mod.gui.GuiUtils;
+import net.discraft.mod.gui.menu.GuiDiscraftMainMenu;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.PositionedSoundRecord;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.util.ResourceLocation;
 
 /**
  * @author ScottehBoeh
@@ -10,6 +17,8 @@ public class GuiDiscraftScrollerSlotText extends GuiScrollerSlot {
 
     public static final char COLOR_CHAR = '\u00A7';
     private final String displayText;
+    private boolean renderSmall = false;
+    private String linkURL;
 
     public GuiDiscraftScrollerSlotText(String text) {
         displayText = text;
@@ -26,18 +35,69 @@ public class GuiDiscraftScrollerSlotText extends GuiScrollerSlot {
         return new String(b);
     }
 
-    @Override
-    public boolean canSelect() {
-        return false;
+    public GuiDiscraftScrollerSlotText setUrl(String givenURL) {
+        this.linkURL = givenURL;
+        return this;
+    }
+
+    public GuiDiscraftScrollerSlotText renderSmall() {
+        this.renderSmall = true;
+        return this;
     }
 
     @Override
-    public void doRender(int mouseX, int mouseY, float partialTicks) {
-        GuiUtils.renderTextWithShadow((isSelected() ? ChatFormatting.WHITE : "") + translateAlternateColorCodes(this.displayText), posX + 2, posY + 2, 0xFFFFFF);
+    public boolean canSelect() {
+        return true;
+    }
+
+    @Override
+    public void doRender(int mouseX, int mouseY, float parTick) {
+
+        String text = translateAlternateColorCodes(this.displayText);
+
+        text = text.replace("{VERSION}", Discraft.MOD_VERSION);
+        text = text.replace("{NAME}", Minecraft.getMinecraft().getSession().getUsername());
+
+        GuiUtils.renderTextScaled(
+                ((isSelected() || (isHovered(mouseX, mouseY) && this.linkURL != null)) ? ChatFormatting.WHITE : "")
+                        + text,
+                posX + 2,
+                posY + 2,
+                0xFFFFFF,
+                this.renderSmall ? .5f : 1
+        );
     }
 
     @Override
     protected int height() {
-        return 11;
+
+        return this.renderSmall ? 6 : 11;
     }
+
+    @Override
+    public void clicked(int mouseX, int mouseY) {
+        super.clicked(mouseX, mouseY);
+        String[] words = this.displayText.split(" ");
+
+        if (this.linkURL != null) {
+            if (this.linkURL.startsWith("http://") || this.linkURL.startsWith("https://")) {
+                GuiDiscraftMainMenu.openURL(this.linkURL);
+                Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+                return;
+            }
+        } else {
+            for (String word : words) {
+                if (word.length() > 2 && word.startsWith("&")) {
+                    word = word.substring(2);
+                }
+
+                if (word.startsWith("http://") || word.startsWith("https://") && isHovered(mouseX,mouseY)) {
+                    GuiDiscraftMainMenu.openURL(word);
+                    Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+                    return;
+                }
+            }
+        }
+    }
+
 }

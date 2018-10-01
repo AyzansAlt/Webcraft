@@ -1,6 +1,8 @@
 package net.discraft.mod.gui.menu;
 
 import com.google.common.collect.Lists;
+import com.mojang.realmsclient.gui.ChatFormatting;
+import net.discraft.mod.gui.GuiUtils;
 import net.discraft.mod.gui.api.GuiDiscraftContainer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -8,7 +10,9 @@ import org.lwjgl.input.Mouse;
 
 import java.awt.*;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 
 public class GuiDiscraftScreen extends GuiScreen {
@@ -20,6 +24,25 @@ public class GuiDiscraftScreen extends GuiScreen {
         try {
             Desktop.getDesktop().browse(uri);
         } catch (IOException e) {
+        }
+    }
+
+    public static void openURL(String par1) {
+
+        try {
+            if (Desktop.isDesktopSupported()) {
+                try {
+                    Desktop.getDesktop().browse(new URI(par1));
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (UnsupportedOperationException e) {
+            e.printStackTrace();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -85,6 +108,9 @@ public class GuiDiscraftScreen extends GuiScreen {
         super.drawScreen(mouseX, mouseY, partialTicks);
 
         drawContainers(mouseX, mouseY, partialTicks);
+
+        GuiUtils.renderTextScaled(ChatFormatting.BLACK + "\u00a9 Copyright - Discraft", 3, height - 7, 0xFFFFFFFF, 0.5);
+        GuiUtils.renderTextScaled(ChatFormatting.BLACK + "www.mcdecimation.net", width - 50, height - 7, 0xFFFFFFFF, 0.5);
 
     }
 

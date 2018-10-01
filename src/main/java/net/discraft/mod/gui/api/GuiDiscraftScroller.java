@@ -21,9 +21,9 @@ public class GuiDiscraftScroller extends GuiDiscraftContainer {
     public static final int SCROLLBAR_Y_PAD = 2;
     public ArrayList<GuiScrollerSlot> slots;
 
-    private int scrollbarY;
-    private int scrollbarMinY, scrollbarMaxY;
-    private int scrollbarX;
+    public int scrollbarY;
+    public int scrollbarMinY, scrollbarMaxY;
+    public int scrollbarX;
 
     private int smoothScrollTargetY = -1;
 
@@ -97,6 +97,7 @@ public class GuiDiscraftScroller extends GuiDiscraftContainer {
     @Override
     public void mouseClicked(int mouseX, int mouseY, int mouseButton) {
         super.mouseClicked(mouseX, mouseY, mouseButton);
+
         int translate = getSlotYTranslation();
 
         for (GuiScrollerSlot slot : slots) {
@@ -152,7 +153,7 @@ public class GuiDiscraftScroller extends GuiDiscraftContainer {
         glScissor(posX * factor, (parentGUI.height - (posY + height - 4)) * factor - 8, width * factor - 30, (height - 8) * factor + 15);
 
         for (GuiScrollerSlot slot : slots) {
-            slot.doRender(mouseX, mouseY + translation, partialTicks);
+            slot.doRender(mouseX, mouseY, partialTicks);
         }
 
         glDisable(GL_SCISSOR_TEST);
@@ -165,7 +166,7 @@ public class GuiDiscraftScroller extends GuiDiscraftContainer {
 
     }
 
-    private int getSlotYTranslation() {
+    public int getSlotYTranslation() {
         int maxTranslate = totalHeight - height;
         return (int) ((float) (scrollbarY - scrollbarMinY) / (scrollbarMaxY - scrollbarMinY) * maxTranslate);
     }
@@ -174,16 +175,55 @@ public class GuiDiscraftScroller extends GuiDiscraftContainer {
 
         boolean needsScroller = (totalHeight > this.height);
 
-        // non-moving background
         GuiUtils.renderRect(scrollbarX - SCROLLBAR_Y_PAD + 4, posY + SCROLLBAR_Y_PAD, (SCROLLBAR_WIDTH + SCROLLBAR_Y_PAD * 2) - 8, height - 2 * SCROLLBAR_Y_PAD, needsScroller ? 0x775C9B34 : 0x773F443C);
 
-        // moving bar
         GuiUtils.renderRect(scrollbarX, scrollbarY, SCROLLBAR_WIDTH, SCROLLBAR_HEIGHT, needsScroller ? 0xFF5C9B34 : 0xFF3F443C);
 
     }
 
     public void setTextList(List<String> list) {
-        setSlotList(list.stream().map(GuiDiscraftScrollerSlotText::new).iterator());
+
+        this.slots.clear();
+
+        for (String text : list) {
+
+            if (!text.startsWith("//")) {
+
+                if (text.startsWith("<image>")) {
+
+                    String[] split = text.replace("<image>", "").split("<>");
+
+                    String imageUrl = split[0];
+                    int imageWidth = Integer.parseInt(split[1]);
+                    int imageHeight = Integer.parseInt(split[2]);
+
+                    GuiDiscraftScrollerSlotImage imageSlot = new GuiDiscraftScrollerSlotImage(imageUrl, imageWidth, imageHeight);
+                    imageSlot.scroller = this;
+                    this.slots.add(imageSlot);
+                    this.onSlotHeightChanged();
+
+                } else {
+
+                    boolean renderSmall = false;
+
+                    if (text.startsWith("<s>")) {
+                        renderSmall = true;
+                        text = text.replace("<s>", "");
+                    }
+
+                    GuiDiscraftScrollerSlotText newSlot = new GuiDiscraftScrollerSlotText(text);
+                    if (renderSmall) {
+                        newSlot.renderSmall();
+                    }
+                    newSlot.scroller = this;
+                    this.slots.add(newSlot);
+                    this.onSlotHeightChanged();
+
+                }
+
+            }
+
+        }
     }
 
     boolean isSelected(GuiScrollerSlot slot) {
@@ -207,7 +247,7 @@ public class GuiDiscraftScroller extends GuiDiscraftContainer {
 
     @Override
     public void drawBackground() {
-        GuiUtils.renderRectWithOutline(this.posX, this.posY, this.width, this.height, 0x22000000, 0x22000000, 1);
+        GuiUtils.renderRectWithOutline(this.posX, this.posY, this.width, this.height, 0x33000000, 0x55000000, 1);
     }
 
 }

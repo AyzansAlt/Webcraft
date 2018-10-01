@@ -3,6 +3,7 @@ package net.discraft.mod.screens;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import net.discraft.mod.Discraft;
 import net.discraft.mod.gui.GuiUtils;
+import net.discraft.mod.module.discord.Module_Discord;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
@@ -18,10 +19,13 @@ public class DiscraftScreen {
     public double posY;
     public double posZ;
 
-    public DiscraftScreen(double givenX, double givenY, double givenZ) {
+    public Module_Discord discordModule;
+
+    public DiscraftScreen(double givenX, double givenY, double givenZ, Module_Discord givenModule) {
         this.posX = givenX;
         this.posY = givenY;
         this.posZ = givenZ;
+        this.discordModule = givenModule;
     }
 
     public void render() {
@@ -66,7 +70,7 @@ public class DiscraftScreen {
 
             GL11.glPushMatrix();
             GL11.glTranslated(0, -6.5, 0);
-            GuiUtils.renderCenteredTextScaled(ChatFormatting.WHITE + I18n.format("discraft.screen.tip", (GameSettings.getKeyDisplayString(Discraft.getInstance().getKeyRegistry().keyOpen.getKeyCode()))), 0, 0, 0, .5);
+            GuiUtils.renderCenteredTextScaled(ChatFormatting.WHITE + I18n.format("discraft.screen.tip", (GameSettings.getKeyDisplayString(this.discordModule.keyOpenDiscordGUI.getKeyCode()))), 0, 0, 0, .5);
             GL11.glPopMatrix();
 
         }

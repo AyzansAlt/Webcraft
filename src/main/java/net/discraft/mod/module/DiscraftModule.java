@@ -7,6 +7,7 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
+import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.ServerChatEvent;
@@ -98,7 +99,7 @@ public class DiscraftModule {
 
     }
 
-    public void onModuleDisable(){
+    public void onModuleDisable() {
 
     }
 
@@ -108,4 +109,8 @@ public class DiscraftModule {
 
     public void addShutdownHook() {
     }
+
+    public void onRenderBlockHighlightEvent(DrawBlockHighlightEvent event) {
+    }
+
 }

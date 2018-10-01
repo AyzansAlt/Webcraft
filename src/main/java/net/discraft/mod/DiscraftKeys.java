@@ -7,8 +7,6 @@ import org.lwjgl.input.Keyboard;
 
 public class DiscraftKeys {
 
-    public KeyBinding keyOpen = new KeyBinding("key.discraft.open", Keyboard.KEY_G, "key.discraft.category.main");
-
     /**
      * Initialize the registration of all Discraft-related Keys
      */
@@ -20,7 +18,6 @@ public class DiscraftKeys {
             }
         }
 
-        ClientRegistry.registerKeyBinding(keyOpen);
     }
 
 }

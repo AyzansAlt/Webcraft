@@ -47,7 +47,8 @@ public abstract class GuiScrollerSlot {
     }
 
     public boolean isHovered(int mouseX, int mouseY) {
-        return GuiUtils.isInBox(posX, posY, scroller.width, height(), mouseX, mouseY);
+        int translate = this.scroller.getSlotYTranslation();
+        return GuiUtils.isInBox(posX, posY - translate, scroller.width, height(), mouseX, mouseY);
     }
 
     protected void onClose() {

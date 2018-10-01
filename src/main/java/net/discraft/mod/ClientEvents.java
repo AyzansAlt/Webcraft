@@ -1,26 +1,19 @@
 package net.discraft.mod;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
-import net.discraft.mod.customevents.Event_RenderIngameTitle;
 import net.discraft.mod.gui.GuiUtils;
 import net.discraft.mod.gui.menu.GuiDiscraftMainMenu;
 import net.discraft.mod.gui.override.GuiDiscraftIngameMenu;
 import net.discraft.mod.module.DiscraftModule;
 import net.discraft.mod.network.ClientNetworkConnection;
 import net.discraft.mod.notification.ClientNotification;
-import net.discraft.mod.screens.DiscraftScreen;
-import net.discraft.mod.utils.UsefulHooks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiIngameMenu;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.GameSettings;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentString;
-import net.minecraftforge.client.event.ClientChatReceivedEvent;
-import net.minecraftforge.client.event.GuiOpenEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.client.event.*;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
@@ -30,8 +23,6 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 
 import java.io.IOException;
-
-import static net.discraft.mod.module.discord.gui.GuiDiscord.discordBrowser;
 
 public class ClientEvents {
 
@@ -159,7 +150,7 @@ public class ClientEvents {
         String unformattedText = ChatFormatting.stripFormatting(event.getComponent().getUnformattedText());
 
         for (DiscraftModule module : Discraft.getInstance().discraftModules) {
-            module.onServerChatEvent(event,formattedText,unformattedText);
+            module.onServerChatEvent(event, formattedText, unformattedText);
         }
 
     }
@@ -180,7 +171,7 @@ public class ClientEvents {
             event.setGui(new GuiDiscraftMainMenu());
 
             if (!Discraft.getInstance().discraftVariables.firstStart) {
-                ClientNotification.createNotification("Discraft - " + ChatFormatting.GREEN + Discraft.MOD_VERSION, I18n.format("discraft.initialized.modules","" + ChatFormatting.GREEN + Discraft.getInstance().discraftModules.size() + ChatFormatting.RESET));
+                ClientNotification.createNotification("Discraft - " + ChatFormatting.GREEN + Discraft.MOD_VERSION, I18n.format("discraft.initialized.modules", "" + ChatFormatting.GREEN + Discraft.getInstance().discraftModules.size() + ChatFormatting.RESET));
                 Discraft.getInstance().discraftVariables.firstStart = true;
             }
         }
@@ -204,17 +195,9 @@ public class ClientEvents {
                 module.onClientLoggedIn(event);
         }
 
-        /* Get the Minecraft Instance */
         Minecraft mc = Minecraft.getMinecraft();
 
-        /* Change Client-side Current Server Value */
-        Discraft.getInstance().discraftPresence.updatePresence();
-
-        /* If Discraft is Enabled */
-        if (Discraft.getInstance().discraftSettings.enableDiscraft) {
-            mc.ingameGUI.getChatGUI().printChatMessage(new TextComponentString(I18n.format("discraft.ingame.tip.open", ChatFormatting.GREEN + (GameSettings.getKeyDisplayString(Discraft.getInstance().getKeyRegistry().keyOpen.getKeyCode())) + ChatFormatting.RESET, Discraft.MOD_VERSION)));
-            mc.ingameGUI.getChatGUI().printChatMessage(new TextComponentString(I18n.format("discraft.ingame.tip.open2", ChatFormatting.GREEN + "/discraft" + ChatFormatting.RESET)));
-        }
+        mc.ingameGUI.getChatGUI().printChatMessage(new TextComponentString(I18n.format("discraft.ingame.tip.open2", ChatFormatting.GREEN + "/discraft" + ChatFormatting.RESET)));
 
     }
 
@@ -308,11 +291,40 @@ public class ClientEvents {
 
     }
 
+    /**
+     * On Render Player Event (Pre) - Called when a Player is Rendered
+     *
+     * @param event - Given Event (RenderLivingEvent.Pre)
+     */
     @SubscribeEvent
-    public void RenderPlayerEvent(net.minecraftforge.client.event.RenderLivingEvent.Pre event) {
+    public void onRenderPlayerEventPre(net.minecraftforge.client.event.RenderLivingEvent.Pre event) {
 
         if (Discraft.getInstance().discraftSettings.enableDiscraft) {
 
+        }
+
+    }
+
+    /**
+     * On Render Player Event (Post) - Called when a Player is Rendered
+     *
+     * @param event - Given Event (RenderLivingEvent.Post)
+     */
+    @SubscribeEvent
+    public void onRenderPlayerEventPost(net.minecraftforge.client.event.RenderLivingEvent.Post event) {
+
+        if (Discraft.getInstance().discraftSettings.enableDiscraft) {
+
+        }
+
+    }
+
+    @SubscribeEvent
+    public void onRenderBlockHighlightEvent(DrawBlockHighlightEvent event) {
+
+        for (DiscraftModule module : Discraft.getInstance().discraftModules) {
+            if (module.isEnabled)
+                module.onRenderBlockHighlightEvent(event);
         }
 
     }

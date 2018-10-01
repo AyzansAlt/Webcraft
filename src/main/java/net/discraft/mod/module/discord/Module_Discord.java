@@ -5,12 +5,12 @@ import net.discraft.mod.Discraft;
 import net.discraft.mod.DiscraftScreenManager;
 import net.discraft.mod.customevents.Event_RenderIngameTitle;
 import net.discraft.mod.module.DiscraftModule;
-import net.discraft.mod.module.discord.gui.GuiDiscord;
 import net.discraft.mod.module.discord.utils.DiscordSettings;
 import net.discraft.mod.screens.DiscraftScreen;
 import net.discraft.mod.utils.UsefulHooks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
@@ -18,7 +18,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import org.lwjgl.input.Keyboard;
 
 import static net.discraft.mod.module.discord.gui.GuiDiscord.discordBrowser;
@@ -28,7 +30,7 @@ public class Module_Discord extends DiscraftModule {
     public DiscordSettings discordSettings;
     public DiscraftScreenManager discraftScreenManager = new DiscraftScreenManager();
 
-    public KeyBinding keyOpenDiscordGUI = new KeyBinding("key.discraft.discord.opengui", Keyboard.KEY_G, "key.discraft.category.module");
+    public KeyBinding keyOpenDiscordGUI = new KeyBinding("key.discraft.discord.opengui", Keyboard.KEY_G, "key.discraft.category.elementCPS");
 
     public Module_Discord(String givenModuleID, String givenModuleName, String givenModuleDescription, String givenModuleDescriptionLong, String givenModuleAuthor, ResourceLocation givenModuleLogo) {
         super(givenModuleID, givenModuleName, givenModuleDescription, givenModuleDescriptionLong, givenModuleAuthor, givenModuleLogo);
@@ -77,7 +79,7 @@ public class Module_Discord extends DiscraftModule {
     }
 
     @Override
-    public void onClientTick(TickEvent.ClientTickEvent event){
+    public void onClientTick(TickEvent.ClientTickEvent event) {
 
         Minecraft mc = Minecraft.getMinecraft();
 
@@ -85,24 +87,24 @@ public class Module_Discord extends DiscraftModule {
         if (mc.player != null && mc.world != null) {
 
             /* If the Open Gui key is pressed, initiate the opening sequence */
-            if (this.discordSettings.enableDiscordGUI && keyOpenDiscordGUI.isPressed()) {
+            if (this.discordSettings.enableDiscordGUI && this.keyOpenDiscordGUI.isPressed()) {
 
-                    /* If player is not sneaking, display the UI */
-                    if (!mc.player.isSneaking()) {
-                        mc.player.openGui(Discraft.getInstance(), 0, mc.player.world, (int) mc.player.posX, (int) mc.player.posY, (int) mc.player.posZ);
-                        /* Else, if the Discord Browser is not equal to Null, spawn it in */
-                    } else if (discordBrowser != null) {
+                /* If player is not sneaking, display the UI */
+                if (!mc.player.isSneaking()) {
+                    mc.player.openGui(Discraft.getInstance(), 0, mc.player.world, (int) mc.player.posX, (int) mc.player.posY, (int) mc.player.posZ);
+                    /* Else, if the Discord Browser is not equal to Null, spawn it in */
+                } else if (discordBrowser != null) {
 
-                        /* Fancy little algorithm that makes the screen spawn infront of the player */
-                        double deltaX1 = (double) (-MathHelper.sin(mc.player.rotationYaw / 180.0F * (float) Math.PI));
-                        double deltaZ1 = (double) (MathHelper.cos(mc.player.rotationYaw / 180.0F * (float) Math.PI));
+                    /* Fancy little algorithm that makes the screen spawn infront of the player */
+                    double deltaX1 = (double) (-MathHelper.sin(mc.player.rotationYaw / 180.0F * (float) Math.PI));
+                    double deltaZ1 = (double) (MathHelper.cos(mc.player.rotationYaw / 180.0F * (float) Math.PI));
 
-                        /* Spawn the new Discraft Screen */
-                        this.discraftScreenManager.add(new DiscraftScreen(mc.player.posX + deltaX1, mc.player.posY + mc.player.getEyeHeight() + 2, mc.player.posZ + deltaZ1));
-                    } else {
-                        /* Inform the user that they must start Discraft before spawning in a Screen */
-                        mc.ingameGUI.getChatGUI().printChatMessage(new TextComponentString(ChatFormatting.GREEN + "[Discraft] " + ChatFormatting.RESET + I18n.format("discraft.openfirst")));
-                    }
+                    /* Spawn the new Discraft Screen */
+                    this.discraftScreenManager.add(new DiscraftScreen(mc.player.posX + deltaX1, mc.player.posY + mc.player.getEyeHeight() + 2, mc.player.posZ + deltaZ1, this));
+                } else {
+                    /* Inform the user that they must start Discraft before spawning in a Screen */
+                    mc.ingameGUI.getChatGUI().printChatMessage(new TextComponentString(ChatFormatting.GREEN + "[Discraft] " + ChatFormatting.RESET + I18n.format("discraft.openfirst")));
+                }
             }
 
             /* Ingame GUI Title Event Check */
@@ -129,16 +131,16 @@ public class Module_Discord extends DiscraftModule {
 
     @Override
     public void loadConfigurations() {
-        this.discordSettings.init();
-    }
-
-    @Override
-    public void initializeConfigurations() {
         this.discordSettings.loadConfig();
     }
 
     @Override
-    public void addShutdownHook(){
+    public void initializeConfigurations() {
+        this.discordSettings.init();
+    }
+
+    @Override
+    public void addShutdownHook() {
 
         /* Add new Shutdown Hook Thread */
         Runtime.getRuntime().addShutdownHook(
@@ -152,6 +154,18 @@ public class Module_Discord extends DiscraftModule {
                 })
 
         );
+
+    }
+
+    @Override
+    public void onClientLoggedIn(FMLNetworkEvent.ClientConnectedToServerEvent event){
+
+        Minecraft mc = Minecraft.getMinecraft();
+
+        /* Change Client-side Current Server Value */
+        Discraft.getInstance().discraftPresence.updatePresence();
+
+        mc.ingameGUI.getChatGUI().printChatMessage(new TextComponentString(I18n.format("discraft.ingame.tip.open", ChatFormatting.GREEN + (GameSettings.getKeyDisplayString(keyOpenDiscordGUI.getKeyCode())) + ChatFormatting.RESET, Discraft.MOD_VERSION)));
 
     }
 

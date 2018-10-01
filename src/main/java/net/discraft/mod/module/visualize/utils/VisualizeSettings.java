@@ -10,11 +10,16 @@ import static java.lang.Double.parseDouble;
 
 public class VisualizeSettings {
 
+    public double DEFAULTmotionBlurAmount = 5;
+
     public boolean enableMotionBlur = false;
     public boolean enableTabToggle = false;
+    public boolean enableCustomBlockHighlight = false;
 
     public double motionBlurAmount = 5;
     public boolean tabToggled = false;
+
+    public BlockHighlightSettings blockHighlightSettings = new BlockHighlightSettings();
 
     File configFile = new File("config/discraft_visualize.cfg");
 
@@ -30,7 +35,10 @@ public class VisualizeSettings {
 
                 properties.setProperty("enableMotionBlur", enableMotionBlur ? "true" : "false");
                 properties.setProperty("enableTabToggle", enableTabToggle ? "true" : "false");
+                properties.setProperty("enableCustomBlockHighlight", enableCustomBlockHighlight ? "true" : "false");
                 properties.setProperty("motionBlurAmount", String.valueOf(motionBlurAmount));
+
+                this.blockHighlightSettings.init(properties);
 
                 properties.store(output, "Discraft - Official Visualize Configuration Settings");
 
@@ -54,9 +62,12 @@ public class VisualizeSettings {
 
             properties.load(input);
 
-            enableMotionBlur = parseBoolean(properties.getProperty("enableMotionBlur"));
-            enableTabToggle = parseBoolean(properties.getProperty("enableTabToggle"));
-            motionBlurAmount = parseDouble(properties.getProperty("motionBlurAmount"));
+            this.enableMotionBlur = parseBoolean(properties.getProperty("enableMotionBlur"));
+            this.enableTabToggle = parseBoolean(properties.getProperty("enableTabToggle"));
+            this.enableCustomBlockHighlight = parseBoolean(properties.getProperty("enableCustomBlockHighlight"));
+            this.motionBlurAmount = parseDouble(properties.getProperty("motionBlurAmount"));
+
+            this.blockHighlightSettings.loadConfig(properties);
 
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -73,7 +84,10 @@ public class VisualizeSettings {
 
             properties.setProperty("enableMotionBlur", enableMotionBlur ? "true" : "false");
             properties.setProperty("enableTabToggle", enableTabToggle ? "true" : "false");
+            properties.setProperty("enableCustomBlockHighlight", enableCustomBlockHighlight ? "true" : "false");
             properties.setProperty("motionBlurAmount", String.valueOf(motionBlurAmount));
+
+            this.blockHighlightSettings.saveConfig(properties);
 
             properties.store(output, "Discraft - Official Visualize Configuration Settings");
 

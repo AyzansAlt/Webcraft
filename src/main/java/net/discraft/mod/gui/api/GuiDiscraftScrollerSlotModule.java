@@ -9,6 +9,7 @@ import net.discraft.mod.notification.ClientNotification;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.init.SoundEvents;
 
 import java.util.ArrayList;
@@ -50,7 +51,7 @@ public class GuiDiscraftScrollerSlotModule extends GuiScrollerSlot {
     @Override
     public void doRender(int mouseX, int mouseY, float partialTicks) {
 
-        if (this.isHovered(mouseX, mouseY)) {
+        if (isHovered(mouseX, mouseY)) {
             GuiUtils.renderRect(this.posX + 2, this.posY + 2, width + 1, height - 8, 0xFF5E9D34);
 
             if (!playedSound) {
@@ -72,6 +73,8 @@ public class GuiDiscraftScrollerSlotModule extends GuiScrollerSlot {
 
         if (isHovered(mouseX, mouseY)) {
 
+            GlStateManager.pushMatrix();
+
             if (descriptionFade < descriptionMaxFade) {
                 descriptionFade += 0.1f;
             }
@@ -79,7 +82,9 @@ public class GuiDiscraftScrollerSlotModule extends GuiScrollerSlot {
             int descWidth = 150;
             int descHeight = 70;
             int descX = this.posX - descWidth - 10;
-            int descY = 30;
+            int descY = this.posY;
+
+            GuiUtils.renderRectWithOutline(descX + descWidth + 1, descY + 3, 4, 35, 0x77000000, 0x77000000, 1);
 
             GuiUtils.renderRectWithOutline(descX, descY, descWidth, descHeight, 0x77000000, 0x77000000, 1);
             GuiUtils.renderRectWithGradientWithAlpha(descX, descY + (descHeight / 2), descWidth, descHeight / 2, 0x00000000, 0xFF5E9D34, 1, 0, descriptionFade);
@@ -97,6 +102,8 @@ public class GuiDiscraftScrollerSlotModule extends GuiScrollerSlot {
                 GuiUtils.renderTextScaled(ChatFormatting.GRAY + var1, hx, hy + 25 + (i * 6), 0xFFFFFF, .5f);
             }
 
+            GlStateManager.popMatrix();
+
 
         } else {
 
@@ -108,10 +115,11 @@ public class GuiDiscraftScrollerSlotModule extends GuiScrollerSlot {
 
     @Override
     public void clicked(int mouseX, int mouseY) {
-        if (isHovered(mouseX, mouseY)) {
+
+        if (isHovered(mouseX,mouseY)) {
             this.module.isEnabled = !this.module.isEnabled;
 
-            if(!this.module.isEnabled){
+            if (!this.module.isEnabled) {
                 this.module.onModuleDisable();
             }
 
@@ -120,7 +128,9 @@ public class GuiDiscraftScrollerSlotModule extends GuiScrollerSlot {
             Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, this.module.isEnabled ? 1.0F : .8F));
             ClientNotification.clearNotifications();
             ClientNotification.createNotification(this.module.moduleName, "Module " + (this.module.isEnabled ? ChatFormatting.GREEN + "Enabled!" : ChatFormatting.RED + "Disabled!"));
+
         }
+
         super.clicked(mouseX, mouseY);
     }
 

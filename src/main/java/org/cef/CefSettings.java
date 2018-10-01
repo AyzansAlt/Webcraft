@@ -91,14 +91,14 @@ public class CefSettings {
     /**
      * The fully qualified path for the resources directory. If this value is
      * empty the cef.pak and/or devtools_resources.pak files must be located in
-     * the module directory on Windows/Linux or the app bundle Resources directory
+     * the elementCPS directory on Windows/Linux or the app bundle Resources directory
      * on Mac OS X. Also configurable using the "resources-dir-path" command-line
      * switch.
      */
     public String resources_dir_path = null;
     /**
      * The fully qualified path for the locales directory. If this value is empty
-     * the locales directory must be located in the module directory. This value
+     * the locales directory must be located in the elementCPS directory. This value
      * is ignored on Mac OS X where pack files are always loaded from the app
      * bundle Resources directory. Also configurable using the "locales-dir-path"
      * command-line switch.

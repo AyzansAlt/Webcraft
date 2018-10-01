@@ -51,7 +51,7 @@ public class DiscraftCommands implements ICommand {
                     if (module.isEnabled) {
                         module.execute(givenServer, sender, args);
                     } else {
-                        sender.sendMessage(new TextComponentString("The module " + module.moduleName + " is " + ChatFormatting.RED + "Disabled" + ChatFormatting.RESET + "!"));
+                        sender.sendMessage(new TextComponentString("The elementCPS " + module.moduleName + " is " + ChatFormatting.RED + "Disabled" + ChatFormatting.RESET + "!"));
                     }
                     return;
                 }

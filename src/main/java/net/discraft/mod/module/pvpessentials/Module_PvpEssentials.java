@@ -17,7 +17,7 @@ public class Module_PvpEssentials extends DiscraftModule {
 
     public PvpSettings pvpSettings = new PvpSettings();
 
-    public KeyBinding keyRearcam = new KeyBinding("key.discraft.pvp.rearcam", Keyboard.KEY_X, "key.discraft.category.module");
+    public KeyBinding keyRearcam = new KeyBinding("key.discraft.pvp.rearcam", Keyboard.KEY_X, "key.discraft.category.elementCPS");
 
     public Module_PvpEssentials(String givenModuleID, String givenModuleName, String givenModuleDescription, String givenModuleDescriptionLong, String givenModuleAuthor, ResourceLocation givenModuleLogo) {
         super(givenModuleID, givenModuleName, givenModuleDescription, givenModuleDescriptionLong, givenModuleAuthor, givenModuleLogo);
@@ -91,12 +91,12 @@ public class Module_PvpEssentials extends DiscraftModule {
 
     @Override
     public void loadConfigurations() {
-        this.pvpSettings.init();
+        this.pvpSettings.loadConfig();
     }
 
     @Override
     public void initializeConfigurations() {
-        this.pvpSettings.loadConfig();
+        this.pvpSettings.init();
     }
 
 }

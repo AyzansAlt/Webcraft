@@ -1,11 +1,15 @@
 package net.discraft.mod.gui.menu;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.util.concurrent.Runnables;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import net.discraft.mod.Discraft;
 import net.discraft.mod.gui.GuiUtils;
 import net.discraft.mod.gui.api.GuiDiscraftButton;
+import net.discraft.mod.gui.api.GuiDiscraftButtonLanguage;
+import net.discraft.mod.gui.api.GuiDiscraftScroller;
 import net.discraft.mod.gui.container.GuiDiscraftContainerModules;
+import net.discraft.mod.utils.NewsManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.renderer.GlStateManager;
@@ -28,13 +32,15 @@ import org.apache.logging.log4j.Logger;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GLContext;
 
+import java.io.IOException;
 import java.net.URI;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Random;
+import java.util.*;
 
 @SideOnly(Side.CLIENT)
 public class GuiDiscraftMainMenu extends GuiDiscraftScreen {
+
+    private final GuiDiscraftScroller menuNewsContainer = new GuiDiscraftScroller(3, 0, 47, 247, 143, this);
+
     public static final String MORE_INFO_TEXT = "Please click " + TextFormatting.UNDERLINE + "here" + TextFormatting.RESET + " for more information.";
     private static final Logger LOGGER = LogManager.getLogger();
     private static final Random RANDOM = new Random();
@@ -156,6 +162,29 @@ public class GuiDiscraftMainMenu extends GuiDiscraftScreen {
     @Override
     public void initGui() {
         super.initGui();
+
+        int buttonWidth = 100;
+
+        int x = width / 2 - 173;
+        this.menuNewsContainer.posX = x + 104;
+        this.menuNewsContainer.posY = 47;
+        this.menuNewsContainer.height = 143;
+
+        addContainer(this.menuNewsContainer);
+
+        this.menuNewsContainer.setTextList(Collections.singletonList("&cLoading News & Updates..."));
+        new Thread() {
+
+            public void run() {
+                try {
+                    injectNews(NewsManager.getNewsAsStringList());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return;
+            }
+        }.start();
+
         this.widthCopyright = this.fontRenderer.getStringWidth("Copyright Mojang AB. Do not distribute!");
         this.widthCopyrightRest = this.width - this.widthCopyright - 2;
         Calendar calendar = Calendar.getInstance();
@@ -169,9 +198,10 @@ public class GuiDiscraftMainMenu extends GuiDiscraftScreen {
             this.addSingleplayerMultiplayerButtons(j, 24);
         }
 
-        this.buttonList.add(new GuiDiscraftButton(0, this.width / 2 - 100, j + 72 + 12, 98, 20, I18n.format("menu.options")).addToolTip(I18n.format("button.tooltip.options")));
-        this.buttonList.add(new GuiDiscraftButton(4, this.width / 2 + 2, j + 72 + 12, 98, 20, I18n.format("menu.quit")).addToolTip(I18n.format("button.tooltip.quit")));
-        this.buttonList.add(new GuiButtonLanguage(5, this.width / 2 - 124, j + 72 + 12));
+        this.buttonList.add(new GuiDiscraftButton(0, x, 144, buttonWidth, 20, I18n.format("menu.options")).addToolTip(I18n.format("button.tooltip.options")));
+        this.buttonList.add(new GuiDiscraftButton(4, x, 170, buttonWidth, 20, ChatFormatting.RED + I18n.format("menu.quit")).addToolTip(I18n.format("button.tooltip.quit")));
+
+        this.buttonList.add(new GuiDiscraftButtonLanguage(5, x - 24, 47).addToolTip("Change game language preferences"));
 
         synchronized (this.threadLock) {
             this.openGLWarning1Width = this.fontRenderer.getStringWidth(this.openGLWarning1);
@@ -202,22 +232,40 @@ public class GuiDiscraftMainMenu extends GuiDiscraftScreen {
 
     }
 
+    private void injectNews(List<String> news) {
+
+            if (news != null) {
+                menuNewsContainer.setTextList(news);
+            } else {
+                menuNewsContainer.setTextList(ImmutableList.of("Failed to grab news and updates!", "Are the Official Servers offline?"));
+            }
+    }
+
     /**
      * Adds Singleplayer and Multiplayer buttons on Main Menu for players who have bought the game.
      */
     private void addSingleplayerMultiplayerButtons(int p_73969_1_, int p_73969_2_) {
-        this.buttonList.add(new GuiDiscraftButton(1, this.width / 2 - 100, p_73969_1_, I18n.format("menu.singleplayer")).addToolTip(I18n.format("button.tooltip.singleplayer")));
-        this.buttonList.add(new GuiDiscraftButton(2, this.width / 2 - 100, p_73969_1_ + p_73969_2_ * 1, I18n.format("menu.multiplayer")).addToolTip(I18n.format("button.tooltip.multiplayer")));
-        this.realmsButton = this.addButton(new GuiDiscraftButton(14, this.width / 2 + 2, p_73969_1_ + p_73969_2_ * 2, 98, 20, I18n.format("menu.online").replace("Minecraft", "").trim()));
-        this.buttonList.add(modButton = new GuiDiscraftButton(6, this.width / 2 - 100, p_73969_1_ + p_73969_2_ * 2, 98, 20, I18n.format("fml.menu.mods")).addToolTip(I18n.format("button.tooltip.mods", "" + ChatFormatting.GREEN + Loader.instance().getActiveModList().size() + ChatFormatting.RESET)));
+
+        int x = width / 2 - 173;
+
+        int buttonWidth = 100;
+
+        this.buttonList.add(new GuiDiscraftButton(1, x, 47,buttonWidth,20, I18n.format("menu.singleplayer")).addToolTip(I18n.format("button.tooltip.singleplayer")));
+        this.buttonList.add(new GuiDiscraftButton(2, x, 71,buttonWidth,20, I18n.format("menu.multiplayer")).addToolTip(I18n.format("button.tooltip.multiplayer")));
+
+        this.realmsButton = this.addButton(new GuiDiscraftButton(14, x, 95, buttonWidth,20, I18n.format("menu.online").replace("Minecraft", "").trim()));
+        this.buttonList.add(modButton = new GuiDiscraftButton(6, x, 119, buttonWidth,20, I18n.format("fml.menu.mods")).addToolTip(I18n.format("button.tooltip.mods", "" + ChatFormatting.GREEN + Loader.instance().getActiveModList().size() + ChatFormatting.RESET)));
     }
 
     /**
      * Adds Demo buttons on Main Menu for players who are playing Demo.
      */
     private void addDemoButtons(int p_73972_1_, int p_73972_2_) {
-        this.buttonList.add(new GuiDiscraftButton(11, this.width / 2 - 100, p_73972_1_, I18n.format("menu.playdemo")));
-        this.buttonResetDemo = this.addButton(new GuiDiscraftButton(12, this.width / 2 - 100, p_73972_1_ + p_73972_2_ * 1, I18n.format("menu.resetdemo")));
+
+        int x = width / 2 - 173;
+
+        this.buttonList.add(new GuiDiscraftButton(11, x, p_73972_1_, I18n.format("menu.playdemo")));
+        this.buttonResetDemo = this.addButton(new GuiDiscraftButton(12, x, p_73972_1_ + p_73972_2_ * 1, I18n.format("menu.resetdemo")));
         ISaveFormat isaveformat = this.mc.getSaveLoader();
         WorldInfo worldinfo = isaveformat.getWorldInfo("Demo_World");
 
@@ -316,8 +364,7 @@ public class GuiDiscraftMainMenu extends GuiDiscraftScreen {
 
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
-        GuiUtils.renderImageCentered(width / 2, 40, MENU_LOGO, 148, 40);
-        //GuiUtils.renderCenteredTextScaledWithOutline("Minecraft's #1 Client",width / 2,75,0xFFFFFF,0x000000,.5);
+        GuiUtils.renderImageCentered(width / 2, 4, MENU_LOGO, 148, 40);
 
         if (mouseX > this.widthCopyrightRest && mouseX < this.widthCopyrightRest + this.widthCopyright && mouseY > this.height - 10 && mouseY < this.height && Mouse.isInsideWindow()) {
             drawRect(this.widthCopyrightRest, this.height - 1, this.widthCopyrightRest + this.widthCopyright, this.height, -1);

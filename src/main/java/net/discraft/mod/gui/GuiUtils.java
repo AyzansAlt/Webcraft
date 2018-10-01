@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.scoreboard.ScoreObjective;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -293,9 +294,13 @@ public class GuiUtils {
         renderRect(givenX - outlineThickness, givenY - outlineThickness, givenWidth + (outlineThickness * 2), givenHeight + (outlineThickness * 2), givenOutlineColor);
         renderRect(givenX, givenY, givenWidth, givenHeight, givenColor);
 
+        GlStateManager.color(1,1,1,1);
+
     }
 
     public static void renderRectWithGradient(int givenX, int givenY, int givenWidth, int givenHeight, int startColor, int endColor, double givenZLevel) {
+
+        GlStateManager.pushMatrix();
 
         givenWidth = givenX + givenWidth;
         givenHeight = givenY + givenHeight;
@@ -325,6 +330,10 @@ public class GuiUtils {
         GlStateManager.disableBlend();
         GlStateManager.enableAlpha();
         GlStateManager.enableTexture2D();
+
+        GlStateManager.color(1,1,1,1);
+
+        GlStateManager.popMatrix();
 
     }
 
@@ -573,6 +582,109 @@ public class GuiUtils {
 
     public static boolean isInBox(int x, int y, int width, int height, int checkX, int checkY) {
         return checkX >= x && checkY >= y && checkX <= x + width && checkY <= y + height;
+    }
+
+    public static void renderBoundingBox(AxisAlignedBB givenBB) {
+
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder worldRenderer = tessellator.getBuffer();
+
+        worldRenderer.begin(3, DefaultVertexFormats.POSITION);
+        worldRenderer.pos(givenBB.minX, givenBB.minY, givenBB.minZ).endVertex();
+        worldRenderer.pos(givenBB.maxX, givenBB.minY, givenBB.minZ).endVertex();
+        worldRenderer.pos(givenBB.maxX, givenBB.minY, givenBB.maxZ).endVertex();
+        worldRenderer.pos(givenBB.minX, givenBB.minY, givenBB.maxZ).endVertex();
+        worldRenderer.pos(givenBB.minX, givenBB.minY, givenBB.minZ).endVertex();
+        tessellator.draw();
+        worldRenderer.begin(3, DefaultVertexFormats.POSITION);
+        worldRenderer.pos(givenBB.minX, givenBB.maxY, givenBB.minZ).endVertex();
+        worldRenderer.pos(givenBB.maxX, givenBB.maxY, givenBB.minZ).endVertex();
+        worldRenderer.pos(givenBB.maxX, givenBB.maxY, givenBB.maxZ).endVertex();
+        worldRenderer.pos(givenBB.minX, givenBB.maxY, givenBB.maxZ).endVertex();
+        worldRenderer.pos(givenBB.minX, givenBB.maxY, givenBB.minZ).endVertex();
+        tessellator.draw();
+        worldRenderer.begin(1, DefaultVertexFormats.POSITION);
+        worldRenderer.pos(givenBB.minX, givenBB.minY, givenBB.minZ).endVertex();
+        worldRenderer.pos(givenBB.minX, givenBB.maxY, givenBB.minZ).endVertex();
+        worldRenderer.pos(givenBB.maxX, givenBB.minY, givenBB.minZ).endVertex();
+        worldRenderer.pos(givenBB.maxX, givenBB.maxY, givenBB.minZ).endVertex();
+        worldRenderer.pos(givenBB.maxX, givenBB.minY, givenBB.maxZ).endVertex();
+        worldRenderer.pos(givenBB.maxX, givenBB.maxY, givenBB.maxZ).endVertex();
+        worldRenderer.pos(givenBB.minX, givenBB.minY, givenBB.maxZ).endVertex();
+        worldRenderer.pos(givenBB.minX, givenBB.maxY, givenBB.maxZ).endVertex();
+        tessellator.draw();
+    }
+
+    public static void renderBoundingBoxFilled(AxisAlignedBB givenBB)
+    {
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder worldRenderer = tessellator.getBuffer();
+
+        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+        worldRenderer.pos(givenBB.minX, givenBB.minY, givenBB.minZ).endVertex();
+        worldRenderer.pos(givenBB.minX, givenBB.maxY, givenBB.minZ).endVertex();
+        worldRenderer.pos(givenBB.maxX, givenBB.minY, givenBB.minZ).endVertex();
+        worldRenderer.pos(givenBB.maxX, givenBB.maxY, givenBB.minZ).endVertex();
+        worldRenderer.pos(givenBB.maxX, givenBB.minY, givenBB.maxZ).endVertex();
+        worldRenderer.pos(givenBB.maxX, givenBB.maxY, givenBB.maxZ).endVertex();
+        worldRenderer.pos(givenBB.minX, givenBB.minY, givenBB.maxZ).endVertex();
+        worldRenderer.pos(givenBB.minX, givenBB.maxY, givenBB.maxZ).endVertex();
+        tessellator.draw();
+
+        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+        worldRenderer.pos(givenBB.maxX, givenBB.maxY, givenBB.minZ).endVertex();
+        worldRenderer.pos(givenBB.maxX, givenBB.minY, givenBB.minZ).endVertex();
+        worldRenderer.pos(givenBB.minX, givenBB.maxY, givenBB.minZ).endVertex();
+        worldRenderer.pos(givenBB.minX, givenBB.minY, givenBB.minZ).endVertex();
+        worldRenderer.pos(givenBB.minX, givenBB.maxY, givenBB.maxZ).endVertex();
+        worldRenderer.pos(givenBB.minX, givenBB.minY, givenBB.maxZ).endVertex();
+        worldRenderer.pos(givenBB.maxX, givenBB.maxY, givenBB.maxZ).endVertex();
+        worldRenderer.pos(givenBB.maxX, givenBB.minY, givenBB.maxZ).endVertex();
+        tessellator.draw();
+
+        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+        worldRenderer.pos(givenBB.minX, givenBB.maxY, givenBB.minZ).endVertex();
+        worldRenderer.pos(givenBB.maxX, givenBB.maxY, givenBB.minZ).endVertex();
+        worldRenderer.pos(givenBB.maxX, givenBB.maxY, givenBB.maxZ).endVertex();
+        worldRenderer.pos(givenBB.minX, givenBB.maxY, givenBB.maxZ).endVertex();
+        worldRenderer.pos(givenBB.minX, givenBB.maxY, givenBB.minZ).endVertex();
+        worldRenderer.pos(givenBB.minX, givenBB.maxY, givenBB.maxZ).endVertex();
+        worldRenderer.pos(givenBB.maxX, givenBB.maxY, givenBB.maxZ).endVertex();
+        worldRenderer.pos(givenBB.maxX, givenBB.maxY, givenBB.minZ).endVertex();
+        tessellator.draw();
+
+        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+        worldRenderer.pos(givenBB.minX, givenBB.minY, givenBB.minZ).endVertex();
+        worldRenderer.pos(givenBB.maxX, givenBB.minY, givenBB.minZ).endVertex();
+        worldRenderer.pos(givenBB.maxX, givenBB.minY, givenBB.maxZ).endVertex();
+        worldRenderer.pos(givenBB.minX, givenBB.minY, givenBB.maxZ).endVertex();
+        worldRenderer.pos(givenBB.minX, givenBB.minY, givenBB.minZ).endVertex();
+        worldRenderer.pos(givenBB.minX, givenBB.minY, givenBB.maxZ).endVertex();
+        worldRenderer.pos(givenBB.maxX, givenBB.minY, givenBB.maxZ).endVertex();
+        worldRenderer.pos(givenBB.maxX, givenBB.minY, givenBB.minZ).endVertex();
+        tessellator.draw();
+
+        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+        worldRenderer.pos(givenBB.minX, givenBB.minY, givenBB.minZ).endVertex();
+        worldRenderer.pos(givenBB.minX, givenBB.maxY, givenBB.minZ).endVertex();
+        worldRenderer.pos(givenBB.minX, givenBB.minY, givenBB.maxZ).endVertex();
+        worldRenderer.pos(givenBB.minX, givenBB.maxY, givenBB.maxZ).endVertex();
+        worldRenderer.pos(givenBB.maxX, givenBB.minY, givenBB.maxZ).endVertex();
+        worldRenderer.pos(givenBB.maxX, givenBB.maxY, givenBB.maxZ).endVertex();
+        worldRenderer.pos(givenBB.maxX, givenBB.minY, givenBB.minZ).endVertex();
+        worldRenderer.pos(givenBB.maxX, givenBB.maxY, givenBB.minZ).endVertex();
+        tessellator.draw();
+
+        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+        worldRenderer.pos(givenBB.minX, givenBB.maxY, givenBB.maxZ).endVertex();
+        worldRenderer.pos(givenBB.minX, givenBB.minY, givenBB.maxZ).endVertex();
+        worldRenderer.pos(givenBB.minX, givenBB.maxY, givenBB.minZ).endVertex();
+        worldRenderer.pos(givenBB.minX, givenBB.minY, givenBB.minZ).endVertex();
+        worldRenderer.pos(givenBB.maxX, givenBB.maxY, givenBB.minZ).endVertex();
+        worldRenderer.pos(givenBB.maxX, givenBB.minY, givenBB.minZ).endVertex();
+        worldRenderer.pos(givenBB.maxX, givenBB.maxY, givenBB.maxZ).endVertex();
+        worldRenderer.pos(givenBB.maxX, givenBB.minY, givenBB.maxZ).endVertex();
+        tessellator.draw();
     }
 
 }

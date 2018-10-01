@@ -5,18 +5,18 @@ import net.discraft.mod.module.DiscraftModule;
 import net.discraft.mod.module.custogui.Module_CustoGUI;
 import net.discraft.mod.module.discord.Module_Discord;
 import net.discraft.mod.module.hypixel.Module_Hypixel;
+import net.discraft.mod.module.protection.Module_Protection;
 import net.discraft.mod.module.pvpessentials.Module_PvpEssentials;
 import net.discraft.mod.module.visualize.Module_Visualize;
 import net.discraft.mod.network.ClientNetworkConnection;
 import net.discraft.mod.network.listener.MessageListener_Client;
 import net.discraft.mod.render.layer.LayerDiscraftCape;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.renderer.entity.RenderPlayer;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -43,7 +43,6 @@ public class Discraft {
     public static final String MOD_VERSION = "1.1a";
     public static final String MOD_NAME = "Discraft";
     public static final String[] developerList = new String[]{"dbc4ea0e-cb87-4ffc-b431-d9a8eec1428c"};
-    public ArrayList<DiscraftModule> discraftModules = new ArrayList<>();
     /**
      * Discord Page URL
      */
@@ -53,6 +52,7 @@ public class Discraft {
      */
     @Mod.Instance(MOD_ID)
     public static Discraft discraftInstance = new Discraft();
+    public ArrayList<DiscraftModule> discraftModules = new ArrayList<>();
     /**
      * Mod Variables
      */
@@ -141,12 +141,21 @@ public class Discraft {
                 new ResourceLocation(Discraft.MOD_ID,
                         "textures/modules/discord.png"));
 
+        DiscraftModule moduleProtection = new Module_Protection(
+                "module_protection", "Protection",
+                "Discraft Client Protector",
+                "This modules functionality is to increase the safety of your Client. This includes fixing any possible exploits that may be present when using Discraft",
+                "ScottehBoeh",
+                new ResourceLocation(Discraft.MOD_ID,
+                        "textures/modules/protection.png"));
+
 
         this.discraftModules.add(moduleHypixel);
         this.discraftModules.add(modulePvpEssentials);
         this.discraftModules.add(moduleCustoGUI);
         this.discraftModules.add(moduleVisualize);
         this.discraftModules.add(moduleDiscord);
+        this.discraftModules.add(moduleProtection);
 
         /* Initialize Handlers/Managers */
         getInstance().discraftSettings.init(); /* Discraft Settings */

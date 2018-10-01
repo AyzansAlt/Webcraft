@@ -14,6 +14,10 @@ key.discraft.pvp.rearcam=(PVP-E) Quick-switch Rear Cam
 
 # Key Bindings (CustoGUI)
 key.discraft.custogui.editgui=(Custo-GUI) Edit GUI
+key.discraft.custogui.element.up=(Custo-GUI) Move Element Up
+key.discraft.custogui.element.down=(Custo-GUI) Move Element Down
+key.discraft.custogui.element.left=(Custo-GUI) Move Element Left
+key.discraft.custogui.element.right=(Custo-GUI) Move Element Right
 
 # Key Bindings (Visualize)
 key.discraft.visualize.tabtoggle=(Vizualise) Toggle Tab
@@ -27,11 +31,15 @@ discraft.ingame.connecting=CONNECTING
 
 # In-game Tooltip Texts
 discraft.ingame.tip.close=Press ESC to return to your Game!
-discraft.ingame.tip.open=Press %s to launch Discraft v%s!
+discraft.ingame.tip.open=Press %s to launch the Discord GUI!
 discraft.ingame.tip.open2=(Or type %s for more commands!)
 
 # In-game Button Texts
 discraft.ingame.button.reload=Reload
+
+# Module Button Texts
+discraft.button.module.custogui.addelement=Add Element
+discraft.button.module.custogui.adddelement.tip=Add a new element to the in-game gui
 
 # In-game Button Tooltip Texts
 discraft.ingame.button.tooltip.reload=Reload the Discord UI
