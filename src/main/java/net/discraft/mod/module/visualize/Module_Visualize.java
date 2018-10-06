@@ -3,6 +3,7 @@ package net.discraft.mod.module.visualize;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import net.discraft.mod.gui.GuiUtils;
 import net.discraft.mod.module.DiscraftModule;
+import net.discraft.mod.module.ModuleSettings;
 import net.discraft.mod.module.visualize.utils.VisualizeSettings;
 import net.discraft.mod.module.visualize.utils.shaderresources.ResourceManagerMotionBlur;
 import net.discraft.mod.module.visualize.utils.shaderresources.ResourceMotionBlur;
@@ -26,12 +27,11 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import org.codehaus.plexus.util.StringUtils;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
-import scala.Int;
 
 import java.awt.*;
+import java.io.File;
 import java.lang.reflect.Field;
 import java.util.Map;
 
@@ -39,7 +39,7 @@ public class Module_Visualize extends DiscraftModule {
 
     public KeyBinding keyTabToggle = new KeyBinding("key.discraft.visualize.tabtoggle", Keyboard.KEY_TAB, "key.discraft.category.elementCPS");
 
-    public VisualizeSettings visualizeSettings = new VisualizeSettings();
+    public VisualizeSettings visualizeSettings = new VisualizeSettings(new File("config/discraft_visualize.cfg"));
     public ResourceMotionBlur blurResource;
     public Map resourceMapper;
 
@@ -56,6 +56,38 @@ public class Module_Visualize extends DiscraftModule {
         if (Minecraft.getMinecraft().entityRenderer != null && Minecraft.getMinecraft().world != null) {
             Minecraft.getMinecraft().entityRenderer.loadShader(new ResourceLocation("motionblur", "motionblur"));
         }
+    }
+
+    public static Color getColor(String col) {
+        switch (col.toLowerCase()) {
+            case "black":
+                return Color.BLACK;
+            case "blue":
+                return Color.BLUE;
+            case "cyan":
+                return Color.CYAN;
+            case "darkgray":
+                return Color.DARK_GRAY;
+            case "gray":
+                return Color.GRAY;
+            case "green":
+                return Color.GREEN;
+            case "yellow":
+                return Color.YELLOW;
+            case "lightgray":
+                return Color.LIGHT_GRAY;
+            case "magneta":
+                return Color.MAGENTA;
+            case "orange":
+                return Color.ORANGE;
+            case "pink":
+                return Color.PINK;
+            case "red":
+                return Color.RED;
+            case "white":
+                return Color.WHITE;
+        }
+        return null;
     }
 
     @Override
@@ -407,7 +439,7 @@ public class Module_Visualize extends DiscraftModule {
                     IBlockState blockState = mc.player.world.getBlockState(position.getBlockPos());
                     Block block = blockState.getBlock();
 
-                    if(!blockState.getMaterial().equals(Material.AIR) && !blockState.getMaterial().equals(Material.AIR)) {
+                    if (!blockState.getMaterial().equals(Material.AIR) && !blockState.getMaterial().equals(Material.AIR)) {
 
                         /* Get Rendering Attributes */
                         float lineThickness = this.visualizeSettings.blockHighlightSettings.blockHighlightThickness;
@@ -421,7 +453,7 @@ public class Module_Visualize extends DiscraftModule {
                             /* Cancel original event */
                             event.setCanceled(true);
 
-                            if(this.visualizeSettings.blockHighlightSettings.blockIsChroma){
+                            if (this.visualizeSettings.blockHighlightSettings.blockIsChroma) {
                                 float time = System.currentTimeMillis() % (10000L / this.visualizeSettings.blockHighlightSettings.blockChromaSpeed) / (10000.0f / this.visualizeSettings.blockHighlightSettings.blockChromaSpeed);
                                 Color color = Color.getHSBColor(time, 1.0f, 1.0f);
                                 GL11.glColor4f(color.getRed() / 255.0f, color.getGreen() / 255.0f, color.getBlue() / 255.0f, this.visualizeSettings.blockHighlightSettings.blockAlpha);
@@ -440,7 +472,7 @@ public class Module_Visualize extends DiscraftModule {
 
                             GL11.glLineWidth(this.visualizeSettings.blockHighlightSettings.blockHighlightThickness);
 
-                            if(this.visualizeSettings.blockHighlightSettings.enableFill){
+                            if (this.visualizeSettings.blockHighlightSettings.enableFill) {
                                 GuiUtils.renderBoundingBoxFilled(box);
                             } else {
                                 GuiUtils.renderBoundingBox(box);
@@ -464,44 +496,17 @@ public class Module_Visualize extends DiscraftModule {
 
     }
 
-    public static Color getColor(String col) {
-        switch (col.toLowerCase()) {
-            case "black":
-                return Color.BLACK;
-            case "blue":
-                return Color.BLUE;
-            case "cyan":
-                return Color.CYAN;
-            case "darkgray":
-                return Color.DARK_GRAY;
-            case "gray":
-                return Color.GRAY;
-            case "green":
-                return Color.GREEN;
-            case "yellow":
-                return Color.YELLOW;
-            case "lightgray":
-                return Color.LIGHT_GRAY;
-            case "magneta":
-                return Color.MAGENTA;
-            case "orange":
-                return Color.ORANGE;
-            case "pink":
-                return Color.PINK;
-            case "red":
-                return Color.RED;
-            case "white":
-                return Color.WHITE;
-        }
-        return null;
-    }
-
-    public int getIntFromColor(int Red, int Green, int Blue){
+    public int getIntFromColor(int Red, int Green, int Blue) {
         Red = (Red << 16) & 0x00FF0000; //Shift red 16-bits and mask out other stuff
         Green = (Green << 8) & 0x0000FF00; //Shift Green 8-bits and mask out other stuff
         Blue = Blue & 0x000000FF; //Mask out anything not blue.
 
         return 0xFF000000 | Red | Green | Blue; //0xFF000000 for 100% Alpha. Bitwise OR everything together.
+    }
+
+    @Override
+    public ModuleSettings getSettings() {
+        return this.visualizeSettings;
     }
 
 }

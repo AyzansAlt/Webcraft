@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 public class DiscraftVariables {
 
+    public int playerCount = 0;
+
     /**
      * First Start Check
      */

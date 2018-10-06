@@ -11,7 +11,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiIngameMenu;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.client.settings.GameSettings;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.event.ServerChatEvent;
@@ -101,6 +100,11 @@ public class ClientEvents {
             }
 
         }
+
+    }
+
+    @SubscribeEvent
+    public void onPlayerNameFormat(net.minecraftforge.event.entity.player.PlayerEvent.NameFormat event) {
 
     }
 

@@ -1,11 +1,11 @@
 package net.discraft.mod.gui.menu;
 
 import com.google.common.collect.Lists;
-import com.mojang.realmsclient.gui.ChatFormatting;
 import net.discraft.mod.gui.GuiUtils;
 import net.discraft.mod.gui.api.GuiDiscraftContainer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.input.Mouse;
 
 import java.awt.*;
@@ -33,6 +33,7 @@ public class GuiDiscraftScreen extends GuiScreen {
             if (Desktop.isDesktopSupported()) {
                 try {
                     Desktop.getDesktop().browse(new URI(par1));
+                    return;
                 } catch (URISyntaxException e) {
                     e.printStackTrace();
                 }
@@ -107,16 +108,22 @@ public class GuiDiscraftScreen extends GuiScreen {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         super.drawScreen(mouseX, mouseY, partialTicks);
 
+        GlStateManager.pushMatrix();
+
         drawContainers(mouseX, mouseY, partialTicks);
 
-        GuiUtils.renderTextScaled(ChatFormatting.BLACK + "\u00a9 Copyright - Discraft", 3, height - 7, 0xFFFFFFFF, 0.5);
-        GuiUtils.renderTextScaled(ChatFormatting.BLACK + "www.mcdecimation.net", width - 50, height - 7, 0xFFFFFFFF, 0.5);
+        GuiUtils.renderTextScaled("\u00a9 Copyright - Discraft", 3, height - 7, 0xFF000000, 0.5);
+        GuiUtils.renderTextScaled("www.mcdecimation.net", width - 50, height - 7, 0xFF000000, 0.5);
+
+        GlStateManager.popMatrix();
 
     }
 
     public void drawContainers(int mouseX, int mouseY, float partialTicks) {
         for (GuiDiscraftContainer gui : containerList) {
+            GlStateManager.pushMatrix();
             gui.drawScreen(mouseX, mouseY, partialTicks);
+            GlStateManager.popMatrix();
         }
     }
 

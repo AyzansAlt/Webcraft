@@ -1,10 +1,13 @@
 package net.discraft.mod.module.visualize.utils;
 
+import net.discraft.mod.module.ModuleSettings;
+
+import java.io.File;
 import java.util.Properties;
 
 import static java.lang.Boolean.parseBoolean;
 
-public class BlockHighlightSettings {
+public class BlockHighlightSettings extends ModuleSettings {
 
     public float DEFAULTblockHighlightThickness = 1;
     public int DEFAULTblockHighlightColor = 0xFFFFFFFF;
@@ -18,6 +21,10 @@ public class BlockHighlightSettings {
     public float blockAlpha = 1;
     public int blockDistance = 6;
     public boolean enableFill = false;
+
+    public BlockHighlightSettings(File givenFile) {
+        super(givenFile);
+    }
 
     public void init(Properties givenProperties) {
         givenProperties.setProperty("blockHighlightColor", String.valueOf(this.blockHighlightColor));

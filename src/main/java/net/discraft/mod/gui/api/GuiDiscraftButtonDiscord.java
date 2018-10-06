@@ -8,8 +8,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class GuiDiscraftButtonLanguage extends GuiDiscraftButton {
-    public GuiDiscraftButtonLanguage(int buttonID, int xPos, int yPos) {
+public class GuiDiscraftButtonDiscord extends GuiDiscraftButton {
+    public GuiDiscraftButtonDiscord(int buttonID, int xPos, int yPos) {
         super(buttonID, xPos, yPos, 20, 20, "");
     }
 
@@ -20,7 +20,7 @@ public class GuiDiscraftButtonLanguage extends GuiDiscraftButton {
         super.drawButton(mc, mouseX, mouseY, partialTicks);
 
         if (this.visible) {
-            GuiUtils.renderImageTransparent(this.x + 2, this.y + 2, new ResourceLocation(Discraft.MOD_ID, "textures/gui/language.png"), this.width - 4, this.height - 4, 1);
+            GuiUtils.renderImageTransparent(this.x + 2, this.y + 2, new ResourceLocation(Discraft.MOD_ID, "textures/gui/discord.png"), this.width - 4, this.height - 4, 1);
         }
 
     }

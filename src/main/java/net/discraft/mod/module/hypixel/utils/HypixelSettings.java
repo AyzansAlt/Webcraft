@@ -1,29 +1,35 @@
 package net.discraft.mod.module.hypixel.utils;
 
 import net.discraft.mod.Discraft;
+import net.discraft.mod.module.ModuleSettings;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Properties;
 
 import static java.lang.Boolean.parseBoolean;
 
-public class HypixelSettings {
+public class HypixelSettings extends ModuleSettings {
 
     public boolean enableAutoGG = false;
     public boolean enableAutoFriend = false;
     public boolean enableProfileGUI = false;
 
-    File configFile = new File("config/discraft_hypixel.cfg");
+    public HypixelSettings(File givenFile) {
+        super(givenFile);
+    }
 
     public void init() {
 
         try {
 
-            if (!configFile.exists()) {
+            if (!moduleConfig.exists()) {
 
                 Properties properties = new Properties();
 
-                OutputStream output = new FileOutputStream(configFile);
+                OutputStream output = new FileOutputStream(moduleConfig);
 
                 properties.setProperty("enableAutoGG", enableAutoGG ? "true" : "false");
                 properties.setProperty("enableAutoFriend", enableAutoFriend ? "true" : "false");
@@ -41,37 +47,28 @@ public class HypixelSettings {
 
     }
 
-    public void loadConfig() {
+    @Override
+    public void loadConfig(Properties givenProperties) {
 
-        try {
-
-            Properties properties = new Properties();
-            InputStream input = new FileInputStream(configFile);
-
-            properties.load(input);
-
-            enableAutoGG = parseBoolean(properties.getProperty("enableAutoGG"));
-            enableAutoFriend = parseBoolean(properties.getProperty("enableAutoFriend"));
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+        enableAutoGG = parseBoolean(givenProperties.getProperty("enableAutoGG"));
+        enableAutoFriend = parseBoolean(givenProperties.getProperty("enableAutoFriend"));
 
     }
 
+    @Override
     public void saveConfig() {
 
         try {
 
             Properties properties = new Properties();
-            OutputStream output = new FileOutputStream(configFile);
+            OutputStream output = new FileOutputStream(this.getModuleConfig());
 
             properties.setProperty("enableAutoGG", enableAutoGG ? "true" : "false");
             properties.setProperty("enableAutoFriend", enableAutoFriend ? "true" : "false");
 
             properties.store(output, "Discraft - Official Hypixel Configuration Settings");
 
-            loadConfig();
+            loadConfig(properties);
 
         } catch (IOException io) {
             io.printStackTrace();

@@ -2,7 +2,9 @@ package net.discraft.mod.network.listener;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+import net.discraft.mod.Discraft;
 import net.discraft.mod.network.messages.Response_FromServer_Broadcast;
+import net.discraft.mod.network.messages.Response_FromServer_PlayerCount;
 import net.discraft.mod.notification.ClientNotification;
 
 /**
@@ -19,6 +21,11 @@ public class MessageListener_Client extends Listener {
             Response_FromServer_Broadcast response = ((Response_FromServer_Broadcast) object);
 
             ClientNotification.createNotification(response.givenBroadcastMessage, "Network Broadcast");
+
+        } else if (object instanceof Response_FromServer_PlayerCount) {
+            Response_FromServer_PlayerCount response = ((Response_FromServer_PlayerCount) object);
+
+            Discraft.getInstance().discraftVariables.playerCount = response.playCount;
 
         }
 

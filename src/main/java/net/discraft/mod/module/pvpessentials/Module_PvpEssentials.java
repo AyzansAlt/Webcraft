@@ -3,6 +3,7 @@ package net.discraft.mod.module.pvpessentials;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import net.discraft.mod.Discraft;
 import net.discraft.mod.module.DiscraftModule;
+import net.discraft.mod.module.ModuleSettings;
 import net.discraft.mod.module.pvpessentials.utils.PvpSettings;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
@@ -13,9 +14,11 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.lwjgl.input.Keyboard;
 
+import java.io.File;
+
 public class Module_PvpEssentials extends DiscraftModule {
 
-    public PvpSettings pvpSettings = new PvpSettings();
+    public PvpSettings pvpSettings = new PvpSettings(new File("config/discraft_pvp.cfg"));
 
     public KeyBinding keyRearcam = new KeyBinding("key.discraft.pvp.rearcam", Keyboard.KEY_X, "key.discraft.category.elementCPS");
 
@@ -97,6 +100,16 @@ public class Module_PvpEssentials extends DiscraftModule {
     @Override
     public void initializeConfigurations() {
         this.pvpSettings.init();
+    }
+
+    @Override
+    public File getConfigFile() {
+        return getSettings().getModuleConfig();
+    }
+
+    @Override
+    public ModuleSettings getSettings() {
+        return this.pvpSettings;
     }
 
 }

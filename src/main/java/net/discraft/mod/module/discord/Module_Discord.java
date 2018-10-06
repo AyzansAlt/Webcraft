@@ -18,7 +18,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.event.world.WorldEvent;
-import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import org.lwjgl.input.Keyboard;
@@ -158,7 +157,7 @@ public class Module_Discord extends DiscraftModule {
     }
 
     @Override
-    public void onClientLoggedIn(FMLNetworkEvent.ClientConnectedToServerEvent event){
+    public void onClientLoggedIn(FMLNetworkEvent.ClientConnectedToServerEvent event) {
 
         Minecraft mc = Minecraft.getMinecraft();
 

@@ -106,6 +106,7 @@ public class GuiDiscord extends GuiScreen {
         }
 
         GL11.glPopMatrix();
+
     }
 
     @Override

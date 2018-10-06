@@ -1,27 +1,33 @@
 package net.discraft.mod.module.pvpessentials.utils;
 
 import net.discraft.mod.Discraft;
+import net.discraft.mod.module.ModuleSettings;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Properties;
 
 import static java.lang.Boolean.parseBoolean;
 
-public class PvpSettings {
+public class PvpSettings extends ModuleSettings {
 
     public boolean enableRearCam = false;
 
-    File configFile = new File("config/discraft_pvp.cfg");
+    public PvpSettings(File givenFile) {
+        super(givenFile);
+    }
 
     public void init() {
 
         try {
 
-            if (!configFile.exists()) {
+            if (!moduleConfig.exists()) {
 
                 Properties properties = new Properties();
 
-                OutputStream output = new FileOutputStream(configFile);
+                OutputStream output = new FileOutputStream(moduleConfig);
 
                 properties.setProperty("enableRearCam", enableRearCam ? "true" : "false");
 
@@ -38,35 +44,24 @@ public class PvpSettings {
 
     }
 
-    public void loadConfig() {
-
-        try {
-
-            Properties properties = new Properties();
-            InputStream input = new FileInputStream(configFile);
-
-            properties.load(input);
-
-            enableRearCam = parseBoolean(properties.getProperty("enableRearCam"));
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-
+    @Override
+    public void loadConfig(Properties givenProperties) {
+        enableRearCam = parseBoolean(givenProperties.getProperty("enableRearCam"));
     }
 
+    @Override
     public void saveConfig() {
 
         try {
 
             Properties properties = new Properties();
-            OutputStream output = new FileOutputStream(configFile);
+            OutputStream output = new FileOutputStream(getModuleConfig());
 
             properties.setProperty("enableRearCam", enableRearCam ? "true" : "false");
 
             properties.store(output, "Discraft - Official PVP Configuration Settings");
 
-            loadConfig();
+            loadConfig(properties);
 
         } catch (IOException io) {
             io.printStackTrace();

@@ -6,9 +6,7 @@ import net.discraft.mod.gui.GuiUtils;
 import net.discraft.mod.gui.menu.GuiDiscraftMainMenu;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.client.gui.GuiButton;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.util.ResourceLocation;
 
 /**
  * @author ScottehBoeh
@@ -69,7 +67,7 @@ public class GuiDiscraftScrollerSlotText extends GuiScrollerSlot {
     }
 
     @Override
-    protected int height() {
+    public int height() {
 
         return this.renderSmall ? 6 : 11;
     }
@@ -91,7 +89,7 @@ public class GuiDiscraftScrollerSlotText extends GuiScrollerSlot {
                     word = word.substring(2);
                 }
 
-                if (word.startsWith("http://") || word.startsWith("https://") && isHovered(mouseX,mouseY)) {
+                if (word.startsWith("http://") || word.startsWith("https://") && isHovered(mouseX, mouseY)) {
                     GuiDiscraftMainMenu.openURL(word);
                     Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
                     return;

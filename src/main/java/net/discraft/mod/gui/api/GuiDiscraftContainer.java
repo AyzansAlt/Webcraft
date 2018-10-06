@@ -1,9 +1,9 @@
 package net.discraft.mod.gui.api;
 
-import net.discraft.mod.gui.GuiUtils;
 import net.discraft.mod.gui.menu.GuiDiscraftScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.GlStateManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,7 +74,9 @@ public class GuiDiscraftContainer {
 
     public void drawButtons(int mouseX, int mouseY, float partialTicks) {
         for (GuiButton button : buttons) {
+            GlStateManager.pushMatrix();
             button.drawButton(mc, mouseX, mouseY, partialTicks);
+            GlStateManager.popMatrix();
         }
     }
 

@@ -20,13 +20,13 @@ public class GuiDiscraftDropdownAddElement extends GuiDiscraftDropdown {
     public GuiDiscraftDropdownAddElement(GuiScreen par1, int par2, int par3, int par4, int par5, Module_CustoGUI givenModule) {
         super(par1, par2, par3, par4, par5);
 
-        this.addOption("CPS Count","Shows average clicks-per-second");
-        this.addOption("Server Reach","Displays server-side attack reach");
-        this.addOption("Client Reach","Displays client-side attack reach");
-        this.addOption("Ping","Displays connection ping");
-        this.addOption("FPS","Displays game frames-per-second");
-        this.addOption("Kill Count","Displays client-session kill count");
-        this.addOption("Death Count","Displays client-session death count");
+        this.addOption("CPS Count", "Shows average clicks-per-second");
+        this.addOption("Server Reach", "Displays server-side attack reach");
+        this.addOption("Client Reach", "Displays client-side attack reach");
+        this.addOption("Ping", "Displays connection ping");
+        this.addOption("FPS", "Displays game frames-per-second");
+        this.addOption("Kill Count", "Displays client-session kill count");
+        this.addOption("Death Count", "Displays client-session death count");
 
         this.module = givenModule;
 
@@ -38,7 +38,7 @@ public class GuiDiscraftDropdownAddElement extends GuiDiscraftDropdown {
         /* CPS Count */
         if (par1 == 1) {
             System.out.println("Adding!");
-            Module_CustoGUI.guiElements.add(new GuiElement_CPS(10,10, this.parentGui, this.module));
+            Module_CustoGUI.guiElements.add(new GuiElement_CPS(10, 10, this.parentGui, this.module));
             return;
         }
 

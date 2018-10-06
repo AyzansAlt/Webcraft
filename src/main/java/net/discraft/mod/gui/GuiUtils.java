@@ -220,9 +220,51 @@ public class GuiUtils {
         }
 
         float f3 = (float) (givenColor >> 24 & 255) / 255.0F;
+
         float f = (float) (givenColor >> 16 & 255) / 255.0F;
         float f1 = (float) (givenColor >> 8 & 255) / 255.0F;
         float f2 = (float) (givenColor & 255) / 255.0F;
+
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder bufferbuilder = tessellator.getBuffer();
+        GlStateManager.enableBlend();
+        GlStateManager.disableTexture2D();
+        GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
+        GlStateManager.color(f, f1, f2, f3);
+        bufferbuilder.begin(7, DefaultVertexFormats.POSITION);
+        bufferbuilder.pos((double) givenX, (double) givenHeight, 0.0D).endVertex();
+        bufferbuilder.pos((double) givenWidth, (double) givenHeight, 0.0D).endVertex();
+        bufferbuilder.pos((double) givenWidth, (double) givenY, 0.0D).endVertex();
+        bufferbuilder.pos((double) givenX, (double) givenY, 0.0D).endVertex();
+        tessellator.draw();
+        GlStateManager.enableTexture2D();
+        GlStateManager.disableBlend();
+
+    }
+
+    public static void renderRect(int givenX, int givenY, int givenWidth, int givenHeight, int givenColor, float givenAlpha) {
+
+        givenWidth = givenX + givenWidth;
+        givenHeight = givenY + givenHeight;
+
+        if (givenX < givenWidth) {
+            int i = givenX;
+            givenX = givenWidth;
+            givenWidth = i;
+        }
+
+        if (givenY < givenHeight) {
+            int j = givenY;
+            givenY = givenHeight;
+            givenHeight = j;
+        }
+
+        float f3 = givenAlpha;
+
+        float f = (float) (givenColor >> 16 & 255) / 255.0F;
+        float f1 = (float) (givenColor >> 8 & 255) / 255.0F;
+        float f2 = (float) (givenColor & 255) / 255.0F;
+
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuffer();
         GlStateManager.enableBlend();
@@ -294,7 +336,7 @@ public class GuiUtils {
         renderRect(givenX - outlineThickness, givenY - outlineThickness, givenWidth + (outlineThickness * 2), givenHeight + (outlineThickness * 2), givenOutlineColor);
         renderRect(givenX, givenY, givenWidth, givenHeight, givenColor);
 
-        GlStateManager.color(1,1,1,1);
+        GlStateManager.color(1, 1, 1, 1);
 
     }
 
@@ -331,7 +373,7 @@ public class GuiUtils {
         GlStateManager.enableAlpha();
         GlStateManager.enableTexture2D();
 
-        GlStateManager.color(1,1,1,1);
+        GlStateManager.color(1, 1, 1, 1);
 
         GlStateManager.popMatrix();
 
@@ -436,6 +478,8 @@ public class GuiUtils {
 
     public static void renderImage(double x, double y, ResourceLocation image, double width, double height) {
 
+        renderColor(0xFFFFFF);
+
         Minecraft.getMinecraft().renderEngine.bindTexture(image);
 
         Tessellator tessellator = Tessellator.getInstance();
@@ -534,6 +578,15 @@ public class GuiUtils {
 
     }
 
+    public static void renderPlayer(int x, int y, int givenRotation) {
+
+        GL11.glPushMatrix();
+
+        PLAYER_RENDERER.renderPlayerModel(x + 80, y + 100, 55, givenRotation);
+        GL11.glPopMatrix();
+
+    }
+
     /**
      * Get Scoreboard Title - get the Title of the Scoreboard GUI Element
      *
@@ -615,8 +668,7 @@ public class GuiUtils {
         tessellator.draw();
     }
 
-    public static void renderBoundingBoxFilled(AxisAlignedBB givenBB)
-    {
+    public static void renderBoundingBoxFilled(AxisAlignedBB givenBB) {
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder worldRenderer = tessellator.getBuffer();
 

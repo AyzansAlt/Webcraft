@@ -38,9 +38,14 @@ public class GuiDiscraftContainerModules extends GuiDiscraftContainer {
         this.moduleScroller = new GuiDiscraftScroller(0, this.posX + 4 + extraX, this.posY + 5, 90, this.height - 10, this.parentGUI);
         this.moduleScroller.initGui();
 
+        int index = 0;
+        int indexLength = Discraft.getInstance().discraftModules.size();
+
         for (DiscraftModule module : Discraft.getInstance().discraftModules) {
-            this.moduleScroller.slots.add(new GuiDiscraftScrollerSlotModule(module, this.moduleScroller.width - 20, 45));
+            this.moduleScroller.slots.add(new GuiDiscraftScrollerSlotModule(module, this.moduleScroller.width - 20, 45, index, indexLength));
+            index++;
         }
+
         this.moduleScroller.onSlotHeightChanged();
 
     }
@@ -105,9 +110,15 @@ public class GuiDiscraftContainerModules extends GuiDiscraftContainer {
     @Override
     public void mouseClicked(int mouseX, int mouseY, int mouseButton) {
         super.mouseClicked(mouseX, mouseY, mouseButton);
-        for (GuiScrollerSlot moduleSlot : this.moduleScroller.slots) {
-            moduleSlot.clicked(mouseX, mouseY);
+
+        int translate = this.moduleScroller.getSlotYTranslation();
+
+        for (GuiScrollerSlot slot : this.moduleScroller.slots) {
+            if (this.moduleScroller.isWithin(mouseX, mouseY, slot)) {
+                slot.clicked(mouseX, mouseY + translate);
+            }
         }
+
     }
 
 }

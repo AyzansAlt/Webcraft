@@ -1,14 +1,18 @@
 package net.discraft.mod.module.visualize.utils;
 
 import net.discraft.mod.Discraft;
+import net.discraft.mod.module.ModuleSettings;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Properties;
 
 import static java.lang.Boolean.parseBoolean;
 import static java.lang.Double.parseDouble;
 
-public class VisualizeSettings {
+public class VisualizeSettings extends ModuleSettings {
 
     public double DEFAULTmotionBlurAmount = 5;
 
@@ -19,19 +23,22 @@ public class VisualizeSettings {
     public double motionBlurAmount = 5;
     public boolean tabToggled = false;
 
-    public BlockHighlightSettings blockHighlightSettings = new BlockHighlightSettings();
+    public BlockHighlightSettings blockHighlightSettings;
 
-    File configFile = new File("config/discraft_visualize.cfg");
+    public VisualizeSettings(File givenFile) {
+        super(givenFile);
+        blockHighlightSettings = new BlockHighlightSettings(givenFile);
+    }
 
     public void init() {
 
         try {
 
-            if (!configFile.exists()) {
+            if (!moduleConfig.exists()) {
 
                 Properties properties = new Properties();
 
-                OutputStream output = new FileOutputStream(configFile);
+                OutputStream output = new FileOutputStream(moduleConfig);
 
                 properties.setProperty("enableMotionBlur", enableMotionBlur ? "true" : "false");
                 properties.setProperty("enableTabToggle", enableTabToggle ? "true" : "false");
@@ -53,34 +60,25 @@ public class VisualizeSettings {
 
     }
 
-    public void loadConfig() {
+    @Override
+    public void loadConfig(Properties givenProperties) {
 
-        try {
+        this.enableMotionBlur = parseBoolean(givenProperties.getProperty("enableMotionBlur"));
+        this.enableTabToggle = parseBoolean(givenProperties.getProperty("enableTabToggle"));
+        this.enableCustomBlockHighlight = parseBoolean(givenProperties.getProperty("enableCustomBlockHighlight"));
+        this.motionBlurAmount = parseDouble(givenProperties.getProperty("motionBlurAmount"));
 
-            Properties properties = new Properties();
-            InputStream input = new FileInputStream(configFile);
-
-            properties.load(input);
-
-            this.enableMotionBlur = parseBoolean(properties.getProperty("enableMotionBlur"));
-            this.enableTabToggle = parseBoolean(properties.getProperty("enableTabToggle"));
-            this.enableCustomBlockHighlight = parseBoolean(properties.getProperty("enableCustomBlockHighlight"));
-            this.motionBlurAmount = parseDouble(properties.getProperty("motionBlurAmount"));
-
-            this.blockHighlightSettings.loadConfig(properties);
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+        this.blockHighlightSettings.loadConfig(givenProperties);
 
     }
 
+    @Override
     public void saveConfig() {
 
         try {
 
             Properties properties = new Properties();
-            OutputStream output = new FileOutputStream(configFile);
+            OutputStream output = new FileOutputStream(getModuleConfig());
 
             properties.setProperty("enableMotionBlur", enableMotionBlur ? "true" : "false");
             properties.setProperty("enableTabToggle", enableTabToggle ? "true" : "false");
@@ -91,7 +89,7 @@ public class VisualizeSettings {
 
             properties.store(output, "Discraft - Official Visualize Configuration Settings");
 
-            loadConfig();
+            loadConfig(properties);
 
         } catch (IOException io) {
             io.printStackTrace();

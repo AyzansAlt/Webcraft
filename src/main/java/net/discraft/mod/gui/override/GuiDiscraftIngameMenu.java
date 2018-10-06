@@ -12,7 +12,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class GuiDiscraftIngameMenu extends GuiDiscraftScreen {
+
     public GuiDiscraftContainerModules containerModules;
+
     private int saveStep;
     private int visibleTime;
 
@@ -21,6 +23,8 @@ public class GuiDiscraftIngameMenu extends GuiDiscraftScreen {
      * window resizes, the buttonList is cleared beforehand.
      */
     public void initGui() {
+        super.initGui();
+
         this.saveStep = 0;
         this.buttonList.clear();
         int i = -16;
@@ -34,13 +38,19 @@ public class GuiDiscraftIngameMenu extends GuiDiscraftScreen {
         this.buttonList.add(new GuiButton(4, this.width / 2 - 100, this.height / 4 + 24 + -16, I18n.format("menu.returnToGame")));
         this.buttonList.add(new GuiButton(0, this.width / 2 - 100, this.height / 4 + 96 + -16, 98, 20, I18n.format("menu.options")));
         this.buttonList.add(new GuiButton(12, this.width / 2 + 2, this.height / 4 + 96 + i, 98, 20, I18n.format("fml.menu.modoptions")));
-        GuiButton guibutton = this.addButton(new GuiButton(7, this.width / 2 - 100, this.height / 4 + 72 + -16, 200, 20, I18n.format("menu.shareToLan")));
-        guibutton.enabled = this.mc.isSingleplayer() && !this.mc.getIntegratedServer().getPublic();
+
         this.buttonList.add(new GuiButton(5, this.width / 2 - 100, this.height / 4 + 48 + -16, 98, 20, I18n.format("gui.advancements")));
         this.buttonList.add(new GuiButton(6, this.width / 2 + 2, this.height / 4 + 48 + -16, 98, 20, I18n.format("gui.stats")));
 
+        GuiButton guibutton = this.addButton(new GuiButton(7, this.width / 2 - 100, this.height / 4 + 72 + -16, 200, 20, I18n.format("menu.shareToLan")));
+        guibutton.enabled = this.mc.isSingleplayer() && !this.mc.getIntegratedServer().getPublic();
+        //this.buttonList.add(new GuiButton(8, this.width / 2 + 2, this.height / 4 + 72 + -16, 98, 20, I18n.format("discraft.ingame.button.opensettings")));
+
         containerModules = new GuiDiscraftContainerModules(0, width + 1, 0, 50, height, this);
-        addContainer(containerModules);
+        if (!this.containerList.contains(containerModules)) {
+            addContainer(containerModules);
+        }
+
     }
 
     /**

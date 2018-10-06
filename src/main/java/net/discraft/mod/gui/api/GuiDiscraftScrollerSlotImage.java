@@ -1,9 +1,6 @@
 package net.discraft.mod.gui.api;
 
-import com.mojang.realmsclient.gui.ChatFormatting;
-import net.discraft.mod.Discraft;
 import net.discraft.mod.gui.GuiUtils;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.util.ResourceLocation;
@@ -80,7 +77,7 @@ public class GuiDiscraftScrollerSlotImage extends GuiScrollerSlot {
     }
 
     @Override
-    protected int height() {
+    public int height() {
         return this.height;
     }
 

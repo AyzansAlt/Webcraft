@@ -18,6 +18,7 @@ key.discraft.custogui.element.up=(Custo-GUI) Move Element Up
 key.discraft.custogui.element.down=(Custo-GUI) Move Element Down
 key.discraft.custogui.element.left=(Custo-GUI) Move Element Left
 key.discraft.custogui.element.right=(Custo-GUI) Move Element Right
+discraft.button.module.customgui.addelement.tip=Add new Element to GUI
 
 # Key Bindings (Visualize)
 key.discraft.visualize.tabtoggle=(Vizualise) Toggle Tab
@@ -36,10 +37,18 @@ discraft.ingame.tip.open2=(Or type %s for more commands!)
 
 # In-game Button Texts
 discraft.ingame.button.reload=Reload
+discraft.ingame.button.opensettings=Discraft Settings...
 
 # Module Button Texts
 discraft.button.module.custogui.addelement=Add Element
 discraft.button.module.custogui.adddelement.tip=Add a new element to the in-game gui
+
+# Module Strings
+discraft.module.creator=Created by %s
+discraft.module.leftclick=(Left-click: %s)
+discraft.module.leftclick.tip=Enable/Disable this Module...
+discraft.module.rightclick=(Right-click: %s)
+discraft.module.rightclick.tip=Configure this Module...
 
 # In-game Button Tooltip Texts
 discraft.ingame.button.tooltip.reload=Reload the Discord UI
@@ -90,8 +99,14 @@ discraft.hypixel.api.fail=§cFailed to fetched new Hypixel API!
 discraft.hypixel.gui.profile.unknown=Error - Unknown User
 
 # Button Tool Tips
-button.tooltip.options=View/Edit game options
-button.tooltip.singleplayer=Play on a singleplayer world
-button.tooltip.multiplayer=Play on an online/LAN server
+button.tooltip.options=View/Edit game options...
+button.tooltip.singleplayer=Select a world...
+button.tooltip.multiplayer=Select a server...
 button.tooltip.mods=View installed mods (%s)
-button.tooltip.quit=Quit and shut down Game
+button.tooltip.quit=Shutdown Minecraft
+button.tooltip.language=Change Language...
+button.tooltip.officialdiscord=Join our Discord...
+
+# Menu Profile Items
+menu.profile.coins=%s Coins
+menu.profile.playercount=%s Player(s) Online

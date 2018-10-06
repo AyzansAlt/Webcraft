@@ -2,16 +2,21 @@ package net.discraft.mod.gui.api;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
 import net.discraft.mod.Discraft;
+import net.discraft.mod.DiscraftSounds;
 import net.discraft.mod.gui.GuiUtils;
 import net.discraft.mod.gui.StringListHelperDiscraft;
+import net.discraft.mod.gui.menu.GuiDiscraftManager;
 import net.discraft.mod.module.DiscraftModule;
 import net.discraft.mod.notification.ClientNotification;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.init.SoundEvents;
+import org.lwjgl.input.Mouse;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import static org.lwjgl.opengl.GL11.GL_SCISSOR_TEST;
@@ -29,12 +34,18 @@ public class GuiDiscraftScrollerSlotModule extends GuiScrollerSlot {
     public float descriptionFade = 0;
     public float descriptionMaxFade = .5f;
 
-    public GuiDiscraftScrollerSlotModule(DiscraftModule givenModule, int givenWidth, int givenHeight) {
+    public int slotIndex;
+    public int maxIndex;
+
+    public GuiDiscraftScrollerSlotModule(DiscraftModule givenModule, int givenWidth, int givenHeight, int givenIndex, int givenMaxIndex) {
 
         this.module = givenModule;
 
         this.height = givenHeight;
         this.width = givenWidth;
+
+        this.slotIndex = givenIndex;
+        this.maxIndex = givenMaxIndex;
 
     }
 
@@ -91,12 +102,19 @@ public class GuiDiscraftScrollerSlotModule extends GuiScrollerSlot {
 
             GuiUtils.renderText(this.module.moduleName, descX + 2, descY + 3, 0xFFFFFF);
             GuiUtils.renderTextScaled(this.module.moduleDescription, descX + 2, descY + 12, 0xFFFFFF, .5);
-            GuiUtils.renderTextScaled("Created by " + ChatFormatting.GREEN + this.module.moduleAuthor, descX + 2, descY + 65, 0xFFFFFF, .5);
+            GuiUtils.renderTextScaled(I18n.format("discraft.module.creator", ChatFormatting.GREEN + this.module.moduleAuthor), descX + 2, descY + 65, 0xFFFFFF, .5);
 
             int hx = descX + 2;
             int hy = descY - 5;
 
             ArrayList<String> desc = StringListHelperDiscraft.getListLimitWidth(this.module.moduleDescriptionLong, descWidth * 2);
+            desc.add("");
+            desc.add(ChatFormatting.WHITE + I18n.format("discraft.module.leftclick", ChatFormatting.GREEN + I18n.format("discraft.module.leftclick.tip") + ChatFormatting.RESET));
+
+            if (module.getConfigFile() != null) {
+                desc.add(ChatFormatting.WHITE + I18n.format("discraft.module.rightclick", ChatFormatting.GREEN + I18n.format("discraft.module.rightclick.tip") + ChatFormatting.RESET));
+            }
+
             for (int i = 0; i < desc.size(); i++) {
                 String var1 = desc.get(i);
                 GuiUtils.renderTextScaled(ChatFormatting.GRAY + var1, hx, hy + 25 + (i * 6), 0xFFFFFF, .5f);
@@ -116,7 +134,7 @@ public class GuiDiscraftScrollerSlotModule extends GuiScrollerSlot {
     @Override
     public void clicked(int mouseX, int mouseY) {
 
-        if (isHovered(mouseX,mouseY)) {
+        if (Mouse.isButtonDown(0)) {
             this.module.isEnabled = !this.module.isEnabled;
 
             if (!this.module.isEnabled) {
@@ -128,6 +146,17 @@ public class GuiDiscraftScrollerSlotModule extends GuiScrollerSlot {
             Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, this.module.isEnabled ? 1.0F : .8F));
             ClientNotification.clearNotifications();
             ClientNotification.createNotification(this.module.moduleName, "Module " + (this.module.isEnabled ? ChatFormatting.GREEN + "Enabled!" : ChatFormatting.RED + "Disabled!"));
+        } else if (Mouse.isButtonDown(1)) {
+
+            if (module.getConfigFile() != null) {
+                try {
+                    Minecraft.getMinecraft().displayGuiScreen(new GuiDiscraftManager(this.scroller.parentGUI, module));
+                    Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1f));
+                    Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(DiscraftSounds.NOTIFICATION, 0.9f));
+                } catch (IOException e) {
+                    ClientNotification.createNotification("Error loading settings for module '" + module.moduleName + "'");
+                }
+            }
 
         }
 
@@ -140,7 +169,7 @@ public class GuiDiscraftScrollerSlotModule extends GuiScrollerSlot {
     }
 
     @Override
-    protected int height() {
+    public int height() {
         return this.height;
     }
 

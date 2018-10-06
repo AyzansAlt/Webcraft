@@ -6,13 +6,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.init.SoundEvents;
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
-import java.awt.event.KeyEvent;
 import java.util.UUID;
-
-import static net.discraft.mod.module.custogui.Module_CustoGUI.*;
 
 public class GuiElement {
 
@@ -31,35 +27,35 @@ public class GuiElement {
     public int posX;
     public int posY;
 
-    public GuiElement(int givenPosX, int givenPosY, GuiScreen givenGUI, Module_CustoGUI givenModule){
+    public GuiElement(int givenPosX, int givenPosY, GuiScreen givenGUI, Module_CustoGUI givenModule) {
         this.posX = givenPosX;
         this.posY = givenPosY;
         this.module = givenModule;
         this.parentGUI = givenGUI;
     }
 
-    public void onRender(Minecraft mc, float parTick){
+    public void onRender(Minecraft mc, float parTick) {
 
-        if(this.isSelected){
-            GuiUtils.renderRectWithOutline(this.posX - 1,this.posY - 1,this.width + 2,this.height + 2,0x77000000,0x55FFFF00,1);
-            GuiUtils.renderTextScaled("Selected",this.posX, this.posY + this.height + 3,0xFFFFFF,.5);
-        } else if (this.isEditable){
-            GuiUtils.renderRectWithOutline(this.posX - 1,this.posY - 1,this.width + 2,this.height + 2,0xFF000000,0x55555555,1);
+        if (this.isSelected) {
+            GuiUtils.renderRectWithOutline(this.posX - 1, this.posY - 1, this.width + 2, this.height + 2, 0x77000000, 0x55FFFF00, 1);
+            GuiUtils.renderTextScaled("Selected", this.posX, this.posY + this.height + 3, 0xFFFFFF, .5);
+        } else if (this.isEditable) {
+            GuiUtils.renderRectWithOutline(this.posX - 1, this.posY - 1, this.width + 2, this.height + 2, 0xFF000000, 0x55555555, 1);
         }
 
     }
 
-    public void onUpdate(Minecraft mc){
+    public void onUpdate(Minecraft mc) {
 
         int mouseX = Mouse.getEventX() * this.parentGUI.width / mc.displayWidth;
         int mouseY = this.parentGUI.height - Mouse.getEventY() * this.parentGUI.height / mc.displayHeight - 1;
 
-        if(!this.isEditable){
+        if (!this.isEditable) {
             this.isSelected = false;
         }
 
-        if(this.isSelected) {
-            if (Mouse.isButtonDown(1) && this.isHovered(mouseX,mouseY)) {
+        if (this.isSelected) {
+            if (Mouse.isButtonDown(1) && this.isHovered(mouseX, mouseY)) {
                 this.posX = mouseX - (this.width / 2);
                 this.posY = mouseY - (this.height / 2);
             }
@@ -69,20 +65,20 @@ public class GuiElement {
 
     public void onClick(int mouseX, int mouseY, int mouseButton) {
 
-        if(isHovered(mouseX,mouseY) && mouseButton == 0){
+        if (isHovered(mouseX, mouseY) && mouseButton == 0) {
 
-            for(GuiElement element : Module_CustoGUI.guiElements){
+            for (GuiElement element : Module_CustoGUI.guiElements) {
                 element.isSelected = false;
             }
 
-            if(this.isEditable && !this.isSelected) {
+            if (this.isEditable && !this.isSelected) {
                 Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 2.0F));
                 this.isSelected = true;
                 return;
             }
 
         } else {
-            if(this.isSelected && mouseButton == 0){
+            if (this.isSelected && mouseButton == 0) {
                 this.isSelected = false;
             }
         }
@@ -93,11 +89,11 @@ public class GuiElement {
         return GuiUtils.isInBox(posX, posY, getWidth(), getHeight(), mouseX, mouseY);
     }
 
-    public int getHeight(){
+    public int getHeight() {
         return this.height;
     }
 
-    public int getWidth(){
+    public int getWidth() {
         return this.width;
     }
 

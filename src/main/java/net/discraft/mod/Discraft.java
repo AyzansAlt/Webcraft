@@ -12,7 +12,6 @@ import net.discraft.mod.network.ClientNetworkConnection;
 import net.discraft.mod.network.listener.MessageListener_Client;
 import net.discraft.mod.render.layer.LayerDiscraftCape;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.ClientCommandHandler;
@@ -72,7 +71,8 @@ public class Discraft {
      */
     public ClientNetworkConnection clientNetworkConnection;
 
-    public String clientNetworkConnection_ip = "network.mcdecimation.net";
+    //network.mcdecimation.net | localhost
+    public String clientNetworkConnection_ip = "localhost";
     public int clientNetworkConnection_tcp = 54666;
     public int clientNetworkConnection_udp = 54888;
 

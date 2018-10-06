@@ -18,6 +18,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class DiscraftModule {
@@ -113,4 +114,11 @@ public class DiscraftModule {
     public void onRenderBlockHighlightEvent(DrawBlockHighlightEvent event) {
     }
 
+    public File getConfigFile() {
+        return (getSettings() != null) ? getSettings().getModuleConfig() : null;
+    }
+
+    public ModuleSettings getSettings() {
+        return null;
+    }
 }

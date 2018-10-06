@@ -5,6 +5,7 @@ import net.discraft.mod.Discraft;
 import net.discraft.mod.DiscraftPresence;
 import net.discraft.mod.gui.GuiUtils;
 import net.discraft.mod.module.DiscraftModule;
+import net.discraft.mod.module.ModuleSettings;
 import net.discraft.mod.module.hypixel.api.HypixelAPI;
 import net.discraft.mod.module.hypixel.utils.HypixelGuiUtils;
 import net.discraft.mod.module.hypixel.utils.HypixelProfileManager;
@@ -28,6 +29,7 @@ import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 
+import java.io.File;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
@@ -37,7 +39,7 @@ public class Module_Hypixel extends DiscraftModule {
 
     public HypixelVariables hypixelVariables = new HypixelVariables();
     public HypixelAPI hypixelAPI = HypixelAPI.getInstance();
-    public HypixelSettings hypixelSettings = new HypixelSettings();
+    public HypixelSettings hypixelSettings = new HypixelSettings(new File("config/discraft_hypixel.cfg"));
 
     public HypixelGuiUtils hypixelGuiUtils;
     public HypixelProfileManager hypixelProfileManager;
@@ -144,7 +146,7 @@ public class Module_Hypixel extends DiscraftModule {
             }
         }
 
-        sender.sendMessage(new TextComponentString(getCommandHelp("/discraft hypixel <autogg.../fetchapi/viewapikey> <enable/disable>")));
+        sender.sendMessage(new TextComponentString(getCommandHelp("/discraft hypixel <autogg/profilegui.../fetchapi/viewapikey> <enable/disable>")));
         return;
 
     }
@@ -345,9 +347,12 @@ public class Module_Hypixel extends DiscraftModule {
 
                 }
             }
-
         }
+    }
 
+    @Override
+    public ModuleSettings getSettings() {
+        return this.hypixelSettings;
     }
 
 }

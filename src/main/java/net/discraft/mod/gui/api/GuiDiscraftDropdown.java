@@ -63,7 +63,7 @@ public abstract class GuiDiscraftDropdown extends GuiDiscraftScreen {
 
             GuiDiscraftButton button;
 
-            if(this.optionsListTooltip.get(i).length() > 0){
+            if (this.optionsListTooltip.get(i).length() > 0) {
                 button = new GuiDiscraftButton(i + 1, this.buttonX, this.buttonY + y, this.buttonWidth, this.buttonHeight, this.optionsList.get(i)).addToolTip(this.optionsListTooltip.get(i));
             } else {
                 button = new GuiDiscraftButton(i + 1, this.buttonX, this.buttonY + y, this.buttonWidth, this.buttonHeight, this.optionsList.get(i));

@@ -4,6 +4,7 @@ import com.esotericsoftware.kryo.Kryo;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 import net.discraft.mod.network.messages.Response_FromServer_Broadcast;
+import net.discraft.mod.network.messages.Response_FromServer_PlayerCount;
 
 import java.util.*;
 
@@ -38,6 +39,7 @@ public class ObjectRegistry {
 
         /** Responses */
         givenKryo.register(Response_FromServer_Broadcast.class);
+        givenKryo.register(Response_FromServer_PlayerCount.class);
 
         /** Normal Objects */
 

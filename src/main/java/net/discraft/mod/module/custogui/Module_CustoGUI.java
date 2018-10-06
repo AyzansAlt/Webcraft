@@ -3,7 +3,6 @@ package net.discraft.mod.module.custogui;
 import net.discraft.mod.module.DiscraftModule;
 import net.discraft.mod.module.custogui.gui.GuiEditElements;
 import net.discraft.mod.module.custogui.utils.GuiElement;
-import net.discraft.mod.module.hypixel.utils.profileobjects.HypixelProfile;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.ResourceLocation;
@@ -12,8 +11,6 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.UUID;
 
 public class Module_CustoGUI extends DiscraftModule {
 
@@ -33,7 +30,7 @@ public class Module_CustoGUI extends DiscraftModule {
 
         Minecraft mc = Minecraft.getMinecraft();
 
-        if(event.getType().equals(RenderGameOverlayEvent.ElementType.ALL)) {
+        if (event.getType().equals(RenderGameOverlayEvent.ElementType.ALL)) {
             for (GuiElement element : guiElements) {
                 if (!(mc.currentScreen instanceof GuiEditElements) && element.isEditable) {
                     element.isEditable = false;
@@ -49,11 +46,11 @@ public class Module_CustoGUI extends DiscraftModule {
 
         Minecraft mc = Minecraft.getMinecraft();
 
-        for(GuiElement element : guiElements){
+        for (GuiElement element : guiElements) {
             element.onUpdate(mc);
         }
 
-        if(keyEditGui.isPressed() && mc.player != null && mc.world != null){
+        if (keyEditGui.isPressed() && mc.player != null && mc.world != null) {
             mc.displayGuiScreen(new GuiEditElements(this));
         }
 
@@ -61,11 +58,12 @@ public class Module_CustoGUI extends DiscraftModule {
 
     /**
      * Add GUI Element - Add a new GUI Element to the In-game GUI
+     *
      * @param givenElement - Given Element to Add
      */
-    public void addGuiElement(GuiElement givenElement){
+    public void addGuiElement(GuiElement givenElement) {
 
-        if(!guiElements.contains(givenElement)){
+        if (!guiElements.contains(givenElement)) {
             guiElements.add(givenElement);
         }
 
@@ -73,14 +71,15 @@ public class Module_CustoGUI extends DiscraftModule {
 
     /**
      * Remove GUI Element - Remove a new GUI Element from the In-game GUI
+     *
      * @param givenElementUUID - Given Element UUID
      */
-    public void removeGuiElement(GuiElement givenElementUUID){
+    public void removeGuiElement(GuiElement givenElementUUID) {
 
         ArrayList<GuiElement> newList = new ArrayList<>();
 
-        for(GuiElement element : this.guiElements){
-            if(!element.equals(givenElementUUID)){
+        for (GuiElement element : this.guiElements) {
+            if (!element.equals(givenElementUUID)) {
                 newList.add(element);
             }
         }
