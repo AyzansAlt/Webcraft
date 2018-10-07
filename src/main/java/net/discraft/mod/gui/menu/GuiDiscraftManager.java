@@ -87,15 +87,16 @@ public class GuiDiscraftManager extends GuiDiscraftScreen {
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 
+        GlStateManager.pushMatrix();
         this.parentGui.drawScreen(mouseX, mouseY, partialTicks);
+        GlStateManager.popMatrix();
 
         GlStateManager.pushMatrix();
-
         GuiUtils.renderRectWithOutline(containerX, containerY, containerWidth, containerHeight, 0xFF509026, 0x77509026, 1);
-        GuiUtils.renderRectWithGradient(containerX, containerY, containerWidth, containerHeight, 0x00000000, 0x33000000, 1);
+        GuiUtils.renderRectWithGradient(containerX, containerY, containerWidth, containerHeight, 0x00000000, 0x33000000, 0);
 
         GuiUtils.renderRectWithOutline(containerX + 6, containerY + 20, containerWidth - 12, containerHeight - 26, 0x77213812, 0x77213812, 1);
-        GuiUtils.renderRectWithGradient(containerX + 6, containerY + 20, containerWidth - 12, containerHeight - 26, 0x00000000, 0x33000000, 1);
+        GuiUtils.renderRectWithGradient(containerX + 6, containerY + 20, containerWidth - 12, containerHeight - 26, 0x00000000, 0x33000000, 0);
 
         GuiUtils.renderText(module.moduleName + " (" + (module.isEnabled ? ChatFormatting.GREEN + "Enabled" : ChatFormatting.RED + "Disabled") + ChatFormatting.RESET + ")", containerX + 3, containerY + 3, 0xFFFFFF);
         GuiUtils.renderTextScaled(I18n.format("discraft.module.creator", ChatFormatting.GREEN + this.module.moduleAuthor), containerX + 3, containerY + 13, 0xFFFFFF, .5);
@@ -110,7 +111,7 @@ public class GuiDiscraftManager extends GuiDiscraftScreen {
     protected void actionPerformed(GuiButton button) {
         switch (button.id) {
             case 0:
-                Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(DiscraftSounds.NOTIFICATION, 1f));
+                Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(DiscraftSounds.ZOOM_OUT, 2f));
                 mc.currentScreen = this.parentGui;
                 break;
         }

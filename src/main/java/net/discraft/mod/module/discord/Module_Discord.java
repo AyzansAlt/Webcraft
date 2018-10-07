@@ -5,6 +5,7 @@ import net.discraft.mod.Discraft;
 import net.discraft.mod.DiscraftScreenManager;
 import net.discraft.mod.customevents.Event_RenderIngameTitle;
 import net.discraft.mod.module.DiscraftModule;
+import net.discraft.mod.module.ModuleSettings;
 import net.discraft.mod.module.discord.utils.DiscordSettings;
 import net.discraft.mod.screens.DiscraftScreen;
 import net.discraft.mod.utils.UsefulHooks;
@@ -22,6 +23,8 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import org.lwjgl.input.Keyboard;
 
+import java.io.File;
+
 import static net.discraft.mod.module.discord.gui.GuiDiscord.discordBrowser;
 
 public class Module_Discord extends DiscraftModule {
@@ -34,7 +37,7 @@ public class Module_Discord extends DiscraftModule {
     public Module_Discord(String givenModuleID, String givenModuleName, String givenModuleDescription, String givenModuleDescriptionLong, String givenModuleAuthor, ResourceLocation givenModuleLogo) {
         super(givenModuleID, givenModuleName, givenModuleDescription, givenModuleDescriptionLong, givenModuleAuthor, givenModuleLogo);
 
-        discordSettings = new DiscordSettings();
+        discordSettings = new DiscordSettings(new File("config/discraft_discord.cfg"));
 
         keyBindings.add(keyOpenDiscordGUI);
 
@@ -166,6 +169,11 @@ public class Module_Discord extends DiscraftModule {
 
         mc.ingameGUI.getChatGUI().printChatMessage(new TextComponentString(I18n.format("discraft.ingame.tip.open", ChatFormatting.GREEN + (GameSettings.getKeyDisplayString(keyOpenDiscordGUI.getKeyCode())) + ChatFormatting.RESET, Discraft.MOD_VERSION)));
 
+    }
+
+    @Override
+    public ModuleSettings getSettings() {
+        return this.discordSettings;
     }
 
 }

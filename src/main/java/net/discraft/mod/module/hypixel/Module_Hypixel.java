@@ -14,20 +14,26 @@ import net.discraft.mod.module.hypixel.utils.HypixelVariables;
 import net.discraft.mod.module.hypixel.utils.profileobjects.HypixelProfile;
 import net.discraft.mod.notification.ClientNotification;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.MouseHelper;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
+import net.minecraftforge.client.event.MouseEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
+import org.lwjgl.input.Mouse;
 
 import java.io.File;
 import java.util.UUID;
@@ -52,6 +58,8 @@ public class Module_Hypixel extends DiscraftModule {
 
     private Pattern friendRemovePattern = Pattern.compile(
             "-----------------------------------------------------\n(?<name>.+) removed you from their friends list!.");
+
+    public String focusedUsername = "ScottehBoeh";
 
     public Module_Hypixel(String givenModuleID, String givenModuleName, String givenModuleDescription, String givenModuleDescriptionLong, String givenModuleAuthor, ResourceLocation givenModuleLogo) {
         super(givenModuleID, givenModuleName, givenModuleDescription, givenModuleDescriptionLong, givenModuleAuthor, givenModuleLogo);
@@ -281,9 +289,27 @@ public class Module_Hypixel extends DiscraftModule {
 
     public void onClientTick(TickEvent.ClientTickEvent event) {
 
+        Minecraft mc = Minecraft.getMinecraft();
+
         if (event.phase.equals(TickEvent.Phase.START)) {
             /* Run Hypixel API Timeout Cooldown */
             this.hypixelVariables.timeOut--;
+
+            if(this.hypixelSettings.enableProfileGUI) {
+                if (mc.objectMouseOver != null && mc.objectMouseOver.entityHit != null && mc.objectMouseOver.entityHit instanceof EntityPlayer) {
+
+                    EntityPlayer player = ((EntityPlayer) mc.objectMouseOver.entityHit);
+                    String playerName = player.getGameProfile().getName();
+
+                    if (mc.player != null && mc.player.isSneaking() && Mouse.isButtonDown(1) && !this.focusedUsername.equalsIgnoreCase(playerName)) {
+                        this.focusedUsername = playerName;
+                        mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.ENTITY_ITEM_PICKUP, 1.0F));
+                        mc.ingameGUI.getChatGUI().printChatMessage(new TextComponentString(ChatFormatting.WHITE + I18n.format("module.hypixel.profilestats", ChatFormatting.GREEN + this.focusedUsername + ChatFormatting.RESET)));
+                    }
+
+                }
+            }
+
         }
 
     }
@@ -334,13 +360,23 @@ public class Module_Hypixel extends DiscraftModule {
 
                     if (mc.objectMouseOver != null && mc.objectMouseOver.entityHit != null && mc.objectMouseOver.entityHit instanceof EntityPlayer) {
 
+                        GlStateManager.pushMatrix();
                         int boxX = (width / 2) - (160 / 2);
                         int boxY = (height - 108);
 
                         EntityPlayer player = ((EntityPlayer) mc.objectMouseOver.entityHit);
+                        String playerUsername = player.getGameProfile().getName();
 
-                        this.hypixelGuiUtils.renderHypixelStatsBox(boxX, boxY, player, width, height);
-
+                        if(player.getGameProfile().getName().equalsIgnoreCase(focusedUsername)) {
+                            GlStateManager.pushMatrix();
+                            this.hypixelGuiUtils.renderHypixelStatsBox(boxX, boxY, player, width, height);
+                            GlStateManager.popMatrix();
+                        } else {
+                            double hitDistance = 0;
+                            hitDistance = GuiUtils.getDistanceToClientCamera(player.posX, player.posY, player.posZ);
+                            double scale = (2 - (hitDistance / 3)) * .75;
+                            GuiUtils.renderCenteredTextScaled(ChatFormatting.WHITE + I18n.format("module.hypixel.inspect",ChatFormatting.GREEN + playerUsername + ChatFormatting.RESET),width / 2,height / 2 + 15,0xFFFFFF,scale);
+                        }
                         GlStateManager.popMatrix();
 
                     }

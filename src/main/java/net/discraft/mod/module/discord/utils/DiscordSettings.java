@@ -1,27 +1,30 @@
 package net.discraft.mod.module.discord.utils;
 
 import net.discraft.mod.Discraft;
+import net.discraft.mod.module.ModuleSettings;
 
 import java.io.*;
 import java.util.Properties;
 
 import static java.lang.Boolean.parseBoolean;
 
-public class DiscordSettings {
+public class DiscordSettings extends ModuleSettings {
 
-    public boolean enableDiscordGUI;
+    public boolean enableDiscordGUI = true;
 
-    File configFile = new File("config/discraft_discord.cfg");
+    public DiscordSettings(File givenFile) {
+        super(givenFile);
+    }
 
     public void init() {
 
         try {
 
-            if (!configFile.exists()) {
+            if (!moduleConfig.exists()) {
 
                 Properties properties = new Properties();
 
-                OutputStream output = new FileOutputStream(configFile);
+                OutputStream output = new FileOutputStream(moduleConfig);
 
                 properties.setProperty("enableDiscordGUI", enableDiscordGUI ? "true" : "false");
 
@@ -38,20 +41,10 @@ public class DiscordSettings {
 
     }
 
-    public void loadConfig() {
+    @Override
+    public void loadConfig(Properties givenProperties) {
 
-        try {
-
-            Properties properties = new Properties();
-            InputStream input = new FileInputStream(configFile);
-
-            properties.load(input);
-
-            enableDiscordGUI = parseBoolean(properties.getProperty("enableDiscordGUI"));
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+        enableDiscordGUI = parseBoolean(givenProperties.getProperty("enableDiscordGUI"));
 
     }
 
@@ -60,13 +53,13 @@ public class DiscordSettings {
         try {
 
             Properties properties = new Properties();
-            OutputStream output = new FileOutputStream(configFile);
+            OutputStream output = new FileOutputStream(moduleConfig);
 
             properties.setProperty("enableDiscordGUI", enableDiscordGUI ? "true" : "false");
 
             properties.store(output, "Discraft - Official Discord Configuration Settings");
 
-            loadConfig();
+            loadConfig(properties);
 
         } catch (IOException io) {
             io.printStackTrace();

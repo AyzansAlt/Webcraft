@@ -6,11 +6,13 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.scoreboard.ScoreObjective;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.MathHelper;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -336,8 +338,6 @@ public class GuiUtils {
         renderRect(givenX - outlineThickness, givenY - outlineThickness, givenWidth + (outlineThickness * 2), givenHeight + (outlineThickness * 2), givenOutlineColor);
         renderRect(givenX, givenY, givenWidth, givenHeight, givenColor);
 
-        GlStateManager.color(1, 1, 1, 1);
-
     }
 
     public static void renderRectWithGradient(int givenX, int givenY, int givenWidth, int givenHeight, int startColor, int endColor, double givenZLevel) {
@@ -372,8 +372,6 @@ public class GuiUtils {
         GlStateManager.disableBlend();
         GlStateManager.enableAlpha();
         GlStateManager.enableTexture2D();
-
-        GlStateManager.color(1, 1, 1, 1);
 
         GlStateManager.popMatrix();
 
@@ -503,24 +501,45 @@ public class GuiUtils {
 
     }
 
+    public static void renderImageTransparent(double x, double y, ResourceLocation image, double width, double height, double alpha) {
+
+        renderColor(0xFFFFFF,alpha);
+
+        Minecraft.getMinecraft().renderEngine.bindTexture(image);
+
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder bufferbuilder = tessellator.getBuffer();
+
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glEnable(GL11.GL_POINT_SMOOTH);
+        GL11.glHint(GL11.GL_POINT_SMOOTH_HINT, GL11.GL_FASTEST);
+
+        bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
+
+        bufferbuilder.pos(x, y + height, 0.0D).tex(0.0D, 1.0D).endVertex();
+        bufferbuilder.pos(x + width, y + height, 0.0D).tex(1.0D, 1.0D).endVertex();
+        bufferbuilder.pos(x + width, y, 0.0D).tex(1.0D, 0.0D).endVertex();
+        bufferbuilder.pos(x, y, 0.0D).tex(0.0D, 0.0D).endVertex();
+
+        tessellator.draw();
+
+        GL11.glDisable(GL11.GL_BLEND);
+        GL11.glDisable(GL11.GL_POINT_SMOOTH);
+
+    }
+
     public static void renderImageCentered(double givenX, double givenY, ResourceLocation givenTexture, double givenWidth, double givenHeight) {
 
         GL11.glPushMatrix();
-        renderImage(givenX - (givenWidth / 2), givenY, givenTexture, givenWidth, givenHeight);
+        renderImage(givenX - (givenWidth / 2), givenY - (givenHeight / 2), givenTexture, givenWidth, givenHeight);
         GL11.glPopMatrix();
 
     }
 
-    public static void renderImageCenteredTransparent(int givenX, int givenY, ResourceLocation givenTexture, int givenWidth, int givenHeight, double givenAlpha) {
+    public static void renderImageCenteredTransparent(double givenX, double givenY, ResourceLocation givenTexture, double givenWidth, double givenHeight, double alpha) {
 
         GL11.glPushMatrix();
-        GL11.glColor4d(255, 255, 255, givenAlpha);
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glEnable(GL11.GL_POINT_SMOOTH);
-        renderImageCentered(givenX, givenY, givenTexture, givenWidth, givenHeight);
-        GL11.glDisable(GL11.GL_POINT_SMOOTH);
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glColor4d(255, 255, 255, 255);
+        renderImageTransparent(givenX - (givenWidth / 2), givenY - (givenHeight / 2), givenTexture, givenWidth, givenHeight,alpha);
         GL11.glPopMatrix();
 
     }
@@ -623,6 +642,14 @@ public class GuiUtils {
         float green = color.getGreen() / 255.0F;
         float blue = color.getBlue() / 255.0F;
         GL11.glColor3f(red, green, blue);
+    }
+
+    public static void renderColor(int par1, double alpha) {
+        Color color = Color.decode("" + par1);
+        double red = color.getRed() / 255.0;
+        double green = color.getGreen() / 255.0;
+        double blue = color.getBlue() / 255.0;
+        GL11.glColor4d(red, green, blue, alpha);
     }
 
     public static void renderCenteredTextWithShadow(String text, int x, int y, int color, int outlineColor) {
@@ -739,4 +766,11 @@ public class GuiUtils {
         tessellator.draw();
     }
 
+    public static double getDistanceToClientCamera(double x, double y, double z) {
+        RenderManager renderManager = Minecraft.getMinecraft().getRenderManager();
+        double d3 = renderManager.viewerPosX - x;
+        double d4 = renderManager.viewerPosY - y;
+        double d5 = renderManager.viewerPosZ - z;
+        return (double) MathHelper.sqrt(d3 * d3 + d4 * d4 + d5 * d5);
+    }
 }

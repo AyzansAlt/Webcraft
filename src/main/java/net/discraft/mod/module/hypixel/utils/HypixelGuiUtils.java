@@ -30,14 +30,15 @@ public class HypixelGuiUtils {
 
         HypixelProfile profile = this.hypixelModule.hypixelProfileManager.getProfileFromUUID(givenPlayer.getGameProfile().getId().toString());
 
-        GuiUtils.renderImageCenteredTransparent(givenWidth / 2, givenHeight - 108, new ResourceLocation(Discraft.MOD_ID, "textures/gui/hypixelstats.png"), 160, 70, .85);
+        GuiUtils.renderImageCenteredTransparent(givenWidth / 2, givenHeight - 73, new ResourceLocation(Discraft.MOD_ID, "textures/gui/hypixelstats.png"), 160, 70, .85);
         GuiUtils.renderText(givenPlayer.getDisplayName().getFormattedText(), givenX + 5, givenY + 5, 0xFFFFFF);
 
         ScissorState.scissor(givenX + 1, givenY + 1, 158, 68, true);
-        GL11.glPushMatrix();
 
+        GL11.glPushMatrix();
         GuiUtils.renderOtherPlayer((AbstractClientPlayer) givenPlayer, givenX + 45, givenY - 5);
         GL11.glPopMatrix();
+
         if (profile != null) {
 
             Date firstLoginDate = new Date(profile.firstLogin);
@@ -84,6 +85,8 @@ public class HypixelGuiUtils {
         }
 
         ScissorState.endScissor();
+
+        GlStateManager.popMatrix();
 
     }
 

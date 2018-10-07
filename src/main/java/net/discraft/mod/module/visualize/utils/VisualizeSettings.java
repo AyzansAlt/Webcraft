@@ -2,6 +2,7 @@ package net.discraft.mod.module.visualize.utils;
 
 import net.discraft.mod.Discraft;
 import net.discraft.mod.module.ModuleSettings;
+import net.minecraft.client.Minecraft;
 
 import java.io.File;
 import java.io.FileOutputStream;

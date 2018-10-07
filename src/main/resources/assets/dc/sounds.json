@@ -16,5 +16,23 @@
     "sounds": [
       "dc:misc/notification"
     ]
+  },
+  "zoomin": {
+    "category": "player",
+    "sounds": [
+      "dc:misc/zoomin"
+    ]
+  },
+  "zoomout": {
+    "category": "player",
+    "sounds": [
+      "dc:misc/zoomout"
+    ]
+  },
+  "settingchange": {
+    "category": "player",
+    "sounds": [
+      "dc:misc/settingchange"
+    ]
   }
 }

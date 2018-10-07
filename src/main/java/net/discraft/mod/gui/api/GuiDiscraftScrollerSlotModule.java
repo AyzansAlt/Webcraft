@@ -98,7 +98,7 @@ public class GuiDiscraftScrollerSlotModule extends GuiScrollerSlot {
             GuiUtils.renderRectWithOutline(descX + descWidth + 1, descY + 3, 4, 35, 0x77000000, 0x77000000, 1);
 
             GuiUtils.renderRectWithOutline(descX, descY, descWidth, descHeight, 0x77000000, 0x77000000, 1);
-            GuiUtils.renderRectWithGradientWithAlpha(descX, descY + (descHeight / 2), descWidth, descHeight / 2, 0x00000000, 0xFF5E9D34, 1, 0, descriptionFade);
+            GuiUtils.renderRectWithGradientWithAlpha(descX, descY + (descHeight / 2), descWidth, descHeight / 2, 0x00000000, 0xFF5E9D34, 0, 0, descriptionFade);
 
             GuiUtils.renderText(this.module.moduleName, descX + 2, descY + 3, 0xFFFFFF);
             GuiUtils.renderTextScaled(this.module.moduleDescription, descX + 2, descY + 12, 0xFFFFFF, .5);
@@ -152,7 +152,7 @@ public class GuiDiscraftScrollerSlotModule extends GuiScrollerSlot {
                 try {
                     Minecraft.getMinecraft().displayGuiScreen(new GuiDiscraftManager(this.scroller.parentGUI, module));
                     Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1f));
-                    Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(DiscraftSounds.NOTIFICATION, 0.9f));
+                    Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(DiscraftSounds.ZOOM_IN, 2f));
                 } catch (IOException e) {
                     ClientNotification.createNotification("Error loading settings for module '" + module.moduleName + "'");
                 }

@@ -1,6 +1,10 @@
 package net.discraft.mod.gui.override;
 
+import net.discraft.mod.gui.GuiUtils;
+import net.discraft.mod.gui.api.GuiDiscraftTextPrompt;
 import net.discraft.mod.gui.container.GuiDiscraftContainerModules;
+import net.discraft.mod.gui.menu.GuiDiscraftMainMenu;
+import net.discraft.mod.gui.menu.GuiDiscraftManager;
 import net.discraft.mod.gui.menu.GuiDiscraftScreen;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.gui.achievement.GuiStats;
@@ -17,6 +21,8 @@ public class GuiDiscraftIngameMenu extends GuiDiscraftScreen {
 
     private int saveStep;
     private int visibleTime;
+
+    private static float moduleFade = 0;
 
     /**
      * Adds the buttons (and other controls) to the screen in question. Called when the GUI is displayed and when the
@@ -115,7 +121,23 @@ public class GuiDiscraftIngameMenu extends GuiDiscraftScreen {
      */
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         this.drawDefaultBackground();
-        this.drawCenteredString(this.fontRenderer, I18n.format("menu.game"), this.width / 2, 40, 16777215);
+
+        GuiUtils.renderImageCentered(width / 2, 23, GuiDiscraftMainMenu.MENU_LOGO, 148, 40);
+
+        if (mc.currentScreen instanceof GuiDiscraftManager
+                || mc.currentScreen instanceof GuiDiscraftTextPrompt) {
+            if (this.moduleFade < 0.8) {
+                this.moduleFade += 0.1f;
+            }
+        } else {
+            if (this.moduleFade > 0) {
+                this.moduleFade -= 0.1f;
+            }
+        }
+
         super.drawScreen(mouseX, mouseY, partialTicks);
+
+        GuiUtils.renderRect(0, 0, width, height, 0xBB000000, this.moduleFade);
+
     }
 }

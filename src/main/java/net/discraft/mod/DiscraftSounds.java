@@ -10,4 +10,9 @@ public class DiscraftSounds {
 
     public static SoundEvent NOTIFICATION = new SoundEvent(new ResourceLocation(Discraft.MOD_ID, "notification"));
 
+    public static SoundEvent ZOOM_IN = new SoundEvent(new ResourceLocation(Discraft.MOD_ID, "zoomin"));
+    public static SoundEvent ZOOM_OUT = new SoundEvent(new ResourceLocation(Discraft.MOD_ID, "zoomout"));
+
+    public static SoundEvent SETTING_CHANGE = new SoundEvent(new ResourceLocation(Discraft.MOD_ID, "settingchange"));
+
 }

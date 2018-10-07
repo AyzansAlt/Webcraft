@@ -67,7 +67,7 @@ public class GuiDiscraftContainerModules extends GuiDiscraftContainer {
         if (pulledOut) {
 
             if (extraX > -maxPullout) {
-                extraX -= 5;
+                extraX -= 10;
                 this.initGui();
             } else if (extraX < -maxPullout) {
                 extraX = -maxPullout;
@@ -76,7 +76,7 @@ public class GuiDiscraftContainerModules extends GuiDiscraftContainer {
         } else {
 
             if (extraX < 0) {
-                extraX += 5;
+                extraX += 10;
                 this.initGui();
             } else if (extraX > 0) {
                 extraX = 0;

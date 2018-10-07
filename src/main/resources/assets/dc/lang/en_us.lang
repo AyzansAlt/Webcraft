@@ -26,6 +26,10 @@ key.discraft.visualize.tabtoggle=(Vizualise) Toggle Tab
 # Key Bindings (Discord)
 key.discraft.discord.opengui=(Discord) Open Discord GUI
 
+# Module Hypixel Strings
+module.hypixel.inspect=Shift + Right-click to view %s's profile
+module.hypixel.profilestats=Showing Hypixel Stats for %s
+
 # In-game Information
 discraft.ingame.loading=Loading discord...
 discraft.ingame.connecting=CONNECTING

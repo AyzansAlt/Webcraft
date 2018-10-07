@@ -42,6 +42,11 @@ public class ClientEvents {
 
             Minecraft mc = Minecraft.getMinecraft();
 
+            if (!Discraft.getInstance().discraftVariables.firstStart && GuiDiscraftMainMenu.hasSeenIntro()) {
+                ClientNotification.createNotification("Discraft - " + ChatFormatting.GREEN + Discraft.MOD_VERSION, I18n.format("discraft.initialized.modules", "" + ChatFormatting.GREEN + Discraft.getInstance().discraftModules.size() + ChatFormatting.RESET));
+                Discraft.getInstance().discraftVariables.firstStart = true;
+            }
+
             /* Add 1 to Swing Animation (Used for animations, etc) */
             Discraft.getInstance().discraftVariables.swing++;
 
@@ -174,10 +179,6 @@ public class ClientEvents {
 
             event.setGui(new GuiDiscraftMainMenu());
 
-            if (!Discraft.getInstance().discraftVariables.firstStart) {
-                ClientNotification.createNotification("Discraft - " + ChatFormatting.GREEN + Discraft.MOD_VERSION, I18n.format("discraft.initialized.modules", "" + ChatFormatting.GREEN + Discraft.getInstance().discraftModules.size() + ChatFormatting.RESET));
-                Discraft.getInstance().discraftVariables.firstStart = true;
-            }
         }
 
         if (event.getGui() instanceof GuiIngameMenu) {

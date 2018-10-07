@@ -10,11 +10,13 @@ import net.discraft.mod.gui.api.*;
 import net.discraft.mod.gui.container.GuiDiscraftContainerModules;
 import net.discraft.mod.utils.NewsManager;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.GameSettings;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.realms.RealmsBridge;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StringUtils;
@@ -37,11 +39,15 @@ import java.util.*;
 public class GuiDiscraftMainMenu extends GuiDiscraftScreen {
 
     public static final String MORE_INFO_TEXT = "Please click " + TextFormatting.UNDERLINE + "here" + TextFormatting.RESET + " for more information.";
+
     private static final Logger LOGGER = LogManager.getLogger();
     private static final Random RANDOM = new Random();
+
     private static final ResourceLocation SPLASH_TEXTS = new ResourceLocation("texts/splashes.txt");
-    private static final ResourceLocation MENU_LOGO = new ResourceLocation(Discraft.MOD_ID + ":textures/gui/logo_main.png");
+    public static final ResourceLocation MENU_LOGO = new ResourceLocation(Discraft.MOD_ID + ":textures/gui/logo_main.png");
+
     private static float moduleFade = 0;
+
     private final GuiDiscraftScroller menuNewsContainer = new GuiDiscraftScroller(3, 0, 47, 247, 143, this);
     /**
      * The Object object utilized as a thread lock when performing non thread-safe operations
@@ -100,6 +106,11 @@ public class GuiDiscraftMainMenu extends GuiDiscraftScreen {
     private GuiScreen realmsNotification;
     private GuiButton modButton;
     private net.minecraftforge.client.gui.NotificationModUpdateScreen modUpdateNotification;
+
+    private static float introFade = 2;
+    private static float introFadeFirst = 1f;
+    private static boolean hasSeenIntro = false;
+    private static boolean hasPlayedIntroSound = false;
 
     public GuiDiscraftMainMenu() {
 
@@ -354,7 +365,8 @@ public class GuiDiscraftMainMenu extends GuiDiscraftScreen {
 
         int x = width / 2 - 173;
 
-        if (mc.currentScreen instanceof GuiDiscraftManager) {
+        if (mc.currentScreen instanceof GuiDiscraftManager
+                || mc.currentScreen instanceof GuiDiscraftTextPrompt) {
             if (moduleFade < 0.8) {
                 moduleFade += 0.1f;
             }
@@ -366,7 +378,7 @@ public class GuiDiscraftMainMenu extends GuiDiscraftScreen {
 
         GlStateManager.pushMatrix();
         float backgroundGradientSwing = (float) ((Math.sin(Discraft.getInstance().discraftVariables.smoothSwing / 80) + 1) * 100);
-        GuiUtils.renderRectWithGradient(0, 0, width + (int) backgroundGradientSwing, height + (int) backgroundGradientSwing, 0xFF5F9F35, 0xFF2E4C1A, 1);
+        GuiUtils.renderRectWithGradient(0, 0, width + (int) backgroundGradientSwing, height + (int) backgroundGradientSwing, 0xFF5F9F35, 0xFF2E4C1A, 0);
         GlStateManager.popMatrix();
 
         /* Player Information Container */
@@ -385,7 +397,7 @@ public class GuiDiscraftMainMenu extends GuiDiscraftScreen {
 
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
-        GuiUtils.renderImageCentered(width / 2, 4, MENU_LOGO, 148, 40);
+        GuiUtils.renderImageCentered(width / 2, 23, MENU_LOGO, 148, 40);
 
         if (this.openGLWarning1 != null && !this.openGLWarning1.isEmpty()) {
             drawRect(this.openGLWarningX1 - 2, this.openGLWarningY1 - 2, this.openGLWarningX2 + 2, this.openGLWarningY2 - 1, 1428160512);
@@ -399,9 +411,11 @@ public class GuiDiscraftMainMenu extends GuiDiscraftScreen {
             this.realmsNotification.drawScreen(mouseX, mouseY, partialTicks);
         }
 
-        modUpdateNotification.drawScreen(mouseX, mouseY, partialTicks);
+        this.modUpdateNotification.drawScreen(mouseX, mouseY, partialTicks);
 
         GuiUtils.renderRect(0, 0, width, height, 0xBB000000, this.moduleFade);
+
+        drawIntro();
 
     }
 
@@ -428,6 +442,42 @@ public class GuiDiscraftMainMenu extends GuiDiscraftScreen {
         if (this.realmsNotification != null) {
             this.realmsNotification.onGuiClosed();
         }
+    }
+
+    public void drawIntro(){
+
+        if(!hasPlayedIntroSound){
+            hasPlayedIntroSound = true;
+            Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_TOAST_CHALLENGE_COMPLETE, 1.0F));
+        }
+
+        if(introFadeFirst <= 0) {
+            if (introFade > 0) {
+                introFade -= 0.02f;
+                hasSeenIntro = false;
+            } else {
+                hasSeenIntro = true;
+            }
+        } else {
+            hasSeenIntro = false;
+        }
+
+        if(introFadeFirst > 0){
+            introFadeFirst-=0.025f;
+        }
+
+        if(!hasSeenIntro){
+
+            GuiUtils.renderRect(0,0,width,height,0xFF5E9D34,introFade);
+            GuiUtils.renderImageCenteredTransparent(this.width / 2,this.height / 2,MENU_LOGO,296, 80,introFade);
+            GuiUtils.renderRect(0,0,width,height,0xFF5E9D34,introFadeFirst);
+
+        }
+
+    }
+
+    public static boolean hasSeenIntro(){
+        return hasSeenIntro;
     }
 
 }

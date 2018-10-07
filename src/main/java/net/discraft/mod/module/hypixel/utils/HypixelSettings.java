@@ -33,6 +33,7 @@ public class HypixelSettings extends ModuleSettings {
 
                 properties.setProperty("enableAutoGG", enableAutoGG ? "true" : "false");
                 properties.setProperty("enableAutoFriend", enableAutoFriend ? "true" : "false");
+                properties.setProperty("enableProfileGUI", enableProfileGUI ? "true" : "false");
 
                 properties.store(output, "Discraft - Official Hypixel Configuration Settings");
 
@@ -52,6 +53,7 @@ public class HypixelSettings extends ModuleSettings {
 
         enableAutoGG = parseBoolean(givenProperties.getProperty("enableAutoGG"));
         enableAutoFriend = parseBoolean(givenProperties.getProperty("enableAutoFriend"));
+        enableProfileGUI = parseBoolean(givenProperties.getProperty("enableProfileGUI"));
 
     }
 
@@ -65,6 +67,7 @@ public class HypixelSettings extends ModuleSettings {
 
             properties.setProperty("enableAutoGG", enableAutoGG ? "true" : "false");
             properties.setProperty("enableAutoFriend", enableAutoFriend ? "true" : "false");
+            properties.setProperty("enableProfileGUI", enableProfileGUI ? "true" : "false");
 
             properties.store(output, "Discraft - Official Hypixel Configuration Settings");
 

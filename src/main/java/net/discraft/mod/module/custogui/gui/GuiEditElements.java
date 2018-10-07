@@ -34,7 +34,7 @@ public class GuiEditElements extends GuiDiscraftScreen {
 
         GuiUtils.renderCenteredTextScaled(ChatFormatting.WHITE + "Press ESC to close", width / 2, height - 15, 0xFFFFFFFF, .5);
 
-        GuiUtils.renderRectWithGradient(0, 0, width, height, 0x00000000, 0xAA000000, 1);
+        GuiUtils.renderRectWithGradient(0, 0, width, height, 0x00000000, 0xAA000000, 0);
 
         mc.ingameGUI.renderGameOverlay(partialTicks);
 

@@ -1,6 +1,7 @@
 package net.discraft.mod.gui.api;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
+import net.discraft.mod.DiscraftSounds;
 import net.discraft.mod.gui.GuiUtils;
 import net.discraft.mod.gui.menu.GuiDiscraftManager;
 import net.minecraft.client.Minecraft;
@@ -50,21 +51,31 @@ public class GuiDiscraftScrollerSlotSetting extends GuiScrollerSlot {
             if (Mouse.isButtonDown(0)) {
                 if (propertyValue.equalsIgnoreCase("true")) {
                     propertyValue = "false";
-                    Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_OFF, .9F));
+                    Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(DiscraftSounds.SETTING_CHANGE, .9F));
                 } else if (propertyValue.equalsIgnoreCase("false")) {
-                    Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 1F));
+                    Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(DiscraftSounds.SETTING_CHANGE, 1F));
                     propertyValue = "true";
                 } else {
-                    System.out.println("Meh. Idk");
+                    if(isNumeric(propertyValue)) {
+                        Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1F));
+                        Minecraft.getMinecraft().displayGuiScreen(new GuiDiscraftTextPromptPropertyString(this.scroller.parentGUI, this).isNumerical(10));
+                    } else {
+                        Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1F));
+                        Minecraft.getMinecraft().displayGuiScreen(new GuiDiscraftTextPromptPropertyString(this.scroller.parentGUI, this));
+                    }
                 }
 
-                this.moduleManager.properties.setProperty(this.property, propertyValue);
-                this.moduleManager.module.getSettings().loadConfig(this.moduleManager.properties);
-                this.moduleManager.module.getSettings().saveConfig();
+                setProperty(propertyValue);
 
             }
 
         }
+    }
+
+    public void setProperty(String givenValue){
+        this.moduleManager.properties.setProperty(this.property, givenValue);
+        this.moduleManager.module.getSettings().loadConfig(this.moduleManager.properties);
+        this.moduleManager.module.getSettings().saveConfig();
     }
 
     public String getPropertyFormatted(String givenProperty) {
@@ -86,6 +97,15 @@ public class GuiDiscraftScrollerSlotSetting extends GuiScrollerSlot {
         BOOLEAN,
         STRING
 
+    }
+
+    public static boolean isNumeric(String str) {
+        try {
+            int number = Integer.parseInt(str);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
 }

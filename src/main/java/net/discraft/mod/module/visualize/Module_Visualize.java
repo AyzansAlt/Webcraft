@@ -350,6 +350,18 @@ public class Module_Visualize extends DiscraftModule {
             applyShader();
         }
 
+        String shaderGroupName = "unknown";
+
+        /* If shader group is not null, set the shaders name */
+        if(Minecraft.getMinecraft().entityRenderer.getShaderGroup() != null) {
+            shaderGroupName = Minecraft.getMinecraft().entityRenderer.getShaderGroup().getShaderGroupName();
+        }
+
+        /* If motion blur disabled but active, disable it */
+        if (!this.visualizeSettings.enableMotionBlur && shaderGroupName.equalsIgnoreCase("motionblur:motionblur")) {
+            Minecraft.getMinecraft().entityRenderer.stopUseShader();
+        }
+
         /* Create the Resource Mapper */
         if (this.resourceMapper == null) {
             try {
