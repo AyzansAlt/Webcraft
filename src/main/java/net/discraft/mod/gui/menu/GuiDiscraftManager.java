@@ -112,7 +112,7 @@ public class GuiDiscraftManager extends GuiDiscraftScreen {
         switch (button.id) {
             case 0:
                 Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(DiscraftSounds.ZOOM_OUT, 2f));
-                mc.currentScreen = this.parentGui;
+                mc.displayGuiScreen(this.parentGui);
                 break;
         }
     }

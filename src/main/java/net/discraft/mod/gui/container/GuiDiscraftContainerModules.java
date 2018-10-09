@@ -9,6 +9,7 @@ import net.discraft.mod.module.DiscraftModule;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
 
 public class GuiDiscraftContainerModules extends GuiDiscraftContainer {
@@ -23,6 +24,8 @@ public class GuiDiscraftContainerModules extends GuiDiscraftContainer {
 
     public GuiDiscraftScroller moduleScroller;
 
+    public GuiDiscraftButton pulloutButton = new GuiDiscraftButton(BUTTON_PULLOUT, 0, 0, 0, 0, "", MODULES_TEXTURE);
+
     public GuiDiscraftContainerModules(int givenID, int givenPosX, int givenPosY, int givenWidth, int givenHeight, GuiDiscraftScreen givenParentGUI) {
         super(givenID, givenPosX, givenPosY, givenWidth, givenHeight, givenParentGUI);
 
@@ -32,7 +35,7 @@ public class GuiDiscraftContainerModules extends GuiDiscraftContainer {
     public void initGui() {
         super.initGui();
 
-        GuiDiscraftButton pulloutButton = new GuiDiscraftButton(BUTTON_PULLOUT, this.posX - 21 + extraX, this.posY + 4, 20, 20, "", MODULES_TEXTURE);
+        pulloutButton = new GuiDiscraftButton(BUTTON_PULLOUT, this.posX - 21 + extraX, this.posY + 4, 20, 20, "", MODULES_TEXTURE);
         this.addButton(pulloutButton);
 
         this.moduleScroller = new GuiDiscraftScroller(0, this.posX + 4 + extraX, this.posY + 5, 90, this.height - 10, this.parentGUI);
@@ -54,9 +57,15 @@ public class GuiDiscraftContainerModules extends GuiDiscraftContainer {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         super.drawScreen(mouseX, mouseY, partialTicks);
 
-        GuiUtils.renderRectWithOutline(this.posX + extraX, this.posY, this.width + -extraX, this.height, 0x77000000, 0x77000000, 1);
+        GuiUtils.renderRectWithOutline(this.posX + extraX, this.posY, this.width + -extraX, this.height, Discraft.getInstance().colorTheme, Discraft.getInstance().colorTheme, 1);
 
         this.moduleScroller.drawScreen(mouseX, mouseY, partialTicks);
+
+        if (!pulledOut && pulloutButton.isMouseOver()) {
+            String pullString = I18n.format("menu.modules.pullout");
+            int pullStringLength = mc.fontRenderer.getStringWidth(pullString);
+            GuiUtils.renderText(pullString, this.posX - 25 - pullStringLength, this.posY + 10, 0xFFFFFF);
+        }
 
     }
 

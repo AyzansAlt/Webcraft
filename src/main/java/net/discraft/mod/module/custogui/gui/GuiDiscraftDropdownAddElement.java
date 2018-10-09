@@ -32,13 +32,31 @@ public class GuiDiscraftDropdownAddElement extends GuiDiscraftDropdown {
 
     }
 
-    @Override
     public void onOptionClicked(int par1) {
 
         /* CPS Count */
         if (par1 == 1) {
-            System.out.println("Adding!");
             Module_CustoGUI.guiElements.add(new GuiElement_CPS(10, 10, this.parentGui, this.module));
+            return;
+        }
+        /* Server-side Reach */
+        if (par1 == 2) {
+            Module_CustoGUI.guiElements.add(new GuiElement_Reach_Server(10, 10, this.parentGui, this.module));
+            return;
+        }
+        /* Client-side Reach */
+        if (par1 == 3) {
+            Module_CustoGUI.guiElements.add(new GuiElement_Reach_Client(10, 10, this.parentGui, this.module));
+            return;
+        }
+        /* Server Ping */
+        if (par1 == 4) {
+            Module_CustoGUI.guiElements.add(new GuiElement_Ping(10, 10, this.parentGui, this.module));
+            return;
+        }
+        /* FPS */
+        if (par1 == 5) {
+            Module_CustoGUI.guiElements.add(new GuiElement_FPS(10, 10, this.parentGui, this.module));
             return;
         }
 

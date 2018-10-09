@@ -18,7 +18,6 @@ key.discraft.custogui.element.up=(Custo-GUI) Move Element Up
 key.discraft.custogui.element.down=(Custo-GUI) Move Element Down
 key.discraft.custogui.element.left=(Custo-GUI) Move Element Left
 key.discraft.custogui.element.right=(Custo-GUI) Move Element Right
-discraft.button.module.customgui.addelement.tip=Add new Element to GUI
 
 # Key Bindings (Visualize)
 key.discraft.visualize.tabtoggle=(Vizualise) Toggle Tab
@@ -45,7 +44,11 @@ discraft.ingame.button.opensettings=Discraft Settings...
 
 # Module Button Texts
 discraft.button.module.custogui.addelement=Add Element
-discraft.button.module.custogui.adddelement.tip=Add a new element to the in-game gui
+discraft.button.module.custogui.addelement.tip=Add a new element to the in-game gui
+discraft.button.module.custogui.deleteelement=Delete Element
+discraft.button.module.custogui.deleteelement.tip=Delete an element from the in-game gui
+discraft.button.module.custogui.deleteallelements=Delete All
+discraft.button.module.custogui.deleteallelements.tip=Delete all elements from the in-game gui
 
 # Module Strings
 discraft.module.creator=Created by %s
@@ -111,6 +114,11 @@ button.tooltip.quit=Shutdown Minecraft
 button.tooltip.language=Change Language...
 button.tooltip.officialdiscord=Join our Discord...
 
-# Menu Profile Items
+# Menu Items
 menu.profile.coins=%s Coins
 menu.profile.playercount=%s Player(s) Online
+menu.modules.pullout=View/Manage Modules ->
+menu.news.loading=Loading News & Updates...
+
+# Error messages
+error.notification.unknownbackgroundurl=Failed to load Background from URL! Showing default!

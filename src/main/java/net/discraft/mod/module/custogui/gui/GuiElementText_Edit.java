@@ -8,9 +8,9 @@ import net.minecraft.client.gui.GuiScreen;
 
 import java.io.IOException;
 
-public class GuiElement_CPS_Edit extends GuiDiscraftScreen {
+public class GuiElementText_Edit extends GuiDiscraftScreen {
 
-    public GuiElement_CPS elementCPS;
+    public GuiElementText elementCPS;
 
     public GuiScreen parentGUI;
 
@@ -20,7 +20,7 @@ public class GuiElement_CPS_Edit extends GuiDiscraftScreen {
     public GuiButton buttonFinish;
     public GuiButton buttonEnableBackground;
 
-    public GuiElement_CPS_Edit(GuiElement_CPS givenElement, GuiScreen givenParentGUI) {
+    public GuiElementText_Edit(GuiElementText givenElement, GuiScreen givenParentGUI) {
         this.elementCPS = givenElement;
         this.parentGUI = givenParentGUI;
     }
@@ -33,9 +33,9 @@ public class GuiElement_CPS_Edit extends GuiDiscraftScreen {
 
         int buttonWidth = 200;
 
-        this.buttonEnableBackground = new GuiDiscraftButton(BUTTON_ENABLEBACKGROUND, (this.width / 2) - (buttonWidth / 2), 60, buttonWidth, 20, ChatFormatting.WHITE + "Enable Background (" + (this.elementCPS.enableBackground ? "True" : "False") + ")");
+        this.buttonEnableBackground = new GuiDiscraftButton(BUTTON_ENABLEBACKGROUND, (this.width / 2) - (buttonWidth / 2), 60, buttonWidth, 20, ChatFormatting.WHITE + "Enable Background (" + (this.elementCPS.shouldDrawBackground ? "True" : "False") + ")");
 
-        this.buttonFinish = new GuiDiscraftButton(BUTTON_FINISH, (this.width / 2) - (buttonWidth / 2), height - 20, buttonWidth, 20, "Finish");
+        this.buttonFinish = new GuiDiscraftButton(BUTTON_FINISH, (this.width / 2) - (buttonWidth / 2), height - 60, buttonWidth, 20, "Finish");
 
         this.buttonList.add(buttonEnableBackground);
         this.buttonList.add(buttonFinish);
@@ -58,9 +58,13 @@ public class GuiElement_CPS_Edit extends GuiDiscraftScreen {
     protected void actionPerformed(GuiButton button) throws IOException {
 
         if (button.id == BUTTON_ENABLEBACKGROUND) {
-            this.elementCPS.enableBackground = !this.elementCPS.enableBackground;
+            this.elementCPS.shouldDrawBackground = !this.elementCPS.shouldDrawBackground;
             this.initGui();
             return;
+        }
+
+        if(button.id == BUTTON_FINISH){
+            mc.displayGuiScreen(parentGUI);
         }
 
     }

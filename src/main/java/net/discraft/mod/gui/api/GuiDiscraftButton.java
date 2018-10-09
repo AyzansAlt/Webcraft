@@ -1,6 +1,7 @@
 package net.discraft.mod.gui.api;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
+import net.discraft.mod.Discraft;
 import net.discraft.mod.gui.GuiUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
@@ -20,7 +21,7 @@ public class GuiDiscraftButton extends GuiButton {
     public int isOver = 2;
     public boolean drawBackground = true;
     public boolean drawShadow = true;
-    public int buttonColor = 0x77000000;
+    public int buttonColor = Discraft.getInstance().colorTheme;
     public boolean centeredText = true;
     public boolean soundPlayed = true;
     private ResourceLocation iconTexture = null;
@@ -92,7 +93,7 @@ public class GuiDiscraftButton extends GuiButton {
 
             if (drawBackground) {
                 if (drawShadow) {
-                    GuiUtils.renderRectWithOutline(x, y, width, height, 0x77000000, 0x77000000, 1);
+                    GuiUtils.renderRectWithOutline(x, y, width, height, Discraft.getInstance().colorTheme, Discraft.getInstance().colorTheme, 1);
                 } else {
                     GuiUtils.renderRect(x, y, width, height, buttonColor);
                 }
@@ -151,7 +152,7 @@ public class GuiDiscraftButton extends GuiButton {
             }
 
             if (showToolTip && isOver == 2) {
-                GuiUtils.renderRectWithOutline(mouseX, mouseY - 10, toolTipY, 10, 0x77000000, 0x77000000, 1);
+                GuiUtils.renderRectWithOutline(mouseX, mouseY - 10, toolTipY, 10, Discraft.getInstance().colorTheme, Discraft.getInstance().colorTheme, 1);
                 if (toolTipY < (toolTipWidth + 2)) {
 
                     int toolTipGap = (toolTipWidth + 2) - toolTipY;

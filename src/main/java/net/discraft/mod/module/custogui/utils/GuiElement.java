@@ -1,5 +1,6 @@
 package net.discraft.mod.module.custogui.utils;
 
+import net.discraft.mod.Discraft;
 import net.discraft.mod.gui.GuiUtils;
 import net.discraft.mod.module.custogui.Module_CustoGUI;
 import net.minecraft.client.Minecraft;
@@ -27,6 +28,12 @@ public class GuiElement {
     public int posX;
     public int posY;
 
+    public int backgroundColor = 0x22000000;
+    public int textColor = 0xFFFFFF;
+    public int textValueColor = 0xFFFF00;
+
+    public boolean shouldDrawBackground = false;
+
     public GuiElement(int givenPosX, int givenPosY, GuiScreen givenGUI, Module_CustoGUI givenModule) {
         this.posX = givenPosX;
         this.posY = givenPosY;
@@ -37,30 +44,39 @@ public class GuiElement {
     public void onRender(Minecraft mc, float parTick) {
 
         if (this.isSelected) {
-            GuiUtils.renderRectWithOutline(this.posX - 1, this.posY - 1, this.width + 2, this.height + 2, 0x77000000, 0x55FFFF00, 1);
             GuiUtils.renderTextScaled("Selected", this.posX, this.posY + this.height + 3, 0xFFFFFF, .5);
-        } else if (this.isEditable) {
-            GuiUtils.renderRectWithOutline(this.posX - 1, this.posY - 1, this.width + 2, this.height + 2, 0xFF000000, 0x55555555, 1);
+        }
+
+        if (this.shouldDrawBackground){
+            GuiUtils.renderRectWithOutline(this.posX,this.posY,this.width,this.height,backgroundColor,backgroundColor,1);
         }
 
     }
 
-    public void onUpdate(Minecraft mc) {
-
-        int mouseX = Mouse.getEventX() * this.parentGUI.width / mc.displayWidth;
-        int mouseY = this.parentGUI.height - Mouse.getEventY() * this.parentGUI.height / mc.displayHeight - 1;
-
-        if (!this.isEditable) {
-            this.isSelected = false;
-        }
+    /**
+     * On Update Visuals - Update Elements Visually
+     * @param mouseX - Given Mouse X
+     * @param mouseY - Given Mouse Y
+     * @param mc - Given Minecraft Instance
+     */
+    public void onUpdateVisuals(int mouseX, int mouseY, Minecraft mc) {
 
         if (this.isSelected) {
-            if (Mouse.isButtonDown(1) && this.isHovered(mouseX, mouseY)) {
+            if (Mouse.isButtonDown(1)) {
                 this.posX = mouseX - (this.width / 2);
                 this.posY = mouseY - (this.height / 2);
             }
         }
 
+    }
+
+    /**
+     * On Update - Update element Attributes
+     */
+    public void onUpdate(Minecraft mc){
+        if (!this.isEditable) {
+            this.isSelected = false;
+        }
     }
 
     public void onClick(int mouseX, int mouseY, int mouseButton) {

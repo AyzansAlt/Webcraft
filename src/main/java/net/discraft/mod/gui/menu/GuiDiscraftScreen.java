@@ -1,6 +1,7 @@
 package net.discraft.mod.gui.menu;
 
 import com.google.common.collect.Lists;
+import net.discraft.mod.Discraft;
 import net.discraft.mod.gui.GuiUtils;
 import net.discraft.mod.gui.api.GuiDiscraftContainer;
 import net.minecraft.client.gui.GuiButton;
@@ -17,7 +18,6 @@ import java.util.List;
 
 public class GuiDiscraftScreen extends GuiScreen {
 
-    public static final int colorTheme = 0x77000000;
     protected List<GuiDiscraftContainer> containerList = Lists.newArrayList();
 
     public static void openURL(URI uri) {
@@ -89,11 +89,6 @@ public class GuiDiscraftScreen extends GuiScreen {
 
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) {
-        try {
-            super.mouseClicked(mouseX, mouseY, mouseButton);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         try {
             super.mouseClicked(mouseX, mouseY, mouseButton);
         } catch (IOException e) {

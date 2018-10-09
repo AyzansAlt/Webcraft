@@ -353,7 +353,7 @@ public class Module_Visualize extends DiscraftModule {
         String shaderGroupName = "unknown";
 
         /* If shader group is not null, set the shaders name */
-        if(Minecraft.getMinecraft().entityRenderer.getShaderGroup() != null) {
+        if (Minecraft.getMinecraft().entityRenderer.getShaderGroup() != null) {
             shaderGroupName = Minecraft.getMinecraft().entityRenderer.getShaderGroup().getShaderGroupName();
         }
 
@@ -438,11 +438,12 @@ public class Module_Visualize extends DiscraftModule {
 
         Minecraft mc = Minecraft.getMinecraft();
 
+        /* If custom highlight is enabled, begin procedure */
         if (this.visualizeSettings.enableCustomBlockHighlight) {
 
             if (mc.objectMouseOver != null) {
 
-                RayTraceResult position = mc.player.rayTrace(6.0, event.getPartialTicks());
+                RayTraceResult position = mc.player.rayTrace(this.visualizeSettings.blockHighlightSettings.blockDistance, event.getPartialTicks());
 
                 /* If the type of hit is a block */
                 if (position != null || position.typeOfHit.equals(RayTraceResult.Type.BLOCK)) {

@@ -1,6 +1,7 @@
 package net.discraft.mod.gui.api;
 
 import com.google.common.collect.Iterators;
+import net.discraft.mod.Discraft;
 import net.discraft.mod.gui.GuiUtils;
 import net.discraft.mod.gui.menu.GuiDiscraftScreen;
 import net.minecraft.client.Minecraft;
@@ -151,8 +152,12 @@ public class GuiDiscraftScroller extends GuiDiscraftContainer {
         glEnable(GL_SCISSOR_TEST);
         glScissor(posX * factor, (parentGUI.height - (posY + height - 4)) * factor - 8, width * factor - 30, (height - 8) * factor + 15);
 
-        for (GuiScrollerSlot slot : slots) {
-            slot.doRender(mouseX, mouseY + translation, partialTicks);
+        try {
+            for (GuiScrollerSlot slot : slots) {
+                slot.doRender(mouseX, mouseY + translation, partialTicks);
+            }
+        } catch (ConcurrentModificationException e) {
+
         }
 
         glDisable(GL_SCISSOR_TEST);
@@ -250,7 +255,7 @@ public class GuiDiscraftScroller extends GuiDiscraftContainer {
     @Override
     public void drawBackground() {
         if (shouldDrawBackground) {
-            GuiUtils.renderRectWithOutline(this.posX, this.posY, this.width, this.height, 0x33000000, 0x55000000, 1);
+            GuiUtils.renderRectWithOutline(this.posX, this.posY, this.width, this.height, Discraft.getInstance().colorTheme - 0x22000000, Discraft.getInstance().colorTheme - 0x22000000, 1);
         }
     }
 

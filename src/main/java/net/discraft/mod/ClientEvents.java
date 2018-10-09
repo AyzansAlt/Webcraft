@@ -153,6 +153,15 @@ public class ClientEvents {
     }
 
     @SubscribeEvent
+    public void onMouseEvent(MouseEvent event){
+        for (DiscraftModule module : Discraft.getInstance().discraftModules) {
+            if(module.isEnabled) {
+                module.onMouseEvent(event);
+            }
+        }
+    }
+
+    @SubscribeEvent
     public void onServerChatEvent(ServerChatEvent event) {
 
         String formattedText = event.getComponent().getFormattedText();
@@ -289,6 +298,12 @@ public class ClientEvents {
      */
     @SubscribeEvent
     public void onEntityAttack(AttackEntityEvent event) {
+
+        for (DiscraftModule module : Discraft.getInstance().discraftModules) {
+            if (module.isEnabled) {
+                module.onEntityAttack(event);
+            }
+        }
 
         if (Discraft.getInstance().discraftSettings.enableDiscraft) {
 

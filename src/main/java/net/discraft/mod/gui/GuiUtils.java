@@ -503,7 +503,7 @@ public class GuiUtils {
 
     public static void renderImageTransparent(double x, double y, ResourceLocation image, double width, double height, double alpha) {
 
-        renderColor(0xFFFFFF,alpha);
+        renderColor(0xFFFFFF, alpha);
 
         Minecraft.getMinecraft().renderEngine.bindTexture(image);
 
@@ -538,9 +538,21 @@ public class GuiUtils {
 
     public static void renderImageCenteredTransparent(double givenX, double givenY, ResourceLocation givenTexture, double givenWidth, double givenHeight, double alpha) {
 
-        GL11.glPushMatrix();
-        renderImageTransparent(givenX - (givenWidth / 2), givenY - (givenHeight / 2), givenTexture, givenWidth, givenHeight,alpha);
-        GL11.glPopMatrix();
+        GlStateManager.pushMatrix();
+        renderImageTransparent(givenX - (givenWidth / 2), givenY - (givenHeight / 2), givenTexture, givenWidth, givenHeight, alpha);
+        GlStateManager.popMatrix();
+
+    }
+
+    public static void renderImageCenteredScaled(double givenX, double givenY, ResourceLocation givenTexture, double givenWidth, double givenHeight, float givenScale) {
+
+        GlStateManager.pushMatrix();
+
+        GlStateManager.translate(givenX - (givenX * givenScale), givenY - (givenY * givenScale), 0);
+        GlStateManager.scale(givenScale, givenScale, givenScale);
+        renderImageCentered(givenX, givenY, givenTexture, givenWidth, givenHeight);
+
+        GlStateManager.popMatrix();
 
     }
 

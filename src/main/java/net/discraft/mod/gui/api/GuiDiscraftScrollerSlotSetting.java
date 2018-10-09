@@ -7,6 +7,7 @@ import net.discraft.mod.gui.menu.GuiDiscraftManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.init.SoundEvents;
+import org.codehaus.plexus.util.StringUtils;
 import org.lwjgl.input.Mouse;
 
 public class GuiDiscraftScrollerSlotSetting extends GuiScrollerSlot {
@@ -19,10 +20,20 @@ public class GuiDiscraftScrollerSlotSetting extends GuiScrollerSlot {
         this.property = givenProperty;
     }
 
+    public static boolean isNumeric(String str) {
+        try {
+            int number = Integer.parseInt(str);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     public void doRender(int mouseX, int mouseY, float partialTicks) {
         drawBackground(mouseX, mouseY);
 
         String propertyValue = this.moduleManager.properties.getProperty(this.property);
+        propertyValue = StringUtils.abbreviate(propertyValue, 25);
         int propertyWidth = Minecraft.getMinecraft().fontRenderer.getStringWidth(propertyValue);
 
         GuiUtils.renderText(this.property, this.posX + 4, this.posY + 4, 0xFFFFFF);
@@ -56,9 +67,9 @@ public class GuiDiscraftScrollerSlotSetting extends GuiScrollerSlot {
                     Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(DiscraftSounds.SETTING_CHANGE, 1F));
                     propertyValue = "true";
                 } else {
-                    if(isNumeric(propertyValue)) {
+                    if (isNumeric(propertyValue)) {
                         Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1F));
-                        Minecraft.getMinecraft().displayGuiScreen(new GuiDiscraftTextPromptPropertyString(this.scroller.parentGUI, this).isNumerical(10));
+                        Minecraft.getMinecraft().displayGuiScreen(new GuiDiscraftTextPromptPropertyString(this.scroller.parentGUI, this).isNumerical(0));
                     } else {
                         Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1F));
                         Minecraft.getMinecraft().displayGuiScreen(new GuiDiscraftTextPromptPropertyString(this.scroller.parentGUI, this));
@@ -72,7 +83,7 @@ public class GuiDiscraftScrollerSlotSetting extends GuiScrollerSlot {
         }
     }
 
-    public void setProperty(String givenValue){
+    public void setProperty(String givenValue) {
         this.moduleManager.properties.setProperty(this.property, givenValue);
         this.moduleManager.module.getSettings().loadConfig(this.moduleManager.properties);
         this.moduleManager.module.getSettings().saveConfig();
@@ -97,15 +108,6 @@ public class GuiDiscraftScrollerSlotSetting extends GuiScrollerSlot {
         BOOLEAN,
         STRING
 
-    }
-
-    public static boolean isNumeric(String str) {
-        try {
-            int number = Integer.parseInt(str);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
     }
 
 }

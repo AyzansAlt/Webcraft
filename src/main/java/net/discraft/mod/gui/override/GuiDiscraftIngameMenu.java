@@ -17,12 +17,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GuiDiscraftIngameMenu extends GuiDiscraftScreen {
 
+    private static float moduleFade = 0;
     public GuiDiscraftContainerModules containerModules;
-
     private int saveStep;
     private int visibleTime;
-
-    private static float moduleFade = 0;
 
     /**
      * Adds the buttons (and other controls) to the screen in question. Called when the GUI is displayed and when the
@@ -122,7 +120,7 @@ public class GuiDiscraftIngameMenu extends GuiDiscraftScreen {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         this.drawDefaultBackground();
 
-        GuiUtils.renderImageCentered(width / 2, 23, GuiDiscraftMainMenu.MENU_LOGO, 148, 40);
+        GuiUtils.renderImageCentered(width / 2, 40, GuiDiscraftMainMenu.MENU_LOGO, 148, 40);
 
         if (mc.currentScreen instanceof GuiDiscraftManager
                 || mc.currentScreen instanceof GuiDiscraftTextPrompt) {

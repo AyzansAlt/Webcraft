@@ -50,6 +50,15 @@ public abstract class GuiDiscraftTextPrompt extends GuiDiscraftScreen {
         this.parentGui = par1;
     }
 
+    public static boolean isNumeric(String str) {
+        try {
+            int number = Integer.parseInt(str);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     /**
      * Info displayed above the input field, max 3 lines
      */
@@ -74,7 +83,7 @@ public abstract class GuiDiscraftTextPrompt extends GuiDiscraftScreen {
         this.promptX = this.width / 2 - (this.promptWidth / 2);
         this.promptY = this.height / 2 - (this.promptHeight / 2);
 
-        this.promptInputText = new GuiTextField(0,this.fontRenderer, this.promptX, this.promptY, this.promptWidth, this.promptHeight);
+        this.promptInputText = new GuiTextField(0, this.fontRenderer, this.promptX, this.promptY, this.promptWidth, this.promptHeight);
         this.promptInputText.setMaxStringLength(this.maxCharacters);
         this.promptInputText.setText(this.promptedTextInput);
 
@@ -103,7 +112,7 @@ public abstract class GuiDiscraftTextPrompt extends GuiDiscraftScreen {
             }
 
             if (this.restrictedUsernameInput && text.contains(Minecraft.getMinecraft().getSession().getUsername())) {
-                    this.errorMessage = "Cannot add own Username";
+                this.errorMessage = "Cannot add own Username";
             }
 
             if (this.restrictedUsernameInput) {
@@ -124,17 +133,17 @@ public abstract class GuiDiscraftTextPrompt extends GuiDiscraftScreen {
                 }
             }
 
-            if(this.mustBeNumber && (!isNumeric(text) || text.contains(" "))){
+            if (this.mustBeNumber && (!isNumeric(text) || text.contains(" "))) {
                 this.errorMessage = "Given value must be numerical!";
                 return;
             }
 
-            if(this.mustBeNumber){
+            if (this.mustBeNumber) {
 
-                text = text.replace("0x","");
+                text = text.replace("0x", "");
                 int number = Integer.decode(text);
 
-                if(this.maxNumber > 0 && number > this.maxNumber){
+                if (this.maxNumber > 0 && number > this.maxNumber) {
                     this.errorMessage = "Given value is too high!";
                     return;
                 }
@@ -208,8 +217,8 @@ public abstract class GuiDiscraftTextPrompt extends GuiDiscraftScreen {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         this.parentGui.drawScreen(mouseX, mouseY, partialTicks);
 
-        GuiUtils.renderRectWithGradient(0,0,width,height / 2,0x00000000,0x99000000,0);
-        GuiUtils.renderRectWithGradient(0,height / 2,width,height,0x99000000,0x00000000,0);
+        GuiUtils.renderRectWithGradient(0, 0, width, height / 2, 0x00000000, 0x99000000, 0);
+        GuiUtils.renderRectWithGradient(0, height / 2, width, height, 0x99000000, 0x00000000, 0);
 
         int margin = 60;
 
@@ -227,27 +236,18 @@ public abstract class GuiDiscraftTextPrompt extends GuiDiscraftScreen {
             for (int i1 = 0; i1 < this.promptInformation.length; i1++) {
 
                 String var1 = this.promptInformation[i1];
-                GuiUtils.renderCenteredText(var1, this.promptX + this.promptWidth / 2, this.promptY - margin + 5 + (i1 * 11),0xFFFFFF);
+                GuiUtils.renderCenteredText(var1, this.promptX + this.promptWidth / 2, this.promptY - margin + 5 + (i1 * 11), 0xFFFFFF);
             }
         }
 
-        GuiUtils.renderCenteredText(ChatFormatting.RED + "" + this.errorMessage, this.promptX + this.promptWidth / 2, this.promptY - margin + 48,0xFFFFFF);
+        GuiUtils.renderCenteredText(ChatFormatting.RED + "" + this.errorMessage, this.promptX + this.promptWidth / 2, this.promptY - margin + 48, 0xFFFFFF);
 
         this.promptInputText.drawTextBox();
 
-        if(this.getTextField().length() <= 0) {
+        if (this.getTextField().length() <= 0) {
             GuiUtils.renderText(this.promptTip, promptInputText.x + 4, promptInputText.y + 7, 0xFFFFFF);
         }
 
-    }
-
-    public static boolean isNumeric(String str) {
-        try {
-            int number = Integer.parseInt(str);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
     }
 
 }

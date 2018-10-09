@@ -11,6 +11,7 @@ import net.discraft.mod.module.visualize.Module_Visualize;
 import net.discraft.mod.network.ClientNetworkConnection;
 import net.discraft.mod.network.listener.MessageListener_Client;
 import net.discraft.mod.render.layer.LayerDiscraftCape;
+import net.discraft.mod.utils.DiscraftCrashChecker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -65,6 +66,7 @@ public class Discraft {
     public DiscraftPresence discraftPresence = new DiscraftPresence();
     public DiscraftSettings discraftSettings = new DiscraftSettings();
     public DiscraftSettingsModules discraftSettingsModules = new DiscraftSettingsModules();
+    public DiscraftCrashChecker discraftChecker = new DiscraftCrashChecker();
 
     /**
      * Discraft Network Connection
@@ -75,6 +77,9 @@ public class Discraft {
     public String clientNetworkConnection_ip = "localhost";
     public int clientNetworkConnection_tcp = 54666;
     public int clientNetworkConnection_udp = 54888;
+
+    public int colorThemeDefault = 0x55000000;
+    public int colorTheme = colorThemeDefault;
 
     /**
      * Get Instance - Get the initial Discraft Instance
@@ -164,6 +169,8 @@ public class Discraft {
         getInstance().discraftPresence.init(); /* Discraft Rich Presence Hook */
 
         initializeConfigurations(); /* Initialize the Discraft Configuration Files */
+
+        this.discraftChecker.init();
 
         /* Register Event Handlers */
         MinecraftForge.EVENT_BUS.register(new ClientEvents());

@@ -22,12 +22,9 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.MouseHelper;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
-import net.minecraftforge.client.event.MouseEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.ServerChatEvent;
@@ -49,17 +46,13 @@ public class Module_Hypixel extends DiscraftModule {
 
     public HypixelGuiUtils hypixelGuiUtils;
     public HypixelProfileManager hypixelProfileManager;
-
+    public String focusedUsername = "ScottehBoeh";
     private Pattern friendRequestPattern = Pattern.compile(
             "\u00A7m----------------------------------------------------Friend request from (?<name>.+)\\[ACCEPT\\] - \\[DENY\\] - \\[IGNORE\\].*");
-
     private Pattern friendExpiredPattern = Pattern.compile(
             "\u00A7m-----------------------------------------------------The friend request from (?<name>.+) has expired.");
-
     private Pattern friendRemovePattern = Pattern.compile(
             "-----------------------------------------------------\n(?<name>.+) removed you from their friends list!.");
-
-    public String focusedUsername = "ScottehBoeh";
 
     public Module_Hypixel(String givenModuleID, String givenModuleName, String givenModuleDescription, String givenModuleDescriptionLong, String givenModuleAuthor, ResourceLocation givenModuleLogo) {
         super(givenModuleID, givenModuleName, givenModuleDescription, givenModuleDescriptionLong, givenModuleAuthor, givenModuleLogo);
@@ -295,7 +288,7 @@ public class Module_Hypixel extends DiscraftModule {
             /* Run Hypixel API Timeout Cooldown */
             this.hypixelVariables.timeOut--;
 
-            if(this.hypixelSettings.enableProfileGUI) {
+            if (this.hypixelSettings.enableProfileGUI) {
                 if (mc.objectMouseOver != null && mc.objectMouseOver.entityHit != null && mc.objectMouseOver.entityHit instanceof EntityPlayer) {
 
                     EntityPlayer player = ((EntityPlayer) mc.objectMouseOver.entityHit);
@@ -367,7 +360,7 @@ public class Module_Hypixel extends DiscraftModule {
                         EntityPlayer player = ((EntityPlayer) mc.objectMouseOver.entityHit);
                         String playerUsername = player.getGameProfile().getName();
 
-                        if(player.getGameProfile().getName().equalsIgnoreCase(focusedUsername)) {
+                        if (player.getGameProfile().getName().equalsIgnoreCase(focusedUsername)) {
                             GlStateManager.pushMatrix();
                             this.hypixelGuiUtils.renderHypixelStatsBox(boxX, boxY, player, width, height);
                             GlStateManager.popMatrix();
@@ -375,7 +368,7 @@ public class Module_Hypixel extends DiscraftModule {
                             double hitDistance = 0;
                             hitDistance = GuiUtils.getDistanceToClientCamera(player.posX, player.posY, player.posZ);
                             double scale = (2 - (hitDistance / 3)) * .75;
-                            GuiUtils.renderCenteredTextScaled(ChatFormatting.WHITE + I18n.format("module.hypixel.inspect",ChatFormatting.GREEN + playerUsername + ChatFormatting.RESET),width / 2,height / 2 + 15,0xFFFFFF,scale);
+                            GuiUtils.renderCenteredTextScaled(ChatFormatting.WHITE + I18n.format("module.hypixel.inspect", ChatFormatting.GREEN + playerUsername + ChatFormatting.RESET), width / 2, height / 2 + 15, 0xFFFFFF, scale);
                         }
                         GlStateManager.popMatrix();
 

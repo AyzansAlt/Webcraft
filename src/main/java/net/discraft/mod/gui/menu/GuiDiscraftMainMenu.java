@@ -8,6 +8,7 @@ import net.discraft.mod.gui.GuiUtils;
 import net.discraft.mod.gui.ScissorState;
 import net.discraft.mod.gui.api.*;
 import net.discraft.mod.gui.container.GuiDiscraftContainerModules;
+import net.discraft.mod.module.DiscraftModule;
 import net.discraft.mod.utils.NewsManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
@@ -39,15 +40,15 @@ import java.util.*;
 public class GuiDiscraftMainMenu extends GuiDiscraftScreen {
 
     public static final String MORE_INFO_TEXT = "Please click " + TextFormatting.UNDERLINE + "here" + TextFormatting.RESET + " for more information.";
-
+    public static final ResourceLocation MENU_LOGO = new ResourceLocation(Discraft.MOD_ID + ":textures/gui/logo_main.png");
     private static final Logger LOGGER = LogManager.getLogger();
     private static final Random RANDOM = new Random();
-
     private static final ResourceLocation SPLASH_TEXTS = new ResourceLocation("texts/splashes.txt");
-    public static final ResourceLocation MENU_LOGO = new ResourceLocation(Discraft.MOD_ID + ":textures/gui/logo_main.png");
-
     private static float moduleFade = 0;
-
+    private static float introFade = 2;
+    private static float introFadeFirst = 1f;
+    private static boolean hasSeenIntro = false;
+    private static boolean hasPlayedIntroSound = false;
     private final GuiDiscraftScroller menuNewsContainer = new GuiDiscraftScroller(3, 0, 47, 247, 143, this);
     /**
      * The Object object utilized as a thread lock when performing non thread-safe operations
@@ -107,11 +108,6 @@ public class GuiDiscraftMainMenu extends GuiDiscraftScreen {
     private GuiButton modButton;
     private net.minecraftforge.client.gui.NotificationModUpdateScreen modUpdateNotification;
 
-    private static float introFade = 2;
-    private static float introFadeFirst = 1f;
-    private static boolean hasSeenIntro = false;
-    private static boolean hasPlayedIntroSound = false;
-
     public GuiDiscraftMainMenu() {
 
         this.openGLWarning2 = MORE_INFO_TEXT;
@@ -124,6 +120,10 @@ public class GuiDiscraftMainMenu extends GuiDiscraftScreen {
             this.openGLWarningLink = "https://help.mojang.com/customer/portal/articles/325948?ref=game";
         }
 
+    }
+
+    public static boolean hasSeenIntro() {
+        return hasSeenIntro;
     }
 
     /**
@@ -176,7 +176,7 @@ public class GuiDiscraftMainMenu extends GuiDiscraftScreen {
 
         addContainer(this.menuNewsContainer);
 
-        this.menuNewsContainer.setTextList(Collections.singletonList("&cLoading News & Updates..."));
+        this.menuNewsContainer.setTextList(Collections.singletonList(ChatFormatting.RED + I18n.format("menu.news.loading")));
         new Thread() {
 
             public void run() {
@@ -381,8 +381,14 @@ public class GuiDiscraftMainMenu extends GuiDiscraftScreen {
         GuiUtils.renderRectWithGradient(0, 0, width + (int) backgroundGradientSwing, height + (int) backgroundGradientSwing, 0xFF5F9F35, 0xFF2E4C1A, 0);
         GlStateManager.popMatrix();
 
+        for (DiscraftModule module : Discraft.getInstance().discraftModules) {
+            if (module.isEnabled) {
+                module.onRenderMainMenu(this.width, this.height, mouseX, mouseY, partialTicks);
+            }
+        }
+
         /* Player Information Container */
-        GuiUtils.renderRectWithOutline(x, 47, 100, 44, 0x77000000, 0x77000000, 1);
+        GuiUtils.renderRectWithOutline(x, 47, 100, 44, Discraft.getInstance().colorTheme, Discraft.getInstance().colorTheme, 1);
         ScissorState.scissor(x, 47, 100, 44, true);
         float playerModelSwing = (float) ((Math.sin(Discraft.getInstance().discraftVariables.swing / 20) + 1) * 15 - 45);
         GuiUtils.renderPlayer(x, 34, (int) playerModelSwing);
@@ -390,7 +396,7 @@ public class GuiDiscraftMainMenu extends GuiDiscraftScreen {
 
         /* Render Player Information */
         GuiUtils.renderText(Minecraft.getMinecraft().getSession().getUsername(), x + 3, 47 + 3, 0xFFFFFF);
-        GuiUtils.renderText(I18n.format("menu.profile.coins", ChatFormatting.YELLOW + "25"), x + 3, 57 + 3, 0xFFFFFF);
+        GuiUtils.renderText(I18n.format(""), x + 3, 57 + 3, 0xFFFFFF);
 
         /* Render Player Count */
         GuiUtils.renderTextScaled(I18n.format("menu.profile.playercount", ChatFormatting.GREEN + "" + Discraft.getInstance().discraftVariables.playerCount + ChatFormatting.RESET), x + 2, 82 + 3, 0xFFFFFF, .5);
@@ -444,14 +450,14 @@ public class GuiDiscraftMainMenu extends GuiDiscraftScreen {
         }
     }
 
-    public void drawIntro(){
+    public void drawIntro() {
 
-        if(!hasPlayedIntroSound){
+        if (!hasPlayedIntroSound) {
             hasPlayedIntroSound = true;
             Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_TOAST_CHALLENGE_COMPLETE, 1.0F));
         }
 
-        if(introFadeFirst <= 0) {
+        if (introFadeFirst <= 0) {
             if (introFade > 0) {
                 introFade -= 0.02f;
                 hasSeenIntro = false;
@@ -462,22 +468,18 @@ public class GuiDiscraftMainMenu extends GuiDiscraftScreen {
             hasSeenIntro = false;
         }
 
-        if(introFadeFirst > 0){
-            introFadeFirst-=0.025f;
+        if (introFadeFirst > 0) {
+            introFadeFirst -= 0.025f;
         }
 
-        if(!hasSeenIntro){
+        if (!hasSeenIntro) {
 
-            GuiUtils.renderRect(0,0,width,height,0xFF5E9D34,introFade);
-            GuiUtils.renderImageCenteredTransparent(this.width / 2,this.height / 2,MENU_LOGO,296, 80,introFade);
-            GuiUtils.renderRect(0,0,width,height,0xFF5E9D34,introFadeFirst);
+            GuiUtils.renderRect(0, 0, width, height, 0xFF5E9D34, introFade);
+            GuiUtils.renderImageCenteredTransparent(this.width / 2, this.height / 2, MENU_LOGO, 296, 80, introFade);
+            GuiUtils.renderRect(0, 0, width, height, 0xFF5E9D34, introFadeFirst);
 
         }
 
-    }
-
-    public static boolean hasSeenIntro(){
-        return hasSeenIntro;
     }
 
 }

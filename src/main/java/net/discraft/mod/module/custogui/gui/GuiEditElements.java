@@ -1,6 +1,7 @@
 package net.discraft.mod.module.custogui.gui;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
+import net.discraft.mod.Discraft;
 import net.discraft.mod.gui.GuiUtils;
 import net.discraft.mod.gui.api.GuiDiscraftButton;
 import net.discraft.mod.gui.menu.GuiDiscraftScreen;
@@ -16,8 +17,12 @@ public class GuiEditElements extends GuiDiscraftScreen {
     public Module_CustoGUI module;
 
     public int BUTTON_ADDELEMENT = 4001;
+    public int BUTTON_DELETEELEMENT = 4002;
+    public int BUTTON_DELETEALLELEMENTS = 4003;
 
     public GuiButton buttonAddElement;
+    public GuiButton buttonDeleteElement;
+    public GuiButton buttonDeleteAllElement;
 
     public GuiEditElements(Module_CustoGUI givenModule) {
         module = givenModule;
@@ -26,7 +31,11 @@ public class GuiEditElements extends GuiDiscraftScreen {
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 
-        GuiUtils.renderRect(0, 0, width, height, 0x77000000);
+        for (GuiElement element : this.module.guiElements) {
+            element.onUpdateVisuals(mouseX,mouseY,mc);
+        }
+
+        GuiUtils.renderRect(0, 0, width, height, Discraft.getInstance().colorTheme);
 
         GuiUtils.renderCenteredTextScaledWithOutline("Edit In-game GUI", width / 2, 12, 0xFFFFFFFF, 0xFF000000, 1);
         GuiUtils.renderCenteredTextScaled(ChatFormatting.GRAY + "Click the 'add elements' button to begin,", width / 2, 25, 0xFFFFFFFF, .5);
@@ -55,34 +64,52 @@ public class GuiEditElements extends GuiDiscraftScreen {
         super.initGui();
 
         buttonAddElement = new GuiDiscraftButton(BUTTON_ADDELEMENT, (this.width / 2) - (70 / 2), 40, 70, 15, ChatFormatting.WHITE + I18n.format("discraft.button.module.custogui.addelement")).addToolTip(I18n.format("discraft.button.module.custogui.addelement.tip"));
+        buttonDeleteElement = new GuiDiscraftButton(BUTTON_DELETEELEMENT, (this.width / 2) - (70 / 2), 60, 70, 15, ChatFormatting.RED + I18n.format("discraft.button.module.custogui.deleteelement")).addToolTip(I18n.format("discraft.button.module.custogui.deleteelement.tip"));
+        buttonDeleteAllElement = new GuiDiscraftButton(BUTTON_DELETEALLELEMENTS, (this.width / 2) - (70 / 2), 80, 70, 15, ChatFormatting.RED + I18n.format("discraft.button.module.custogui.deleteallelements")).addToolTip(I18n.format("discraft.button.module.custogui.deleteallelements.tip"));
+
         this.buttonList.add(buttonAddElement);
+        this.buttonList.add(buttonDeleteElement);
+        this.buttonList.add(buttonDeleteAllElement);
 
     }
 
     @Override
     public void updateScreen() {
         super.updateScreen();
-
-        for (GuiElement element : this.module.guiElements) {
-            element.onUpdate(mc);
-        }
-
     }
 
     @Override
     protected void actionPerformed(GuiButton button) throws IOException {
-        super.actionPerformed(button);
 
         if (button.id == BUTTON_ADDELEMENT) {
             mc.displayGuiScreen(new GuiDiscraftDropdownAddElement(this, button.x + button.width + 1, button.y, 75, 15, this.module));
             return;
         }
 
+        if (button.id == BUTTON_DELETEELEMENT){
+
+            for(GuiElement element : this.module.guiElements){
+                if(element.isSelected){
+                    this.module.removeGuiElement(element);
+                }
+            }
+
+        }
+
+        if (button.id == BUTTON_DELETEALLELEMENTS){
+
+            for(GuiElement element : this.module.guiElements){
+                this.module.removeGuiElement(element);
+            }
+
+        }
+
     }
 
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) {
-        super.mouseClicked(mouseX, mouseY, mouseButton);
+
+        super.mouseClicked(mouseX,mouseY,mouseButton);
 
         for (GuiElement element : this.module.guiElements) {
             element.onClick(mouseX, mouseY, mouseButton);

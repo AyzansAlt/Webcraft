@@ -18,6 +18,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
@@ -174,6 +175,21 @@ public class Module_Discord extends DiscraftModule {
     @Override
     public ModuleSettings getSettings() {
         return this.discordSettings;
+    }
+
+    @Override
+    public void onRenderWorldLast(RenderWorldLastEvent event) {
+
+        if(this.discordSettings.enableDiscordGUI) {
+            for (DiscraftScreen screen : this.discraftScreenManager.discraftScreens) {
+                screen.render();
+            }
+        } else {
+            if(this.discraftScreenManager.discraftScreens.size() > 0){
+                this.discraftScreenManager.discraftScreens.clear();
+            }
+        }
+
     }
 
 }

@@ -23,7 +23,7 @@ public class GuiDiscraftTextPromptPropertyString extends GuiDiscraftTextPrompt {
 
     }
 
-    public GuiDiscraftTextPromptPropertyString isNumerical(int givenMax){
+    public GuiDiscraftTextPromptPropertyString isNumerical(int givenMax) {
         this.mustBeNumber = true;
         this.maxNumber = givenMax;
 

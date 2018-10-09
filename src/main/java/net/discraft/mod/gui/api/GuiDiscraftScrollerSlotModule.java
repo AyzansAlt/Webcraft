@@ -95,9 +95,9 @@ public class GuiDiscraftScrollerSlotModule extends GuiScrollerSlot {
             int descX = this.posX - descWidth - 10;
             int descY = this.posY;
 
-            GuiUtils.renderRectWithOutline(descX + descWidth + 1, descY + 3, 4, 35, 0x77000000, 0x77000000, 1);
+            GuiUtils.renderRectWithOutline(descX + descWidth + 1, descY + 3, 4, 35, Discraft.getInstance().colorTheme, Discraft.getInstance().colorTheme, 1);
 
-            GuiUtils.renderRectWithOutline(descX, descY, descWidth, descHeight, 0x77000000, 0x77000000, 1);
+            GuiUtils.renderRectWithOutline(descX, descY, descWidth, descHeight, Discraft.getInstance().colorTheme, Discraft.getInstance().colorTheme, 1);
             GuiUtils.renderRectWithGradientWithAlpha(descX, descY + (descHeight / 2), descWidth, descHeight / 2, 0x00000000, 0xFF5E9D34, 0, 0, descriptionFade);
 
             GuiUtils.renderText(this.module.moduleName, descX + 2, descY + 3, 0xFFFFFF);

@@ -6,11 +6,9 @@ import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.event.ClientChatReceivedEvent;
-import net.minecraftforge.client.event.DrawBlockHighlightEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.client.event.*;
 import net.minecraftforge.event.ServerChatEvent;
+import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -44,13 +42,10 @@ public class DiscraftModule {
     }
 
     public String getCommandPrefix() {
-
         return "Unknown";
-
     }
 
     public void execute(MinecraftServer givenServer, ICommandSender sender, String[] args) throws CommandException {
-
     }
 
     public String getCommandHelp(String givenHelp) {
@@ -73,39 +68,30 @@ public class DiscraftModule {
     }
 
     public void onRenderWorldLast(RenderWorldLastEvent event) {
-
     }
 
     public void onClientLoggedIn(FMLNetworkEvent.ClientConnectedToServerEvent event) {
-
     }
 
     public void onChatReceiveEvent(ClientChatReceivedEvent event) {
-
     }
 
     public void onServerChatEvent(ServerChatEvent event, String givenFormatted, String givenUnformatted) {
-
     }
 
     public void onClientTick(TickEvent.ClientTickEvent event) {
-
     }
 
     public void onRenderIngameTitle(String givenTitle) {
-
     }
 
     public void onRenderOverlay(RenderGameOverlayEvent event) {
-
     }
 
     public void onModuleDisable() {
-
     }
 
     public void onWorldLoad(WorldEvent.Load event) {
-
     }
 
     public void addShutdownHook() {
@@ -120,5 +106,14 @@ public class DiscraftModule {
 
     public ModuleSettings getSettings() {
         return null;
+    }
+
+    public void onRenderMainMenu(int width, int height, int mouseX, int mouseY, float partialTicks) {
+    }
+
+    public void onMouseEvent(MouseEvent event){
+    }
+
+    public void onEntityAttack(AttackEntityEvent event) {
     }
 }

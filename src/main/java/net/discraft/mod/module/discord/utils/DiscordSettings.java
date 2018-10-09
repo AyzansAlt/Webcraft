@@ -3,7 +3,10 @@ package net.discraft.mod.module.discord.utils;
 import net.discraft.mod.Discraft;
 import net.discraft.mod.module.ModuleSettings;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Properties;
 
 import static java.lang.Boolean.parseBoolean;
