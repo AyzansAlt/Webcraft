@@ -173,4 +173,9 @@ public class GuiDiscraftScrollerSlotModule extends GuiScrollerSlot {
         return this.height;
     }
 
+    @Override
+    public int width() {
+        return this.width;
+    }
+
 }

@@ -28,7 +28,6 @@ public class GuiDiscraftContainerModules extends GuiDiscraftContainer {
 
     public GuiDiscraftContainerModules(int givenID, int givenPosX, int givenPosY, int givenWidth, int givenHeight, GuiDiscraftScreen givenParentGUI) {
         super(givenID, givenPosX, givenPosY, givenWidth, givenHeight, givenParentGUI);
-
     }
 
     @Override

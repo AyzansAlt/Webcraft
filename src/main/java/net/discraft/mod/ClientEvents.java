@@ -153,9 +153,9 @@ public class ClientEvents {
     }
 
     @SubscribeEvent
-    public void onMouseEvent(MouseEvent event){
+    public void onMouseEvent(MouseEvent event) {
         for (DiscraftModule module : Discraft.getInstance().discraftModules) {
-            if(module.isEnabled) {
+            if (module.isEnabled) {
                 module.onMouseEvent(event);
             }
         }
@@ -278,12 +278,18 @@ public class ClientEvents {
     }
 
     /**
-     * On Entity Hurt Event - Called when an Entity is hurt on the Server
+     * On Entity Attack Event - Called when an Entity is attacked on the Server
      *
-     * @param event - Given Event (LivingHurtEvent)
+     * @param event - Given Event (AttackEntityEvent)
      */
     @SubscribeEvent
-    public void onEntityHurt(LivingHurtEvent event) {
+    public void onEntityAttack(AttackEntityEvent event) {
+
+        for (DiscraftModule module : Discraft.getInstance().discraftModules) {
+            if (module.isEnabled) {
+                module.onEntityAttack(event);
+            }
+        }
 
         if (Discraft.getInstance().discraftSettings.enableDiscraft) {
 
@@ -292,16 +298,16 @@ public class ClientEvents {
     }
 
     /**
-     * On Entity Attack Event - Called when an Entity is attacked on the Server
+     * On Entity Attack Event - Called when an Entity is hurt on the Server
      *
      * @param event - Given Event (LivingHurtEvent)
      */
     @SubscribeEvent
-    public void onEntityAttack(AttackEntityEvent event) {
+    public void onEntityHurt(LivingHurtEvent event) {
 
         for (DiscraftModule module : Discraft.getInstance().discraftModules) {
             if (module.isEnabled) {
-                module.onEntityAttack(event);
+                module.onEntityHurt(event);
             }
         }
 

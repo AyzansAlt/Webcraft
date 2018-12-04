@@ -63,7 +63,7 @@ public class GuiElementText_Edit extends GuiDiscraftScreen {
             return;
         }
 
-        if(button.id == BUTTON_FINISH){
+        if (button.id == BUTTON_FINISH) {
             mc.displayGuiScreen(parentGUI);
         }
 

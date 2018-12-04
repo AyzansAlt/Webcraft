@@ -81,4 +81,9 @@ public class GuiDiscraftScrollerSlotImage extends GuiScrollerSlot {
         return this.height;
     }
 
+    @Override
+    public int width() {
+        return this.scroller.width;
+    }
+
 }

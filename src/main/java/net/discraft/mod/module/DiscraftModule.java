@@ -8,6 +8,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.event.ServerChatEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -111,9 +112,12 @@ public class DiscraftModule {
     public void onRenderMainMenu(int width, int height, int mouseX, int mouseY, float partialTicks) {
     }
 
-    public void onMouseEvent(MouseEvent event){
+    public void onMouseEvent(MouseEvent event) {
     }
 
     public void onEntityAttack(AttackEntityEvent event) {
+    }
+
+    public void onEntityHurt(LivingHurtEvent event) {
     }
 }

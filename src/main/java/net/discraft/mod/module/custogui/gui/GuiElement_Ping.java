@@ -2,10 +2,7 @@ package net.discraft.mod.module.custogui.gui;
 
 import net.discraft.mod.module.custogui.Module_CustoGUI;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraftforge.fml.client.FMLClientHandler;
 
 public class GuiElement_Ping extends GuiElementText {
 
@@ -18,7 +15,7 @@ public class GuiElement_Ping extends GuiElementText {
 
         int pingValue = 0;
 
-        if(mc.player != null && mc.player.connection != null && mc.player.connection.getPlayerInfo(mc.player.getUniqueID()) != null){
+        if (mc.player != null && mc.player.connection != null && mc.player.connection.getPlayerInfo(mc.player.getUniqueID()) != null) {
             pingValue = mc.player.connection.getPlayerInfo(mc.player.getUniqueID()).getResponseTime();
         }
 

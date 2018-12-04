@@ -40,7 +40,7 @@ public class Discraft {
      * Mod Attributes
      */
     public static final String MOD_ID = "dc";
-    public static final String MOD_VERSION = "1.1a";
+    public static final String MOD_VERSION = "1.2a";
     public static final String MOD_NAME = "Discraft";
     public static final String[] developerList = new String[]{"dbc4ea0e-cb87-4ffc-b431-d9a8eec1428c"};
     /**

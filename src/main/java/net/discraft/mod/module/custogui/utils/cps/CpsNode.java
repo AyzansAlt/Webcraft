@@ -4,9 +4,9 @@ public class CpsNode {
 
     public int liveTime = 20;
 
-    public boolean mustDie(){
+    public boolean mustDie() {
         liveTime--;
-        if(liveTime <= 0){
+        if (liveTime <= 0) {
             return true;
         }
         return false;

@@ -111,6 +111,7 @@ public class GuiDiscraftScroller extends GuiDiscraftContainer {
             scrollerClickMouseOffset = mouseY - scrollbarY;
             scrollerClicked = true;
         }
+
     }
 
     @Override

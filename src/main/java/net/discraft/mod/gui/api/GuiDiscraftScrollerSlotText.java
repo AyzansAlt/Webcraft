@@ -73,6 +73,11 @@ public class GuiDiscraftScrollerSlotText extends GuiScrollerSlot {
     }
 
     @Override
+    public int width() {
+        return this.scroller.width;
+    }
+
+    @Override
     public void clicked(int mouseX, int mouseY) {
         super.clicked(mouseX, mouseY);
         String[] words = this.displayText.split(" ");

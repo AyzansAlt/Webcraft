@@ -18,6 +18,7 @@ import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.MouseEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.lwjgl.input.Keyboard;
@@ -27,6 +28,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import static net.minecraft.client.Minecraft.getMinecraft;
@@ -81,7 +83,7 @@ public class Module_CustoGUI extends DiscraftModule {
     @Override
     public void onClientTick(TickEvent.ClientTickEvent event) {
 
-        if(event.phase.equals(TickEvent.Phase.START)) {
+        if (event.phase.equals(TickEvent.Phase.START)) {
 
             Minecraft mc = Minecraft.getMinecraft();
 
@@ -100,8 +102,8 @@ public class Module_CustoGUI extends DiscraftModule {
     }
 
     @Override
-    public void onMouseEvent(MouseEvent event){
-        if(event.getButton() == 0 && event.isButtonstate()){
+    public void onMouseEvent(MouseEvent event) {
+        if (event.getButton() == 0 && event.isButtonstate()) {
             this.elementData.CPSNodes.add(new CpsNode());
         }
     }
@@ -188,10 +190,26 @@ public class Module_CustoGUI extends DiscraftModule {
 
         Minecraft mc = Minecraft.getMinecraft();
 
-        if(mc.player != null) {
+        if (mc.player != null) {
             if (event.getEntity().equals(mc.player)) {
-                this.elementData.clientReach = event.getEntity().getDistance(event.getTarget());
+                DecimalFormat decimalFormat = new DecimalFormat("#.##");
+                this.elementData.clientReach = Float.valueOf(decimalFormat.format(event.getEntity().getDistance(event.getTarget())));
                 System.out.println(this.elementData.clientReach);
+            }
+        }
+
+    }
+
+    @Override
+    public void onEntityHurt(LivingHurtEvent event) {
+
+        Minecraft mc = Minecraft.getMinecraft();
+
+        if (mc.player != null) {
+            if (event.getSource().getTrueSource() != null && event.getSource().getTrueSource().equals(mc.player)) {
+                DecimalFormat decimalFormat = new DecimalFormat("#.##");
+                this.elementData.serverReach = Float.valueOf(decimalFormat.format(event.getSource().getTrueSource().getDistance(event.getEntityLiving())));
+                System.out.println(this.elementData.serverReach);
             }
         }
 

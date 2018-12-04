@@ -1,6 +1,5 @@
 package net.discraft.mod.module.custogui.utils;
 
-import net.discraft.mod.Discraft;
 import net.discraft.mod.gui.GuiUtils;
 import net.discraft.mod.module.custogui.Module_CustoGUI;
 import net.minecraft.client.Minecraft;
@@ -47,17 +46,18 @@ public class GuiElement {
             GuiUtils.renderTextScaled("Selected", this.posX, this.posY + this.height + 3, 0xFFFFFF, .5);
         }
 
-        if (this.shouldDrawBackground){
-            GuiUtils.renderRectWithOutline(this.posX,this.posY,this.width,this.height,backgroundColor,backgroundColor,1);
+        if (this.shouldDrawBackground) {
+            GuiUtils.renderRectWithOutline(this.posX, this.posY, this.width, this.height, backgroundColor, backgroundColor, 1);
         }
 
     }
 
     /**
      * On Update Visuals - Update Elements Visually
+     *
      * @param mouseX - Given Mouse X
      * @param mouseY - Given Mouse Y
-     * @param mc - Given Minecraft Instance
+     * @param mc     - Given Minecraft Instance
      */
     public void onUpdateVisuals(int mouseX, int mouseY, Minecraft mc) {
 
@@ -73,7 +73,7 @@ public class GuiElement {
     /**
      * On Update - Update element Attributes
      */
-    public void onUpdate(Minecraft mc){
+    public void onUpdate(Minecraft mc) {
         if (!this.isEditable) {
             this.isSelected = false;
         }

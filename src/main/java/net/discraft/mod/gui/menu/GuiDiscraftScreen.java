@@ -1,7 +1,6 @@
 package net.discraft.mod.gui.menu;
 
 import com.google.common.collect.Lists;
-import net.discraft.mod.Discraft;
 import net.discraft.mod.gui.GuiUtils;
 import net.discraft.mod.gui.api.GuiDiscraftContainer;
 import net.minecraft.client.gui.GuiButton;
@@ -88,18 +87,6 @@ public class GuiDiscraftScreen extends GuiScreen {
     }
 
     @Override
-    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) {
-        try {
-            super.mouseClicked(mouseX, mouseY, mouseButton);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        for (GuiDiscraftContainer gui : containerList) {
-            gui.mouseClicked(mouseX, mouseY, mouseButton);
-        }
-    }
-
-    @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         super.drawScreen(mouseX, mouseY, partialTicks);
 
@@ -153,10 +140,25 @@ public class GuiDiscraftScreen extends GuiScreen {
     }
 
     @Override
+    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) {
+        try {
+            super.mouseClicked(mouseX, mouseY, mouseButton);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        for (GuiDiscraftContainer container : containerList) {
+            container.mouseClicked(mouseX, mouseY, mouseButton);
+        }
+    }
+
+    @Override
     protected void mouseClickMove(int par1, int par2, int par3, long timeSinceLastClick) {
         super.mouseClickMove(par1, par2, par3, timeSinceLastClick);
-        for (GuiDiscraftContainer container : containerList) {
-            container.mouseReleased(par1, par2);
+
+        if (par3 >= 0) {
+            for (GuiDiscraftContainer container : containerList) {
+                container.mouseReleased(par1, par2);
+            }
         }
     }
 

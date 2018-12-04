@@ -14,12 +14,12 @@ public class ElementData {
     public int killCounter = 0;
     public int deathCounter = 0;
 
-    public void update(){
+    public void update() {
 
         ArrayList<CpsNode> newList = new ArrayList<>();
 
-        for(CpsNode node : CPSNodes){
-            if(!node.mustDie()){
+        for (CpsNode node : CPSNodes) {
+            if (!node.mustDie()) {
                 newList.add(node);
             }
         }

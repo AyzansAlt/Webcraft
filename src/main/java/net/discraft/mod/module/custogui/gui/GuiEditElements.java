@@ -32,7 +32,7 @@ public class GuiEditElements extends GuiDiscraftScreen {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 
         for (GuiElement element : this.module.guiElements) {
-            element.onUpdateVisuals(mouseX,mouseY,mc);
+            element.onUpdateVisuals(mouseX, mouseY, mc);
         }
 
         GuiUtils.renderRect(0, 0, width, height, Discraft.getInstance().colorTheme);
@@ -86,19 +86,19 @@ public class GuiEditElements extends GuiDiscraftScreen {
             return;
         }
 
-        if (button.id == BUTTON_DELETEELEMENT){
+        if (button.id == BUTTON_DELETEELEMENT) {
 
-            for(GuiElement element : this.module.guiElements){
-                if(element.isSelected){
+            for (GuiElement element : this.module.guiElements) {
+                if (element.isSelected) {
                     this.module.removeGuiElement(element);
                 }
             }
 
         }
 
-        if (button.id == BUTTON_DELETEALLELEMENTS){
+        if (button.id == BUTTON_DELETEALLELEMENTS) {
 
-            for(GuiElement element : this.module.guiElements){
+            for (GuiElement element : this.module.guiElements) {
                 this.module.removeGuiElement(element);
             }
 
@@ -109,7 +109,7 @@ public class GuiEditElements extends GuiDiscraftScreen {
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) {
 
-        super.mouseClicked(mouseX,mouseY,mouseButton);
+        super.mouseClicked(mouseX, mouseY, mouseButton);
 
         for (GuiElement element : this.module.guiElements) {
             element.onClick(mouseX, mouseY, mouseButton);

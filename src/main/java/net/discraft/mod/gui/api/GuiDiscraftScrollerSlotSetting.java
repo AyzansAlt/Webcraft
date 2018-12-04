@@ -4,10 +4,10 @@ import com.mojang.realmsclient.gui.ChatFormatting;
 import net.discraft.mod.DiscraftSounds;
 import net.discraft.mod.gui.GuiUtils;
 import net.discraft.mod.gui.menu.GuiDiscraftManager;
+import net.discraft.mod.utils.StringUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.init.SoundEvents;
-import org.codehaus.plexus.util.StringUtils;
 import org.lwjgl.input.Mouse;
 
 public class GuiDiscraftScrollerSlotSetting extends GuiScrollerSlot {
@@ -22,7 +22,7 @@ public class GuiDiscraftScrollerSlotSetting extends GuiScrollerSlot {
 
     public static boolean isNumeric(String str) {
         try {
-            int number = Integer.parseInt(str);
+            Integer.parseInt(str);
             return true;
         } catch (Exception e) {
             return false;
@@ -50,6 +50,11 @@ public class GuiDiscraftScrollerSlotSetting extends GuiScrollerSlot {
     @Override
     public int height() {
         return 15;
+    }
+
+    @Override
+    public int width() {
+        return this.scroller.width;
     }
 
     @Override

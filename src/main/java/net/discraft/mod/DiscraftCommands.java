@@ -67,7 +67,7 @@ public class DiscraftCommands implements ICommand {
 
                     if (Desktop.isDesktopSupported()) {
                         try {
-                            Desktop.getDesktop().browse(new URI(DiscraftRef.URL_COMMANDS));
+                            Desktop.getDesktop().browse(new URI(DiscraftReferences.commandsURL));
                         } catch (IOException e) {
                             e.printStackTrace();
                         } catch (URISyntaxException e) {

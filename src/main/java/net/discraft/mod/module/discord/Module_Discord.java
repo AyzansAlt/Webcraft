@@ -180,12 +180,12 @@ public class Module_Discord extends DiscraftModule {
     @Override
     public void onRenderWorldLast(RenderWorldLastEvent event) {
 
-        if(this.discordSettings.enableDiscordGUI) {
+        if (this.discordSettings.enableDiscordGUI) {
             for (DiscraftScreen screen : this.discraftScreenManager.discraftScreens) {
                 screen.render();
             }
         } else {
-            if(this.discraftScreenManager.discraftScreens.size() > 0){
+            if (this.discraftScreenManager.discraftScreens.size() > 0) {
                 this.discraftScreenManager.discraftScreens.clear();
             }
         }
