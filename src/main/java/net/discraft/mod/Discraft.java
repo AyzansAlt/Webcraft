@@ -58,7 +58,7 @@ public class Discraft {
      */
     public DiscraftVariables discraftVariables = new DiscraftVariables();
     /**
-     * Necessary Instange Utilities
+     * Necessary Instance Utilities
      */
     public DiscraftLogger discraftLogger = new DiscraftLogger();
     public DiscraftKeys discraftKeys = new DiscraftKeys();
@@ -73,8 +73,7 @@ public class Discraft {
      */
     public ClientNetworkConnection clientNetworkConnection;
 
-    //network.mcdecimation.net | localhost
-    public String clientNetworkConnection_ip = "localhost";
+    public String clientNetworkConnection_ip = "network.mcdecimation.net";
     public int clientNetworkConnection_tcp = 54666;
     public int clientNetworkConnection_udp = 54888;
 
@@ -105,6 +104,7 @@ public class Discraft {
         /* Change Icon and Title of Window */
         DiscraftJavaWindow.init();
 
+        /* Initialize default Modules */
         DiscraftModule moduleHypixel = new Module_Hypixel(
                 "module_hypixel",
                 "Hypixel API",
@@ -170,14 +170,12 @@ public class Discraft {
 
         initializeConfigurations(); /* Initialize the Discraft Configuration Files */
 
+        /* Initialize Discraft Checker Utility */
         this.discraftChecker.init();
-
         /* Register Event Handlers */
         MinecraftForge.EVENT_BUS.register(new ClientEvents());
-
         /* Register GUI Handlers */
         NetworkRegistry.INSTANCE.registerGuiHandler(getInstance(), new GuiHandler());
-
         /* Register Client-Side Commands */
         ClientCommandHandler.instance.registerCommand(new DiscraftCommands());
 
@@ -251,6 +249,8 @@ public class Discraft {
         if (FMLCommonHandler.instance().getSide().isClient()) {
             ClientNetworkConnection.client.addListener(new MessageListener_Client());
         }
+
+        /* Attempt connection to Management Server */
         try {
             ClientNetworkConnection.initializeClientConnection(clientNetworkConnection_ip, clientNetworkConnection_tcp, clientNetworkConnection_udp);
         } catch (IOException e) {
@@ -298,24 +298,29 @@ public class Discraft {
      */
     public void loadConfigurations() {
 
+        /* For each module, load configuration */
         for (DiscraftModule module : discraftModules) {
             module.loadConfigurations();
         }
 
     }
 
+    /**
+     * Does Module Exist - Check if module exists using a specified Module ID
+     * @param givenModuleID - Given Module ID
+     * @return - Yes/No - Does exist/Doesn't exist
+     */
     public boolean doesModuleExist(String givenModuleID) {
 
-        for (DiscraftModule module : discraftModules) {
-            if (module.moduleID.equals(givenModuleID)) {
-                return true;
-            }
-        }
-
-        return false;
+        return (getModuleFromID(givenModuleID) != null);
 
     }
 
+    /**
+     * Get Module from ID - Get a specific Module using a Module ID reference
+     * @param givenModuleID - Given Module ID
+     * @return - Returns the Discraft Module (if exists)
+     */
     public DiscraftModule getModuleFromID(String givenModuleID) {
 
         for (DiscraftModule module : discraftModules) {

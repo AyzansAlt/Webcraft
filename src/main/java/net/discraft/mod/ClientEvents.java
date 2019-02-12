@@ -33,14 +33,13 @@ public class ClientEvents {
     @SubscribeEvent
     public void onClientTick(TickEvent.ClientTickEvent event) {
 
+        /* For each module, send client tick event */
         for (DiscraftModule module : Discraft.getInstance().discraftModules) {
             if (module.isEnabled)
                 module.onClientTick(event);
         }
 
         if (event.phase.equals(TickEvent.Phase.START)) {
-
-            Minecraft mc = Minecraft.getMinecraft();
 
             if (!Discraft.getInstance().discraftVariables.firstStart && GuiDiscraftMainMenu.hasSeenIntro()) {
                 ClientNotification.createNotification("Discraft - " + ChatFormatting.GREEN + Discraft.MOD_VERSION, I18n.format("discraft.initialized.modules", "" + ChatFormatting.GREEN + Discraft.getInstance().discraftModules.size() + ChatFormatting.RESET));
@@ -131,9 +130,9 @@ public class ClientEvents {
         }
 
         /* Render Discraft Notifications */
-        ClientNotification clietNotification = Discraft.getInstance().discraftVariables.currentClientNotification;
-        if (clietNotification != null) {
-            clietNotification.doRender(mc);
+        ClientNotification clientNotification = Discraft.getInstance().discraftVariables.currentClientNotification;
+        if (clientNotification != null) {
+            clientNotification.doRender();
         }
 
     }
@@ -146,7 +145,9 @@ public class ClientEvents {
     @SubscribeEvent
     public void onChatReceiveEvent(ClientChatReceivedEvent event) {
 
+        /* For each module, send chat receive event */
         for (DiscraftModule module : Discraft.getInstance().discraftModules) {
+            if (module.isEnabled)
             module.onChatReceiveEvent(event);
         }
 
@@ -154,6 +155,8 @@ public class ClientEvents {
 
     @SubscribeEvent
     public void onMouseEvent(MouseEvent event) {
+
+        /* For each module, send mouse event */
         for (DiscraftModule module : Discraft.getInstance().discraftModules) {
             if (module.isEnabled) {
                 module.onMouseEvent(event);
@@ -164,10 +167,12 @@ public class ClientEvents {
     @SubscribeEvent
     public void onServerChatEvent(ServerChatEvent event) {
 
+        /* For each module, send chat event */
         String formattedText = event.getComponent().getFormattedText();
         String unformattedText = ChatFormatting.stripFormatting(event.getComponent().getUnformattedText());
 
         for (DiscraftModule module : Discraft.getInstance().discraftModules) {
+            if (module.isEnabled)
             module.onServerChatEvent(event, formattedText, unformattedText);
         }
 
@@ -181,15 +186,12 @@ public class ClientEvents {
     @SubscribeEvent
     public void onGuiOpen(GuiOpenEvent event) {
 
-        /* Get the Minecraft Instance */
-        Minecraft mc = Minecraft.getMinecraft();
-
+        /* If GUI is equal to Main Menu, switch to Discraft Main Menu */
         if (event.getGui() instanceof GuiMainMenu) {
-
             event.setGui(new GuiDiscraftMainMenu());
-
         }
 
+        /* If GUI is In-game Main Menu, switch to Discraft In-game Main Menu */
         if (event.getGui() instanceof GuiIngameMenu) {
             event.setGui(new GuiDiscraftIngameMenu());
         }
@@ -204,13 +206,13 @@ public class ClientEvents {
     @SubscribeEvent
     public void onClientLoggedIn(FMLNetworkEvent.ClientConnectedToServerEvent event) {
 
+        /* For each module, send on Client Logged In event */
         for (DiscraftModule module : Discraft.getInstance().discraftModules) {
             if (module.isEnabled)
                 module.onClientLoggedIn(event);
         }
 
         Minecraft mc = Minecraft.getMinecraft();
-
         mc.ingameGUI.getChatGUI().printChatMessage(new TextComponentString(I18n.format("discraft.ingame.tip.open2", ChatFormatting.GREEN + "/discraft" + ChatFormatting.RESET)));
 
     }

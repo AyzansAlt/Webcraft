@@ -19,7 +19,10 @@ public class LayerDiscraftCape implements LayerRenderer {
     }
 
     public void doRenderLayer(AbstractClientPlayer entitylivingbaseIn, float p_177141_2_, float p_177141_3_, float partialTicks, float p_177141_5_, float p_177141_6_, float p_177141_7_, float scale) {
+
+        /* If Discraft is Enabled, begin rendering process */
         if (Discraft.getInstance().discraftSettings.enableDiscraft) {
+
             if (entitylivingbaseIn.hasPlayerInfo() && !entitylivingbaseIn.isInvisible() && entitylivingbaseIn.isWearing(EnumPlayerModelParts.CAPE) && isDeveloper(entitylivingbaseIn.getGameProfile().getId().toString())) {
 
                 GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
@@ -64,20 +67,27 @@ public class LayerDiscraftCape implements LayerRenderer {
         }
     }
 
+    /**
+     * Is Developer - Check if given Player UUID is a Developer
+     * @param givenPlayerUUID - Given Player UUID (String)
+     * @return - Yes/No - Yes, they are a Developer/No, they are not a developer
+     */
     private boolean isDeveloper(String givenPlayerUUID) {
 
         for (String currentPlayerUUID : Discraft.developerList) {
-
             if (currentPlayerUUID.equals(givenPlayerUUID)) {
                 return true;
             }
-
         }
 
         return false;
 
     }
 
+    /**
+     * Should Combine Textures
+     * @return - Return False by default
+     */
     public boolean shouldCombineTextures() {
         return false;
     }

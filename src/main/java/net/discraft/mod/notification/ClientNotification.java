@@ -11,24 +11,22 @@ import org.lwjgl.opengl.GL11;
 
 public class ClientNotification {
 
-    /* Regular Notification Textures */
-    public ResourceLocation notificationTexture = new ResourceLocation(Discraft.MOD_ID + ":textures/gui/notification.png");
-    public ResourceLocation notificationTextureOverlay = new ResourceLocation(Discraft.MOD_ID + ":textures/gui/notification_overlay.png");
+    /** Regular Notification Textures */
+    public final ResourceLocation notificationTexture = new ResourceLocation(Discraft.MOD_ID + ":textures/gui/notification.png");
+    public final ResourceLocation notificationTextureOverlay = new ResourceLocation(Discraft.MOD_ID + ":textures/gui/notification_overlay.png");
 
-    /* Warning Notification Textures */
-    public ResourceLocation notificationWarningTexture = new ResourceLocation(Discraft.MOD_ID + ":textures/gui/notificationwarning.png");
-    public ResourceLocation notificationWarningTextureOverlay = new ResourceLocation(Discraft.MOD_ID + ":textures/gui/notificationwarning_overlay.png");
-
-    public ResourceLocation notificationSound = new ResourceLocation(Discraft.MOD_ID, "notification");
+    /** Warning Notification Textures */
+    public final ResourceLocation notificationWarningTexture = new ResourceLocation(Discraft.MOD_ID + ":textures/gui/notificationwarning.png");
+    public final ResourceLocation notificationWarningTextureOverlay = new ResourceLocation(Discraft.MOD_ID + ":textures/gui/notificationwarning_overlay.png");
 
     /**
      * Message in the notification
      */
-    public String[] message;
+    private String[] message;
     /**
      * Sub message of the notification (Countercraft, Ferullo Gaming etc)
      */
-    public String subMessage;
+    private String subMessage;
 
     /**
      * Time the message is on the screen
@@ -125,7 +123,7 @@ public class ClientNotification {
         }
     }
 
-    public void doRender(Minecraft par1Minecraft) {
+    public void doRender() {
         float val = (float) (Math.sin(Discraft.getInstance().discraftVariables.smoothSwing / 8) + 1);
         GuiUtils.renderImageTransparent(3, (int) this.posY + 3, isWarning ? notificationWarningTexture : notificationTexture, 160, 32, alpha);
         GuiUtils.renderImageTransparent(3, (int) this.posY + 3, isWarning ? notificationWarningTextureOverlay : notificationTextureOverlay, 160, 32, val);
