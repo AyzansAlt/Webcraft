@@ -9,3 +9,12 @@ Discraft includes a modified version of the handy web-browser library known as
 MCEF (Minecraft ChromiumEF) which allows for in-game web-browsing and 
 page-rendering. This has made it possible for Discraft to initialize Discord 
 in-game without flaw.
+
+Required Libraries:
+  - Discord-RPC
+  - Gson (2.8.1+)
+  - Jsonbeans (0.7+)
+  - Kryo (2.24.0+)
+  - Kryonet (2.22.0-RC1+)
+  - minlog (1.2+)
+  - Objenesis (2.1+)
