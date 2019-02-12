@@ -41,6 +41,7 @@ public class ClientEvents {
 
         if (event.phase.equals(TickEvent.Phase.START)) {
 
+            /* If Discraft has first started, send Discraft start Notification */
             if (!Discraft.getInstance().discraftVariables.firstStart && GuiDiscraftMainMenu.hasSeenIntro()) {
                 ClientNotification.createNotification("Discraft - " + ChatFormatting.GREEN + Discraft.MOD_VERSION, I18n.format("discraft.initialized.modules", "" + ChatFormatting.GREEN + Discraft.getInstance().discraftModules.size() + ChatFormatting.RESET));
                 Discraft.getInstance().discraftVariables.firstStart = true;
@@ -74,6 +75,7 @@ public class ClientEvents {
                 }
             }
 
+            /* Check if Discraft is Enabled, then perform reconnection */
             if (Discraft.getInstance().discraftSettings.enableDiscraft) {
 
                 /* Run the Reconnection Timer */
