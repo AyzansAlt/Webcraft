@@ -1,5 +1,4 @@
-![alt text][logo]
-[logo]: https://i.imgur.com/Icz3wCA.png "Discraft Logo"
+![logo](https://i.imgur.com/Icz3wCA.png)
 
 Discraft allows you to access Discord via an in-game web display, defeating the 
 need to have discord open externally on a Web Browser or Client. This means that 
